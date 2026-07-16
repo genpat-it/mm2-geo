@@ -1,0 +1,65 @@
+--- a/align.c
++++ b/align.c
+@@ -642,6 +642,24 @@
+ 	else memset(junc, 0, en - st);
+ }
+ 
++// mm2-geo: geometry-guided band-doubling. Each gap's DP band is sized from the anchor
++// drift (|dq - dr| + margin) instead of minimap2's global -r, and doubled on boundary
++// contact up to minimap2's own bandwidth; ksw2 still fills the band, so indel placement
++// stays accurate. Gated by MM2_GEO=1 (MM2_GEO_MARGIN sets the margin, default 20);
++// with MM2_GEO unset/0 this build is stock minimap2.
++static int mm_geo_enabled(void)
++{
++	static int v = -1;
++	if (v < 0) { const char *e = getenv("MM2_GEO"); v = (e && *e && atoi(e) != 0)? 1 : 0; }
++	return v;
++}
++static int mm_geo_margin(void)
++{
++	static int m = -1;
++	if (m < 0) { const char *e = getenv("MM2_GEO_MARGIN"); m = (e && *e)? atoi(e) : 20; if (m < 0) m = 0; }
++	return m;
++}
++
+ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int qlen, uint8_t *qseq0[2], mm_reg1_t *r, mm_reg1_t *r2, int n_a, mm128_t *a, ksw_extz_t *ez, int splice_flag)
+ {
+ 	int is_sr = !!(opt->flag & MM_F_SR), is_splice = !!(opt->flag & MM_F_SPLICE), is_sr_rna = (!!(opt->flag & MM_F_SR_RNA) && is_splice);
+@@ -808,7 +826,7 @@
+ 		} else mm_adjust_minier(mi, qseq0, &a[as1 + i], &re, &qe);
+ 		re1 = re, qe1 = qe;
+ 		if (i == cnt1 - 1 || (a[as1+i].y&MM_SEED_LONG_JOIN) || (qe - qs >= opt->min_ksw_len && re - rs >= opt->min_ksw_len)) { // gap filling
+-			int j, bw1 = bw_long, zdrop_code;
++			int j, bw1 = bw_long, zdrop_code = 0;
+ 			if (a[as1+i].y & MM_SEED_LONG_JOIN)
+ 				bw1 = qe - qs > re - rs? qe - qs : re - rs;
+ 			// perform alignment
+@@ -820,7 +838,27 @@
+ 				mm_idx_getseq(mi, rid, rs, re, tseq);
+ 			}
+ 			mm_get_junc(mi, rid, rs, re, !!(ksw_flag&KSW_EZ_SPLICE_REV), junc);
+-			if (is_sr || (is_sr_rna && qe - qs == re - rs)) { // perform ungapped alignment
++			if (mm_geo_enabled() && !is_splice && !is_sr) { // mm2-geo: geometry-sized DP band (long-read gap filling; short-read/splice keep the stock paths below)
++					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb, ceil_bw = bw1;
++					if (dd < 0) dd = -dd;                 // anchor drift |dq - dr|
++					gb = dd + mm_geo_margin();            // initial band from geometry
++					if (gb < 1) gb = 1;                   // never let the band collapse to zero
++					if (gb > ceil_bw) gb = ceil_bw;       // cap at minimap2's own bandwidth
++					for (;;) {
++						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, ksw_flag|KSW_EZ_APPROX_MAX, ez);
++						if (gb >= ceil_bw) break;
++						int e = 0, mx = 0, c;             // max off-diagonal excursion of the returned CIGAR
++						for (c = 0; c < ez->n_cigar; ++c) {
++							int op = ez->cigar[c] & 0xf, ln = ez->cigar[c] >> 4;
++							if (op == MM_CIGAR_INS) e += ln; else if (op == MM_CIGAR_DEL) e -= ln;
++							if (e > mx) mx = e;
++							if (-e > mx) mx = -e;
++						}
++						if (mx < gb) break;               // path stayed inside the band -> accept
++						gb <<= 1; if (gb > ceil_bw) gb = ceil_bw;  // boundary contact -> double and retry
++					}
++			}
++			else if (is_sr || (is_sr_rna && qe - qs == re - rs)) { // perform ungapped alignment
+ 				int32_t max_gapped_score = (qe - qs - 2) * opt->a - 2 * (opt->q + opt->e);
+ 				assert(qe - qs == re - rs);
+ 				ksw_reset_extz(ez);
