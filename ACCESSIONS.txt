@@ -1,0 +1,23 @@
+Data accessions and sources (fetched by accession; large raw reads are NOT bundled).
+
+HUMAN — GIAB HG002 (NA24385)
+  PacBio HiFi   : GIAB HG002 CCS 15/20 kb chem-2 alignment
+                  HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam   (NCBI GIAB FTP)
+  ONT R10.4.1   : ONT Open Data GIAB 2023.05 HG002 super-accuracy       PAO83395.pass.cram
+  PacBio CLR    : GIAB HG002 PacBio CLR, PacBio_MtSinai_NIST            HG002_PacBio_GRCh38.bam
+  reference     : GRCh38 (small-variant/concordance), GRCh37 (structural variants)
+  chr subsets   : chr22 = CM000684.2, chr14 = CM000676.2 (region-sliced; commands in scripts/)
+  small-var truth: GIAB HG002 GRCh38 benchmark VCF + high-confidence BED (Zook et al. 2019)
+  SV truth      : GIAB HG002 SV Tier1 v0.6 (GRCh37): HG002_SVs_Tier1_v0.6.vcf.gz + BED (Zook et al. 2020)
+  genome-wide   : whole-genome random subset of the same GIAB HG002 PacBio CCS data
+                  (138,688 reads; read-name manifest in data/genomewide_readnames.txt)
+
+BACTERIAL — E. coli
+  reads         : ENA SRR9900640 (real Oxford Nanopore isolate)
+  reference     : E. coli K-12 MG1655, NC_000913.3 (concordance row only)
+  spike-in truth: built from the strain's own Flye assembly (data/ecoli_strain_assembly.fasta);
+                  SNPs+indels implanted by scripts/15_ecoli_plant_variants.py (seed 20260716)
+                  -> data/ecoli_ref_mut.fa + data/ecoli_spikein_truth.vcf.gz
+
+TOOL
+  mm2-geo source + geo.patch : https://github.com/genpat-it/mm2-geo  (tag submission-2026)

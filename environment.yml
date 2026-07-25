@@ -1,0 +1,20 @@
+# Conda environment pinning the tool versions used in the mm2-geo paper.
+# DeepVariant is NOT a conda package: it was run via docker google/deepvariant:1.6.1 (PACBIO model).
+# The clair3 bacterial model (r1041_e82_400bps_sup_v430_bacteria_finetuned) ships with Clair3.
+# Build compiler: GCC 14.3.1 with minimap2's default flags (-O2 -Wall).
+name: mm2-geo-repro
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - samtools=1.21
+  - bcftools=1.23
+  - clair3=2.0.2
+  - rtg-tools=3.13
+  - sniffles=2.7.2
+  - truvari=5.4.0
+  - flye=2.9.6
+  - badread=0.4.1
+  - python>=3.9
+# minimap2 2.30-r1287 and mm2-fast 2.24-r1122 are built from source
+# (see the mm2-geo tool repository); do not install minimap2 from conda here.
