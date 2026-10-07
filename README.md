@@ -1,9 +1,9 @@
 # mm2-geo
 
-**Geometry-guided band-doubling for the minimap2 gap-filling DP** — a small,
+**Geometry-guided band sizing for the minimap2 gap-filling DP** — a small,
 runtime-gated patch on top of [minimap2](https://github.com/lh3/minimap2) v2.30
-that accelerates the between-anchor dynamic programming at near-identical
-variant-calling accuracy.
+that reduces the between-anchor dynamic programming, with a **fast mode** and a
+**certified mode** whose output is identical to minimap2's.
 
 > mm2-geo is minimap2 v2.30 (Li, 2018; MIT license, preserved in `LICENSE.txt`)
 > plus a compact, self-contained change in `align.c`. With `MM2_GEO` unset the executable produces
@@ -30,15 +30,21 @@ make
 cp minimap2 mm2geo   # the Makefile emits ./minimap2; run it as ./mm2geo below
 # stock minimap2 behaviour (output-identical to minimap2 2.30):
 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-# geo mode:
+# fast mode:
 MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-MM2_GEO=1 MM2_GEO_MARGIN=20 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
+# certified mode (output identical to minimap2):
+MM2_GEO=1 MM2_GEO_CERT=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 ```
 
-- `MM2_GEO=1` — enable geometry-guided band-doubling.
+- `MM2_GEO=1` — fast mode: geometry-sized band, doubled when the returned path
+  touches the band boundary (a heuristic acceptance test).
+- `MM2_GEO_CERT=1` — certified mode: a band is accepted only when the in-band
+  score provably exceeds that of any path leaving it; otherwise the gap is
+  realigned once with the smallest band the bound certifies. Includes an exact
+  one-gap shortcut and a score-only first pass on gaps of at least 256 bp
+  (`MM2_GEO_CERT_SCOREPROBE=<int>`, 0 disables). Output is identical to minimap2's.
+- `MM2_GEO_ONEGAP=1` — the exact one-gap shortcut alone (implied by `MM2_GEO_CERT=1`).
 - `MM2_GEO_MARGIN=<int>` — initial band margin (default 20).
-- `MM2_GEO_UNCAP=1` — (experimental) let the band exceed minimap2's own bound on
-  large-drift gaps.
 
 **Diagnostic flags** (gated; zero measurable cost when unset — a single
 never-taken branch — used to reproduce the paper's mechanism/ablation):
@@ -49,24 +55,24 @@ never-taken branch — used to reproduce the paper's mechanism/ablation):
 
 ## Results (paper)
 
-- **Faster, less memory**: 1.15–1.47× on the alignment stage (1.15–1.35× HiFi/ONT,
-  1.38–1.47× CLR) at lower peak memory (up to −43%).
-- **Mechanism, measured**: mm2-geo evaluates ~46% of minimap2's gap-filling
-  logical DP cells (a 2.2× reduction, near-identical on HiFi and ONT); ~99.9% of
-  gaps accept on the first pass at a median band of 20–21.
-- **Accuracy preserved**: small-variant F1 within **0.0011** of minimap2 on GIAB
-  HG002 (chr22, chr14; HiFi/ONT), three-caller confirmed on HiFi chr22 (clair3,
-  bcftools, DeepVariant); within **0.009** on a real *E. coli* ONT spike-in
-  benchmark; structural-variant F1 within **0.008** (Sniffles2 + truvari vs GIAB
-  Tier1).
-- **Complementary to SIMD acceleration**: the same patch applied to
-  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) adds a further 1.17–1.23×
-  (version-matched; up to ~1.83× vs minimap2 2.30, a figure that spans minimap2
-  versions) at near-identical F1.
-- Not reducible to lowering minimap2's `-r`: a fixed small band clips indels
-  (INDEL F1 drops; on ONT it is even slower), whereas mm2-geo preserves F1.
+Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three runs):
+
+| data | fast mode | certified mode (identical output) |
+|---|---|---|
+| HiFi | 1.38× | 1.24× (1.22× genome-wide, 53×) |
+| ONT | 1.15–1.19× | 1.07–1.19× |
+| CLR | 1.41× | 1.11× |
+
+- The DP stage itself becomes 1.5–2.0× faster in the fast mode and 1.15–2.6×
+  faster in the certified mode; the rest of the run is unchanged, so the
+  end-to-end gain follows the share of run time spent in DP (Amdahl's law).
+- The fast mode keeps small-variant F1 unchanged in GIAB high-confidence regions
+  but can accept lower-scoring alignments in repetitive sequence; use the
+  certified mode for structural-variant or repeat analyses and validated pipelines.
+- Complementary to SIMD acceleration: the same patch applies to
+  [mm2-fast](https://github.com/bwa-mem2/mm2-fast).
 - Short reads (Illumina, `-ax sr`) use minimap2's ungapped path and are
-  unaffected — the method targets long-read gap DP.
+  unaffected.
 
 ## Applying to mm2-fast / mm2-plus
 
@@ -82,12 +88,16 @@ MM2_GEO=1 ./minimap2 ...
 
 ## Honest note
 
-mm2-geo is **not byte-identical** to stock minimap2 (98.3–99.9% CIGAR identity on
-the routine benchmarks): minimap2's own gap alignment is approximate
-(`KSW_EZ_APPROX_MAX`), and because the accepted band may exclude paths minimap2
-would explore, byte-identical output cannot be guaranteed in general. What
-mm2-geo provides is **near-identical downstream variant-calling F1**, verified
-against GIAB truth across three callers and extended to a real bacterial genome.
+The **fast mode** is not byte-identical to stock minimap2 (98.3–99.9% CIGAR
+identity): its boundary-contact test can accept a lower-scoring path when a
+band-leaving insertion–deletion detour is replaced by mismatches, which happens
+mostly in repetitive sequence. The **certified mode** replaces that test with a
+score bound and reproduces minimap2's output; its guarantee is relative to
+minimap2, whose own band, z-drop and chaining remain heuristics, and equal-score
+alternatives (ties) can in rare cases be reported differently.
+
+Versions: tag `submission-2026` = fast mode only; tag `revision-2026` = fast and
+certified modes (the fast mode is unchanged).
 
 ## Reproducibility
 

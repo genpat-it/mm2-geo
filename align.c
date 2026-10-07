@@ -666,6 +666,80 @@ static int mm_geo_margin(void)
 static int mm_geo_nodouble(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_NODOUBLE"); v=(e&&*e&&atoi(e))?1:0;} return v; }
 static int mm_geo_fixed(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_FIXED"); v=(e&&*e&&atoi(e))?1:0;} return v; }
 
+// mm2-geo certified mode (MM2_GEO_CERT=1). A path that leaves the band |i-j|<=b of a gap (lengths ql, tl,
+// drift d) contains an insertion run and a deletion run totalling at least L=(b+1)+(b+1-d) and aligns at most
+// (ql+tl-L)/2 pairs, so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d), with
+// g(l) = min(q+l*e, q2+l*e2). If the in-band score S reaches U(b), no out-of-band path scores higher; otherwise
+// the gap is realigned once with the smallest band whose bound S certifies (capped at minimap2's own band).
+// MM2_GEO_ONEGAP=1 (implied by MM2_GEO_CERT=1) first tries the best alignment with at most one gap in O(L) and
+// accepts it only when it beats an upper bound on every alignment with two or more gaps.
+static int mm_geo_cert(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT"); v=(e&&*e&&atoi(e))?1:0;} return v; }
+// In certified mode, gaps of at least MM2_GEO_CERT_SCOREPROBE bp (default 256; 0 disables) are first aligned
+// score-only (no traceback); the score either certifies the narrow band or selects the certified band directly,
+// so the traceback is computed only once, at the band that is finally accepted.
+static int mm_geo_cert_scoreprobe(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_SCOREPROBE"); v=(e&&*e)?atoi(e):256; if(v<0)v=0;} return v; }
+static int mm_geo_onegap(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_ONEGAP"); v=(e&&*e&&atoi(e))?1:0; if(mm_geo_cert()) v=1;} return v; }
+static inline int mm_geo_gcost(const mm_mapopt_t *o, int l){ int c1 = o->q + l * o->e, c2 = o->q2 + l * o->e2; return c1 < c2? c1 : c2; }
+static inline long long mm_geo_cert_ub(const mm_mapopt_t *o, int ql, int tl, int b, int d)
+{
+	int L1 = b + 1, L2 = b + 1 - d, L;
+	if (L2 < 1) L2 = 1;
+	L = L1 + L2;
+	if (L > ql + tl) return -(1LL<<40); // no out-of-band path fits in this gap
+	return (long long)o->a * ((ql + tl - L) / 2) - mm_geo_gcost(o, L1) - mm_geo_gcost(o, L2);
+}
+static int mm_geo_cert_band(const mm_mapopt_t *o, int ql, int tl, int d, long long s, int lo, int hi) // U is non-increasing in b
+{
+	if (mm_geo_cert_ub(o, ql, tl, hi, d) > s) return hi;
+	while (hi - lo > 1) { int mid = lo + (hi - lo) / 2; if (mm_geo_cert_ub(o, ql, tl, mid, d) <= s) hi = mid; else lo = mid; }
+	return hi;
+}
+static int mm_geo_try_onegap(void *km, const mm_mapopt_t *o, const int8_t *mat, int ql, const uint8_t *qs, int tl, const uint8_t *ts, ksw_extz_t *ez)
+{
+	int d = ql > tl? ql - tl : tl - ql, n = ql < tl? ql : tl;
+	int p, best_p = 0, sc = 0, best = KSW_NEG_INF, op, k;
+	long long ub;
+	if (d > 32 || n <= 0) return 0;
+	if (d == 0) {
+		for (k = 0; k < n; ++k) sc += mat[qs[k] * 5 + ts[k]];
+		best = sc;
+		ub = (long long)o->a * (n - 1) - 2LL * mm_geo_gcost(o, 1);
+		op = -1;
+	} else if (ql > tl) {
+		for (k = 0; k < n; ++k) sc += mat[qs[k+d] * 5 + ts[k]];
+		sc -= mm_geo_gcost(o, d); best = sc;
+		for (p = 0; p < n; ++p) {
+			sc += mat[qs[p] * 5 + ts[p]] - mat[qs[p+d] * 5 + ts[p]];
+			if (sc > best) best = sc, best_p = p + 1;
+		}
+		op = MM_CIGAR_INS;
+		ub = (long long)o->a * (n - 1) - mm_geo_gcost(o, d + 1) - mm_geo_gcost(o, 1);
+	} else {
+		for (k = 0; k < n; ++k) sc += mat[qs[k] * 5 + ts[k+d]];
+		sc -= mm_geo_gcost(o, d); best = sc;
+		for (p = 0; p < n; ++p) {
+			sc += mat[qs[p] * 5 + ts[p]] - mat[qs[p] * 5 + ts[p+d]];
+			if (sc > best) best = sc, best_p = p + 1;
+		}
+		op = MM_CIGAR_DEL;
+		ub = (long long)o->a * (n - 1) - mm_geo_gcost(o, d + 1) - mm_geo_gcost(o, 1);
+	}
+	if (d >= 2) { // two same-type runs summing to d
+		int split_cost = 0x7fffffff;
+		for (k = 1; k < d; ++k) { int c = mm_geo_gcost(o, k) + mm_geo_gcost(o, d - k); if (c < split_cost) split_cost = c; }
+		if ((long long)o->a * n - split_cost > ub) ub = (long long)o->a * n - split_cost;
+	}
+	if ((long long)best <= ub) return 0;
+	ksw_reset_extz(ez); ez->score = best;
+	if (d == 0) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, n);
+	else {
+		if (best_p > 0) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, best_p);
+		ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, op, d);
+		if (best_p < n) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, n - best_p);
+	}
+	return 1;
+}
+
 // --- mm2-geo instrumentation (MM2_GEO_STATS=1). Directly measures DP work.
 // Collect single-threaded (-t 1). ksw_geo_cells (defined here, incremented inside the
 // ksw2 anti-diagonal loop) is the ACTUAL number of DP cells evaluated, counted identically
@@ -876,6 +950,9 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int 
 	const int geo_fixed = mm_geo_fixed();
 	const int geo_nodouble = mm_geo_nodouble();
 	const int geo_stats = mm_geo_stats();
+	const int geo_cert = mm_geo_cert();
+	const int geo_onegap = mm_geo_onegap();
+	const int geo_probe = geo_cert? mm_geo_cert_scoreprobe() : 0;
 
 	for (i = is_sr? cnt1 - 1 : 1; i < cnt1; ++i) { // gap filling; for short genomic reads, fill from the first seed to the last
 		if ((a[as1+i].y & (MM_SEED_IGNORE|MM_SEED_TANDEM)) && i != cnt1 - 1) continue;
@@ -899,7 +976,7 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int 
 			mm_get_junc(mi, rid, rs, re, !!(ksw_flag&KSW_EZ_SPLICE_REV), junc);
 			if (geo_on && !is_splice && !is_sr) { // mm2-geo: geometry -> narrow DP band (genomic long-read, non-splice; short-read/splice fall to the stock paths below)
 					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb, gb0, ceil_bw;
-					int natt = 0, stats = geo_stats;
+					int natt = 0, stats = geo_stats, scoreprobed = 0;
 					if (dd < 0) dd = -dd;
 					ceil_bw = full_bw;
 					gb = (geo_fixed? 0 : dd) + geo_margin; // ablation: fixed band ignores geometry
@@ -907,6 +984,17 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int 
 					if (gb > ceil_bw) gb = ceil_bw;
 					gb0 = gb;
 					for (;;) {
+						if (natt == 0 && geo_onegap && mm_geo_try_onegap(km, opt, mat, qe - qs, qseq, re - rs, tseq, ez)) { ++natt; break; } // exact <=1-gap shortcut
+						if (geo_cert && !scoreprobed && geo_probe > 0 && (qe - qs >= geo_probe || re - rs >= geo_probe)) { // score-only first pass
+							mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, ksw_flag|KSW_EZ_APPROX_MAX|KSW_EZ_SCORE_ONLY, ez);
+							++natt; scoreprobed = 1;
+							if (gb < ceil_bw) {
+								if (ez->zdropped || ez->score <= KSW_NEG_INF / 2) gb = ceil_bw;
+								else if ((long long)ez->score < mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd))
+									gb = mm_geo_cert_band(opt, qe - qs, re - rs, dd, ez->score, gb, ceil_bw);
+							}
+							continue;
+						}
 						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, ksw_flag|KSW_EZ_APPROX_MAX, ez);
 						++natt;
 						if (gb >= ceil_bw) break;
@@ -917,6 +1005,13 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int 
 							if (op == MM_CIGAR_INS) e += ln; else if (op == MM_CIGAR_DEL) e -= ln;
 							if (e > mx) mx = e;
 							if (-e > mx) mx = -e;
+						}
+						if (geo_cert) { // certified acceptance: score bound instead of boundary contact
+							if (!ez->zdropped && ez->score > KSW_NEG_INF / 2) {
+								if ((long long)ez->score >= mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd)) break;
+								gb = mm_geo_cert_band(opt, qe - qs, re - rs, dd, ez->score, gb, ceil_bw);
+							} else gb = ceil_bw;
+							continue;
 						}
 						if (mx < gb) break;
 						gb <<= 1; if (gb > ceil_bw) gb = ceil_bw;
