@@ -69,21 +69,24 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 - The fast mode keeps small-variant F1 unchanged in GIAB high-confidence regions
   but can accept lower-scoring alignments in repetitive sequence; use the
   certified mode for structural-variant or repeat analyses and validated pipelines.
-- Complementary to SIMD acceleration: the same patch applies to
-  [mm2-fast](https://github.com/bwa-mem2/mm2-fast).
+- Complementary to SIMD acceleration: a port to
+  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) is provided (`geo_mm2fast.patch`).
 - Short reads (Illumina, `-ax sr`) use minimap2's ungapped path and are
   unaffected.
 
-## Applying to mm2-fast / mm2-plus
+## Applying to minimap2 and mm2-fast
 
-The change touches only the shared gap-filling loop in `align.c`, so it ports
-across the minimap2 family:
+`geo.patch` applies to stock minimap2 v2.30 (`align.c` only). mm2-fast restructures the
+gap-filling loop, so it needs its own port, `geo_mm2fast.patch` (fast and certified modes),
+which applies to mm2-fast commit `14fe36c`:
 
 ```bash
-cd mm2-fast   # or mm2-plus
-patch -p1 < /path/to/geo.patch    # geo.patch is included in this repo
-make
-MM2_GEO=1 ./minimap2 ...
+git clone https://github.com/bwa-mem2/mm2-fast && cd mm2-fast
+git checkout 14fe36c100f6c2aab224d000f3903ca5909640cd
+git apply /path/to/geo_mm2fast.patch
+make            # see the mm2-fast README for its build requirements
+MM2_GEO=1 ./minimap2 ...                  # fast mode
+MM2_GEO=1 MM2_GEO_CERT=1 ./minimap2 ...   # certified mode (output identical to mm2-fast)
 ```
 
 ## Honest note

@@ -1,0 +1,65 @@
+diff --git a/align.c b/align.c
+index d7588a9..e519a71 100644
+--- a/align.c
++++ b/align.c
+@@ -667,6 +667,27 @@ static void mm_fix_bad_ends_splice(void *km, const mm_mapopt_t *opt, const mm_id
+ 	}
+ }
+ 
++// mm2-geo band-doubling grafted onto mm2-fast (env MM2_GEO=1, MM2_GEO_MARGIN default 20)
++static int mm_geo_enabled(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO"); v=(e&&*e&&atoi(e))?1:0;} return v; }
++static int mm_geo_margin(void){ static int m=-1; if(m<0){const char*e=getenv("MM2_GEO_MARGIN"); m=(e&&*e)?atoi(e):20; if(m<0)m=0;} return m; }
++// certified acceptance (MM2_GEO_CERT=1): any path leaving the band |i-j|<=b contains an insertion and a deletion run
++// totalling >= (b+1)+(b+1-d), so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d); accept when S >= U(b),
++// otherwise realign once with the smallest band that the bound certifies.
++static int mm_geo_cert(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT"); v=(e&&*e)?atoi(e):0;} return v; }
++static inline int mm_geo_gcost(const mm_mapopt_t *o, int l){ int c1 = o->q + l * o->e, c2 = o->q2 + l * o->e2; return c1 < c2? c1 : c2; }
++static inline long long mm_geo_cert_ub(const mm_mapopt_t *o, int ql, int tl, int b, int d){
++	int L1 = b + 1, L2 = b + 1 - d, L;
++	if (L2 < 1) L2 = 1;
++	L = L1 + L2;
++	if (L > ql + tl) return -(1LL<<40);
++	return (long long)o->a * ((ql + tl - L) / 2) - mm_geo_gcost(o, L1) - mm_geo_gcost(o, L2);
++}
++static int mm_geo_cert_band(const mm_mapopt_t *o, int ql, int tl, int d, long long s, int lo, int hi){
++	if (mm_geo_cert_ub(o, ql, tl, hi, d) > s) return hi;
++	while (hi - lo > 1) { int mid = lo + (hi - lo) / 2; if (mm_geo_cert_ub(o, ql, tl, mid, d) <= s) hi = mid; else lo = mid; }
++	return hi;
++}
++
+ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int qlen, uint8_t *qseq0[2], mm_reg1_t *r, mm_reg1_t *r2, int n_a, mm128_t *a, ksw_extz_t *ez, int splice_flag)
+ {
+ 	int is_sr = !!(opt->flag & MM_F_SR), is_splice = !!(opt->flag & MM_F_SPLICE);
+@@ -838,7 +859,31 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+ 				mm_idx_getseq(mi, rid, rs, re, tseq);
+ 			}
+ 			mm_idx_bed_junc(mi, rid, rs, re, junc);
+-			if (is_sr) { // perform ungapped alignment
++				if (mm_geo_enabled() && !is_sr) { // mm2-geo: geometry-seeded band-doubling (converges to mm2-fast's band)
++					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb;
++					if (dd < 0) dd = -dd;
++					gb = dd + mm_geo_margin();
++					if (gb > full_bw) gb = full_bw;
++					for (;;) {
++						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, extra_flag|KSW_EZ_APPROX_MAX, ez);
++						if (gb >= full_bw) break;
++						int e = 0, mx = 0, c;
++						for (c = 0; c < ez->n_cigar; ++c) {
++							int op = ez->cigar[c] & 0xf, ln = ez->cigar[c] >> 4;
++							if (op == MM_CIGAR_INS) e += ln; else if (op == MM_CIGAR_DEL) e -= ln;
++							if (e > mx) mx = e;
++							if (-e > mx) mx = -e;
++						}
++						if (!mm_geo_cert()) {
++							if (mx < gb) break;
++							gb <<= 1; if (gb > full_bw) gb = full_bw;
++						} else {
++							if (ez->zdropped || ez->score <= KSW_NEG_INF / 2) { gb = full_bw; continue; }
++							if ((long long)ez->score >= mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd)) break;
++							gb = mm_geo_cert_band(opt, qe - qs, re - rs, dd, ez->score, gb, full_bw);
++						}
++					}
++				} else if (is_sr) { // perform ungapped alignment
+ 				assert(qe - qs == re - rs);
+ 				ksw_reset_extz(ez);
+ 				for (j = 0, ez->score = 0; j < qe - qs; ++j) {
