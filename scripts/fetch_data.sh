@@ -16,6 +16,11 @@ mkdir -p "$WORKDIR" "$TMPDIR"; cd "$WORKDIR"
 S="$SAMTOOLS"
 log(){ echo "[fetch $(date +%T)] $*"; }
 get(){ [ -s "$2" ] || { log "download $2"; curl -fsSL --retry 5 -C - -o "$2.part" "$1" && mv "$2.part" "$2"; }; }
+# get_md5 URL OUT MD5: download and verify; a corrupt file is deleted and downloaded again (up to 3 attempts)
+get_md5(){ local i; for i in 1 2 3; do get "$1" "$2"
+    if echo "$3  $2" | md5sum -c --quiet 2>/dev/null; then return 0; fi
+    log "md5 mismatch for $2 (attempt $i), downloading again"; rm -f "$2" "$2.part"; done
+  log "ERROR: $2 does not match md5 $3"; return 1; }
 
 GIAB=https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab
 HIFI_BAM_URL=$GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb_20kb_chemistry2/GRCh38/HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam
@@ -78,8 +83,8 @@ slice "$CLR_BAM_URL"  chr14 clr_chr14.fq
 # ---------- genome-wide HiFi set: one complete SMRT Cell of the GIAB HG002 CCS 15 kb data (138,688 reads, ~0.57x),
 # used unsliced against the whole GRCh38 (scripts 11, 12, 25, 26) ----------
 if [ ! -s "$GW_READS" ]; then
-  get $GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb/m54238_180901_011437.Q20.fastq "$GW_READS.dl"
-  echo "aee0290a80436b0b7f1f598be70efcbe  $GW_READS.dl" | md5sum -c --quiet && mv "$GW_READS.dl" "$GW_READS"
+  get_md5 $GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb/m54238_180901_011437.Q20.fastq "$GW_READS.dl" \
+    aee0290a80436b0b7f1f598be70efcbe && mv "$GW_READS.dl" "$GW_READS"
 fi
 
 # ---------- E. coli: real ONT isolate (ENA SRR9900640), K-12 MG1655 reference, spike-in artifacts ----------
@@ -87,8 +92,8 @@ fi
 DATA="$REPO/data"
 mkdir -p ecoli_real2/flye ecoli_vc
 if [ ! -s ecoli_real2/SRR9900640.fastq ]; then
-  get https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR990/000/SRR9900640/SRR9900640_1.fastq.gz ecoli_real2/SRR9900640_1.fastq.gz
-  echo "733b61ae7289db93cc46e14dc473122d  ecoli_real2/SRR9900640_1.fastq.gz" | md5sum -c --quiet
+  get_md5 https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR990/000/SRR9900640/SRR9900640_1.fastq.gz ecoli_real2/SRR9900640_1.fastq.gz \
+    733b61ae7289db93cc46e14dc473122d
   gunzip -c ecoli_real2/SRR9900640_1.fastq.gz > ecoli_real2/SRR9900640.fastq.part && mv ecoli_real2/SRR9900640.fastq.part ecoli_real2/SRR9900640.fastq
 fi
 get "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NC_000913.3&rettype=fasta&retmode=text" "$ECOLI_REF"
