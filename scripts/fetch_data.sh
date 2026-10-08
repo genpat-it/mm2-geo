@@ -15,7 +15,7 @@ MODE="${1:-core}"
 mkdir -p "$WORKDIR" "$TMPDIR"; cd "$WORKDIR"
 S="$SAMTOOLS"
 log(){ echo "[fetch $(date +%T)] $*"; }
-get(){ [ -s "$2" ] || { log "download $2"; curl -fL --retry 5 -C - -o "$2.part" "$1" && mv "$2.part" "$2"; }; }
+get(){ [ -s "$2" ] || { log "download $2"; curl -fsSL --retry 5 -C - -o "$2.part" "$1" && mv "$2.part" "$2"; }; }
 
 GIAB=https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab
 HIFI_BAM_URL=$GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb_20kb_chemistry2/GRCh38/HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam
