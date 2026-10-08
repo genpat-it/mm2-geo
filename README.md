@@ -2,7 +2,7 @@
 
 **Geometry-guided band sizing for the minimap2 gap-filling DP** — a small,
 runtime-gated patch on top of [minimap2](https://github.com/lh3/minimap2) v2.30
-that reduces the between-anchor dynamic programming, with a **fast mode** and a
+that reduces the between-anchor dynamic programming, with a **heuristic mode** and a
 **certified mode** whose output is identical to minimap2's.
 
 > mm2-geo is minimap2 v2.30 (Li, 2018; MIT license, preserved in `LICENSE.txt`)
@@ -30,13 +30,13 @@ make
 cp minimap2 mm2geo   # the Makefile emits ./minimap2; run it as ./mm2geo below
 # stock minimap2 behaviour (output-identical to minimap2 2.30):
 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-# fast mode:
+# heuristic mode:
 MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 # certified mode (output identical to minimap2):
 MM2_GEO=1 MM2_GEO_CERT=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 ```
 
-- `MM2_GEO=1` — fast mode: geometry-sized band, doubled when the returned path
+- `MM2_GEO=1` — heuristic mode: geometry-sized band, doubled when the returned path
   touches the band boundary (a heuristic acceptance test).
 - `MM2_GEO_CERT=1` — certified mode: a band is accepted only when the in-band
   score provably exceeds that of any path leaving it; otherwise the gap is
@@ -57,16 +57,16 @@ never-taken branch — used to reproduce the paper's mechanism/ablation):
 
 Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three runs):
 
-| data | fast mode | certified mode (identical output) |
+| data | heuristic mode | certified mode (identical output) |
 |---|---|---|
 | HiFi | 1.38× | 1.24× (1.22× genome-wide, 53×) |
 | ONT | 1.15–1.19× | 1.07–1.19× |
 | CLR | 1.41× | 1.11× |
 
-- The DP stage itself becomes 1.5–2.0× faster in the fast mode and 1.15–2.6×
+- The DP stage itself becomes 1.5–2.0× faster in the heuristic mode and 1.15–2.6×
   faster in the certified mode; the rest of the run is unchanged, so the
   end-to-end gain follows the share of run time spent in DP (Amdahl's law).
-- The fast mode keeps small-variant F1 unchanged in GIAB high-confidence regions
+- The heuristic mode keeps small-variant F1 unchanged in GIAB high-confidence regions
   but can accept lower-scoring alignments in repetitive sequence; use the
   certified mode for structural-variant or repeat analyses and validated pipelines.
 - Complementary to SIMD acceleration: a port to
@@ -77,7 +77,7 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 ## Applying to minimap2 and mm2-fast
 
 `geo.patch` applies to stock minimap2 v2.30 (`align.c` only). mm2-fast restructures the
-gap-filling loop, so it needs its own port, `geo_mm2fast.patch` (fast and certified modes),
+gap-filling loop, so it needs its own port, `geo_mm2fast.patch` (heuristic and certified modes),
 which applies to mm2-fast commit `14fe36c`:
 
 ```bash
@@ -85,13 +85,13 @@ git clone https://github.com/bwa-mem2/mm2-fast && cd mm2-fast
 git checkout 14fe36c100f6c2aab224d000f3903ca5909640cd
 git apply /path/to/geo_mm2fast.patch
 make            # see the mm2-fast README for its build requirements
-MM2_GEO=1 ./minimap2 ...                  # fast mode
+MM2_GEO=1 ./minimap2 ...                  # heuristic mode
 MM2_GEO=1 MM2_GEO_CERT=1 ./minimap2 ...   # certified mode (output identical to mm2-fast)
 ```
 
 ## Honest note
 
-The **fast mode** is not byte-identical to stock minimap2 (98.3–99.9% CIGAR
+The **heuristic mode** is not byte-identical to stock minimap2 (98.3–99.9% CIGAR
 identity): its boundary-contact test can accept a lower-scoring path when a
 band-leaving insertion–deletion detour is replaced by mismatches, which happens
 mostly in repetitive sequence. The **certified mode** replaces that test with a
@@ -99,8 +99,8 @@ score bound and reproduces minimap2's output; its guarantee is relative to
 minimap2, whose own band, z-drop and chaining remain heuristics, and equal-score
 alternatives (ties) can in rare cases be reported differently.
 
-Versions: tag `submission-2026` = fast mode only; tag `revision-2026` = fast and
-certified modes (the fast mode is unchanged).
+Versions: tag `submission-2026` = heuristic mode only; tag `revision-2026` = heuristic and
+certified modes (the heuristic mode is unchanged).
 
 ## Reproducibility
 
