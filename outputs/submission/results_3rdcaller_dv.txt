@@ -1,0 +1,3 @@
+### DeepVariant (3rd caller, gold standard) — HiFi mm2-default vs mm2-geo
+stockH   | SNV 0.9962/0.9985/0.9974   | INDEL 0.9919/0.9927/0.9923  
+geoH20   | SNV 0.9968/0.9986/0.9977   | INDEL 0.9919/0.9927/0.9923  

@@ -1,0 +1,6 @@
+### Clean timing (median of 3, pure align, real GIAB chr22)
+  HiFi: mm2=33s  mm2-geo=24s  mm2-fast=28s  mm2-fast+geo=23s
+        speedup: geo=1.38x  fast=1.18x  fast+geo=1.43x (vs mm2)
+  ONT: mm2=72s  mm2-geo=59s  mm2-fast=49s  mm2-fast+geo=40s
+        speedup: geo=1.22x  fast=1.47x  fast+geo=1.80x (vs mm2)
+### DONE

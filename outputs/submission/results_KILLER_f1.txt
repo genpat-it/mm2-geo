@@ -1,0 +1,16 @@
+### ALIGN
+  bam ontDEF ok (114992)
+  bam ontR20 ok (114992)
+  bam ontGEO ok (114992)
+  bam hifiR20 ok (154806)
+### CLAIR3 + F1
+  clair3 ontDEF: 133s vars=49761
+  clair3 ontR20: 135s vars=49589
+  clair3 ontGEO: 133s vars=49639
+  clair3 hifiR20: 115s vars=48650
+## KILLER TABLE (F1 vs GIAB)
+ONT mm2-default        | SNV 0.9937/0.9943/0.9940   | INDEL 0.7787/0.8227/0.8001  
+ONT mm2 -r20 (strawman) | SNV 0.9928/0.9839/0.9883   | INDEL 0.7448/0.8002/0.7715  
+ONT mm2-geo m50        | SNV 0.9959/0.9943/0.9951   | INDEL 0.7793/0.8224/0.8003  
+HiFi mm2 -r20 (strawman) | SNV 0.9962/0.9955/0.9959   | INDEL 0.9826/0.9854/0.9840  
+### DONE

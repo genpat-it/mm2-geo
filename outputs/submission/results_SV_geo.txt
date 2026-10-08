@@ -1,0 +1,11 @@
+>> ONT (SV F1 vs GIAB Tier1, GRCh37 chr22)
+   mm2 raw SV calls: 548
+   ONT  mm2  P=0.886 R=0.656 F1=0.754  TP=179 FP=23 FN=94
+   geo raw SV calls: 547
+   ONT  geo  P=0.873 R=0.652 F1=0.746  TP=178 FP=26 FN=95
+>> HiFi (SV F1 vs GIAB Tier1, GRCh37 chr22)
+   mm2 raw SV calls: 592
+   HiFi mm2  P=0.900 R=0.659 F1=0.761  TP=180 FP=20 FN=93
+   geo raw SV calls: 582
+   HiFi geo  P=0.891 R=0.656 F1=0.755  TP=179 FP=22 FN=94
+### DONE-SVGEO

@@ -1,0 +1,19 @@
+### PART B — F1 vs truth (SNV/INDEL). mm2 & geo everywhere; +fast,fastgeo on chr22
+  chr22 HiFi mm2         SNV 0.9932/0.9987/0.9959   INDEL 0.9953/0.9973/0.9963  
+  chr22 HiFi geo         SNV 0.9929/0.9987/0.9958   INDEL 0.9951/0.9971/0.9961  
+  chr22 HiFi fast        SNV 0.9932/0.9987/0.9959   INDEL 0.9953/0.9973/0.9963  
+  chr22 HiFi fastgeo     SNV 0.9929/0.9987/0.9958   INDEL 0.9951/0.9971/0.9961  
+  chr22 ONT mm2          SNV 0.9937/0.9943/0.9940   INDEL 0.7787/0.8227/0.8001  
+  chr22 ONT geo          SNV 0.9960/0.9942/0.9951   INDEL 0.7787/0.8233/0.8004  
+  chr22 ONT fast         SNV 0.9937/0.9943/0.9940   INDEL 0.7795/0.8230/0.8006  
+  chr22 ONT fastgeo      SNV 0.9960/0.9942/0.9951   INDEL 0.7787/0.8233/0.8004  
+  chr14 HiFi mm2 FAIL
+  chr14 HiFi geo FAIL
+  chr14 ONT mm2 FAIL
+  chr14 ONT geo          SNV 0.9991/0.9961/0.9976   INDEL 0.8211/0.8491/0.8349  
+  ecoli HiFi mm2 FAIL
+  ecoli HiFi geo FAIL
+  ecoli ONT mm2 FAIL
+  ecoli ONT geo FAIL
+  ecoli CLR: no caller model (CLR) — time/mem only
+### DONE-B

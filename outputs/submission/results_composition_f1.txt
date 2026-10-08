@@ -1,0 +1,8 @@
+### COMPOSITION: mm2-fast vs mm2-fast+geo(m20) | HiFi F1 vs GIAB | speed(align): mm2-fast 29s, +geo 23s (+1.3x)
+  clair3 mf_base: 115s vars=48911
+  clair3 mfg_m20: 116s vars=48921
+### F1 vs GIAB (SNV / INDEL)
+aligner    | SNV P/R/F1               | INDEL P/R/F1            
+mf_base    | 0.9932/0.9987/0.9959     | 0.9953/0.9973/0.9963    
+mfg_m20    | 0.9929/0.9987/0.9958     | 0.9951/0.9971/0.9961    
+### DONE

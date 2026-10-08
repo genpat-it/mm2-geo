@@ -1,0 +1,5 @@
+ONT cert P=0.886 R=0.656 F1=0.754 TP=179 FP=23 FN=94
+ONT lost-SV recovered (1=yes): 1
+HiFi cert P=0.900 R=0.659 F1=0.761 TP=180 FP=20 FN=93
+HiFi lost-SV recovered (1=yes): 1
+DONE

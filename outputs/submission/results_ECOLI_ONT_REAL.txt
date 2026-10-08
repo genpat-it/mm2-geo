@@ -1,0 +1,7 @@
+### E. coli ONT REALE (SRR9900640, ceppo ~94% id a MG1655) map-ont, mm2 vs geo
+   reads: 3896819 | strain divergence ~5.6% vs MG1655
+   mm2  time 40.96s  RSS 6.2GB
+   geo  time 30.89s  RSS 5.1GB
+   mapped: mm2 3896819, geo 3896819
+   concordance: samePOS 100.00% sameMAPQ 100.00% CIGARid 99.94% NMid 89.29%
+### DONE-EOR

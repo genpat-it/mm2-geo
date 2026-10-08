@@ -1,0 +1,6 @@
+chr22-HiFi   mm2_primary 154817  geo_primary 154815  shared 154815  mm2_only 2  geo_only 0
+chr22-ONT    mm2_primary 114992  geo_primary 114992  shared 114992  mm2_only 0  geo_only 0
+chr22-CLR    mm2_primary 250944  geo_primary 250944  shared 250944  mm2_only 0  geo_only 0
+chr14-CLR    mm2_primary 612938  geo_primary 612938  shared 612938  mm2_only 0  geo_only 0
+ecoli-ONT    mm2_primary 3481989  geo_primary 3481989  shared 3481989  mm2_only 0  geo_only 0
+### DONE-PRESENCE

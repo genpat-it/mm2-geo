@@ -1,0 +1,20 @@
+reg   config           time_s  speedup    cig-id%
+ont   mm2 default          73    1.00x     100.00
+ont   mm2 -r100            84    0.87x      81.57
+ont   mm2 -r50             88    0.83x      77.67
+ont   mm2 -r20             80    0.91x      69.83
+ont   mm2 -r10             80    0.91x      58.33
+ont   geo m5               60    1.22x      90.89
+ont   geo m10              60    1.22x      94.65
+ont   geo m20              60    1.22x      98.34
+ont   geo m50              61    1.20x      99.47
+hifi  mm2 default          34    1.00x     100.00
+hifi  mm2 -r100            26    1.31x      87.17
+hifi  mm2 -r50             17    2.00x      84.63
+hifi  mm2 -r20             13    2.62x      78.35
+hifi  mm2 -r10             12    2.83x      67.87
+hifi  geo m5               26    1.31x      98.59
+hifi  geo m10              25    1.36x      98.97
+hifi  geo m20              26    1.31x      99.35
+hifi  geo m50              26    1.31x      99.73
+### DONE

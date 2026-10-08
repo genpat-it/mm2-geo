@@ -1,0 +1,5 @@
+hifi mm2-fast          SNV/INDEL 0.9959/0.9963
+hifi mm2-fast-geo      SNV/INDEL 0.9958/0.9961
+ont mm2-fast           SNV/INDEL 0.9940/0.8006
+ont mm2-fast-geo       SNV/INDEL 0.9951/0.8004
+### DONE-COMPF1

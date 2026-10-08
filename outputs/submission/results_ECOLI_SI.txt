@@ -1,0 +1,6 @@
+>> [1] plant SNVs + indels
+planted 3712 SNVs + 928 indels into NC_000913.3
+>> [2] build sample (bcftools consensus)
+Note: applying IUPAC codes based on FORMAT/GT in sample SAMPLE
+Applied 4640 variants
+>> [3] SDF + simulate reads (HiFi + ONT, 30x)

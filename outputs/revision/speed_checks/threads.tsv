@@ -1,0 +1,17 @@
+t1	reads_wg30k.fq	devnull	geo=0	350.47 2216996
+t1	reads_wg30k.fq	devnull	geo=1	259.42 1909616
+t1	reads_wg30k.fq	file	geo=0	342.45 2217880
+t1	reads_wg30k.fq	file	geo=1	260.13 1907956
+t4	reads_wg138k.fq	devnull	geo=0	411.08 4759276
+t4	reads_wg138k.fq	devnull	geo=1	307.00 4542528
+t4	reads_wg138k.fq	file	geo=0	411.21 4709524
+t4	reads_wg138k.fq	file	geo=1	307.28 4647696
+t8	reads_wg138k.fq	devnull	geo=0	208.26 6536700
+t8	reads_wg138k.fq	devnull	geo=1	155.64 6161940
+t8	reads_wg138k.fq	file	geo=0	207.59 6428336
+t8	reads_wg138k.fq	file	geo=1	157.30 6318452
+t32	reads_wg138k.fq	devnull	geo=0	60.56 15993984
+t32	reads_wg138k.fq	devnull	geo=1	45.55 14440208
+t32	reads_wg138k.fq	file	geo=0	60.90 15706132
+t32	reads_wg138k.fq	file	geo=1	46.01 14750380
+DONE

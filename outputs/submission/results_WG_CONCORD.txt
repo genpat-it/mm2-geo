@@ -1,0 +1,4 @@
+N50 12832
+reads 138688  bases 1780423685 (1.78 Gb)  mean_len 12837  approx_cov 0.57x (vs 3.1Gb)
+primary shared 0 (mm2 137920, geo 137900)
+### DONE-WGCONCORD

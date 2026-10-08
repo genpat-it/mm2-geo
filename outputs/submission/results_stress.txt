@@ -1,0 +1,2 @@
+### Stress sweep: max F1-safe speedup vs margin (median of 3 time, cig-id vs stock)
+  HiFi stock: 34s

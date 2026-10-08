@@ -1,0 +1,3 @@
+hifi: stock pub=4945dc9ef1e206e4 rel=4945dc9ef1e206e4 [same] | fast pub=c2d51c1f1d995e6a rel=c2d51c1f1d995e6a [same] | certified rel=4945dc9ef1e206e4 [IDENTICAL-TO-STOCK]
+ont: stock pub=3a536fed50b3a9a4 rel=3a536fed50b3a9a4 [same] | fast pub=798ef475900da123 rel=798ef475900da123 [same] | certified rel=3a536fed50b3a9a4 [IDENTICAL-TO-STOCK]
+clr: stock pub=2d0d21062fb559fc rel=2d0d21062fb559fc [same] | fast pub=488aa75d0795a94a rel=488aa75d0795a94a [same] | certified rel=2d0d21062fb559fc [IDENTICAL-TO-STOCK]

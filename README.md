@@ -89,6 +89,10 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 The three-caller cross-check (Table S5) uses Clair3, bcftools and DeepVariant (`google/deepvariant:1.6.1`)
 on the BAM of `01`; the fixed `-r` comparison (Table S8) reruns `01` with minimap2 `-r 20`.
 
+## Raw outputs
+The summary files of the runs reported in the paper are in `outputs/` (see `outputs/README.md` for the
+file → table map); a re-run writes the same files into `$WORKDIR`.
+
 ## Data
 `scripts/fetch_data.sh` downloads and prepares every input from public sources (listed in
 `ACCESSIONS.txt`): GRCh38 (GenBank `GCA_000001405.15`), the GRCh38 no-alt analysis set (to decode the ONT

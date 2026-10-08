@@ -1,0 +1,3 @@
+MM2_GEO=0  time 41.74s  RSS 5.1GB
+MM2_GEO=1  time 29.73s  RSS 3.6GB
+### DONE-ECOLITIME

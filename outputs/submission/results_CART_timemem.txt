@@ -1,0 +1,10 @@
+### PART A — TIME + PEAK-MEM (median of 3), all 4 configs
+data   tech  | mm2            geo            mm2-fast       mm2-fast+geo  
+chr22  HiFi  |    46s  14.1GB    34s  12.0GB    37s  20.8GB    30s  18.7GB
+chr22  ONT   |   106s  12.5GB    87s   9.9GB    68s  15.9GB    58s  11.3GB
+chr14  HiFi  |    40s  12.1GB    30s  10.3GB    37s  14.3GB    33s  12.0GB
+chr14  ONT   |    77s  12.2GB    67s   6.9GB    73s  14.6GB    68s   7.4GB
+ecoli  HiFi  |     1s   3.4GB     1s   0.8GB     1s   3.4GB     1s   0.9GB
+ecoli  ONT   |     1s   1.1GB     1s   0.5GB     1s   1.1GB     1s   0.6GB
+ecoli  CLR   |     3s   7.0GB     1s   0.8GB     2s   7.1GB     1s   1.1GB
+### DONE-A

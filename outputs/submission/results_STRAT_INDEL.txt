@@ -1,0 +1,9 @@
+>>> hifi_mm2 (MM2_GEO=0)
+    eval: strat/hifi_mm2/ev  (tp-baseline/fp/fn retained)
+>>> hifi_geo (MM2_GEO=1)
+    eval: strat/hifi_geo/ev  (tp-baseline/fp/fn retained)
+>>> ont_mm2 (MM2_GEO=0)
+    eval: strat/ont_mm2/ev  (tp-baseline/fp/fn retained)
+>>> ont_geo (MM2_GEO=1)
+    eval: strat/ont_geo/ev  (tp-baseline/fp/fn retained)
+### DONE-STRAT

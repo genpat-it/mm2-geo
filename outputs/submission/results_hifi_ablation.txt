@@ -1,0 +1,2 @@
+### HiFi mm2(stock=mm2geo_off) vs mm2-geo | clair3 hifi + rtg vcfeval | speed: mm2 33s vs mm2geo 17s (2.0x)
+  clair3 mm2: 116s vars=48911

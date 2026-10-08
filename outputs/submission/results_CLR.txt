@@ -1,0 +1,14 @@
+### CLR (real GIAB HG002 PacBio CLR, GRCh38) — map-pb, mm2 vs geo
+>> slicing chr22 CLR from remote BAM...
+   chr22 CLR reads: 250992
+>> slicing chr14 CLR from remote BAM...
+   chr14 CLR reads: 613023
+>> chr22 CLR time+mem (median-3, 32t)
+   mm2: 44s / 14.1GB   |   geo: 32s / 9.6GB
+>> chr22 CLR concordance (mm2 vs geo)
+   shared 250992  samePOS 0.02%  sameMAPQ 0.00%  CIGARid 0.00%  NMid 0.00%
+>> chr14 CLR time+mem (median-3, 32t)
+   mm2: 78s / 14.5GB   |   geo: 53s / 9.1GB
+>> chr14 CLR concordance (mm2 vs geo)
+   shared 613023  samePOS 0.01%  sameMAPQ 0.00%  CIGARid 0.00%  NMid 0.00%
+### DONE-CLR

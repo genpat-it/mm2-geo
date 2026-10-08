@@ -1,0 +1,10 @@
+### FIX ROWS — chr14 (.fai) + ecoli (truth GT)
+  chr14 HiFi mm2         SNV 0.9996/0.9997/0.9997   INDEL 0.9978/0.9977/0.9977  
+  chr14 HiFi geo         SNV 0.9996/0.9997/0.9997   INDEL 0.9977/0.9979/0.9978  
+  chr14 ONT mm2          SNV 0.9991/0.9957/0.9974   INDEL 0.8219/0.8497/0.8356  
+  chr14 ONT geo          SNV 0.9991/0.9961/0.9976   INDEL 0.8211/0.8491/0.8349  
+  ecoli HiFi mm2         SNV 0.9980/1.0000/0.9990   INDEL 0.0000/0.0000/0.0000  
+  ecoli HiFi geo         SNV 0.9980/1.0000/0.9990   INDEL 0.0000/0.0000/0.0000  
+  ecoli ONT mm2          SNV 1.0000/1.0000/1.0000   INDEL 0.0000/0.0000/0.0000  
+  ecoli ONT geo          SNV 1.0000/1.0000/1.0000   INDEL 0.0000/0.0000/0.0000  
+### DONE-FIX

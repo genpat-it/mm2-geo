@@ -1,0 +1,31 @@
+hifi	cert3_vs_stock	IDENTICAL
+hifi	mm2	rep1	47.66 15272484
+hifi	geo	rep1	34.64 13474584
+hifi	cert3	rep1	41.63 15927404
+hifi	mm2	rep2	48.07 15295308
+hifi	geo	rep2	34.26 13755152
+hifi	cert3	rep2	41.57 15689164
+hifi	mm2	rep3	48.16 15382460
+hifi	geo	rep3	34.37 13363796
+hifi	cert3	rep3	41.07 15608500
+ont	cert3_vs_stock	IDENTICAL
+ont	mm2	rep1	108.79 13766964
+ont	geo	rep1	89.71 10829400
+ont	cert3	rep1	107.54 12307320
+ont	mm2	rep2	109.27 13159520
+ont	geo	rep2	89.60 10840964
+ont	cert3	rep2	106.80 12511844
+ont	mm2	rep3	108.62 13415984
+ont	geo	rep3	89.34 10932620
+ont	cert3	rep3	107.44 12707620
+clr	cert3_vs_stock	IDENTICAL
+clr	mm2	rep1	45.77 14988548
+clr	geo	rep1	32.89 10430364
+clr	cert3	rep1	43.30 13856048
+clr	mm2	rep2	46.16 15192216
+clr	geo	rep2	32.68 10437740
+clr	cert3	rep2	43.45 13530744
+clr	mm2	rep3	45.49 14969732
+clr	geo	rep3	32.68 10410984
+clr	cert3	rep3	43.61 13524260
+DONE

@@ -1,0 +1,13 @@
+### clair3 calling (hifi model, chr22, conf regions)
+  clair3 fm_g: 1s  vcf=clair3_fm_g/merge_output.vcf.gz
+OK
+  clair3 fm_gp: 0s  vcf=clair3_fm_gp/merge_output.vcf.gz
+OK
+  clair3 mm2: 1s  vcf=clair3_mm2/merge_output.vcf.gz
+OK
+### rtg vcfeval vs GIAB truth (conf regions)
+aligner  | SNV  P/R/F1            | INDEL  P/R/F1         
+  fm_g vcfeval FAILED
+  fm_gp vcfeval FAILED
+  mm2 vcfeval FAILED
+### DONE

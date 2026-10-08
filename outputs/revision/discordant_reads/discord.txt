@@ -1,0 +1,9 @@
+hifi: shared-placement primaries 154,618; CIGAR differs 817 (0.53%)
+   among differing: same AS 0.1%  geo higher AS 0.2%  geo lower AS 99.6%  same NM 3.9%
+   dAS(geo-mm2) min -18984 p1 -9591 p50 -160 p99 -2 max 6110;  relative p1 -278.082%  min -94100.000%
+ont: shared-placement primaries 114,522; CIGAR differs 1,852 (1.62%)
+   among differing: same AS 3.2%  geo higher AS 0.5%  geo lower AS 96.2%  same NM 3.3%
+   dAS(geo-mm2) min -56877 p1 -25921 p50 -28 p99 0 max 25069;  relative p1 -69.358%  min -1800.000%
+clr: shared-placement primaries 250,504; CIGAR differs 2,516 (1.00%)
+   among differing: same AS 2.9%  geo higher AS 0.2%  geo lower AS 96.9%  same NM 3.4%
+   dAS(geo-mm2) min -13012 p1 -3769 p50 -44 p99 0 max 9314;  relative p1 -2200.000%  min -23500.000%

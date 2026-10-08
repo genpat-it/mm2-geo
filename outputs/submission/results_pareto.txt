@@ -1,0 +1,16 @@
+reg   cfg         time_s  speedup   pos-id%   cig-id%
+ont   stock           74    1.00x     100.0     100.0
+ont   geo m5          60    1.23x      95.4      71.3
+ont   geo m10         59    1.25x      97.3      84.4
+ont   geo m20         58    1.28x      98.7      93.6
+ont   geo m50         60    1.23x      99.4      98.0
+ont   geo m100        61    1.21x      99.6      98.8
+ont   geo m200        63    1.17x      99.8      99.7
+hifi  stock           34    1.00x     100.0     100.0
+hifi  geo m5          21    1.62x      96.3      90.4
+hifi  geo m10         22    1.55x      96.6      92.5
+hifi  geo m20         22    1.55x      97.1      94.2
+hifi  geo m50         22    1.55x      98.8      97.6
+hifi  geo m100        23    1.48x      99.4      98.5
+hifi  geo m200        25    1.36x      99.6      99.4
+### DONE

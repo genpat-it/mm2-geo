@@ -1,0 +1,11 @@
+>> HiFi concordance (mm2 vs geo)
+   shared primaries: 155308
+   same POS: 99.86%  same MAPQ: 99.85%  identical CIGAR: 99.35%
+   mean |dNM|: 2.373  (geo worse: 0.26%, better: 0.37%, equal: 99.37%)
+   mean |dAS|: 3.452
+>> ONT concordance (mm2 vs geo)
+   shared primaries: 114992
+   same POS: 99.77%  same MAPQ: 99.08%  identical CIGAR: 98.34%
+   mean |dNM|: 3.436  (geo worse: 0.73%, better: 0.88%, equal: 98.39%)
+   mean |dAS|: 11.298
+### DONE-CONC

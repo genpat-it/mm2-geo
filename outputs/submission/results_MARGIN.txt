@@ -1,0 +1,14 @@
+### MARGIN ABLATION (chr22). time=median-3 32t; CIGARid vs stock; F1 clair3
+>> hifi
+   hifi m=5   time 34.29s  CIGARid 98.59%  SNV/INDEL-F1 0.9960/0.9962
+   hifi m=10  time 34.33s  CIGARid 98.97%  SNV/INDEL-F1 (skip)
+   hifi m=20  time 34.43s  CIGARid 99.35%  SNV/INDEL-F1 0.9958/0.9961
+   hifi m=40  time 34.80s  CIGARid 99.67%  SNV/INDEL-F1 (skip)
+   hifi m=80  time 36.44s  CIGARid 99.81%  SNV/INDEL-F1 0.9959/0.9965
+>> ont
+   ont  m=5   time 88.35s  CIGARid 90.89%  SNV/INDEL-F1 0.9952/0.7998
+   ont  m=10  time 88.84s  CIGARid 94.65%  SNV/INDEL-F1 (skip)
+   ont  m=20  time 87.90s  CIGARid 98.34%  SNV/INDEL-F1 0.9951/0.8004
+   ont  m=40  time 88.41s  CIGARid 99.35%  SNV/INDEL-F1 (skip)
+   ont  m=80  time 90.39s  CIGARid 99.71%  SNV/INDEL-F1 0.9940/0.7997
+### DONE-MARGIN

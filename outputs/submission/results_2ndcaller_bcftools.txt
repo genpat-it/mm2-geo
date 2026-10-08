@@ -1,0 +1,7 @@
+### 2nd caller = bcftools mpileup+call (CIGAR-trusting, no re-alignment) | HiFi mm2-default vs mm2-geo
+  bcftools stockH: 337s vars=51201
+  bcftools geoH20: 304s vars=51201
+aligner    | SNV P/R/F1                | INDEL P/R/F1
+stockH     | 0.9475/0.9962/0.9712     | 0.6966/0.8535/0.7671    
+geoH20     | 0.9475/0.9962/0.9712     | 0.6966/0.8535/0.7671    
+### DONE

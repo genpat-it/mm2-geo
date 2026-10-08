@@ -1,0 +1,10 @@
+### HiFi F1: stock vs mm2-geo(band-doubling m20/m50) | speed(align): stock 49s, geo m20 42s, m50 43s
+  clair3 stockH: 117s vars=48911
+  clair3 geoH20: 117s vars=48921
+  clair3 geoH50: 117s vars=48905
+### F1 vs GIAB (SNV / INDEL)
+aligner  | SNV  P / R / F1            | INDEL  P / R / F1         
+stockH   | 0.9932 / 0.9987 / 0.9959   | 0.9953 / 0.9973 / 0.9963  
+geoH20   | 0.9929 / 0.9987 / 0.9958   | 0.9951 / 0.9971 / 0.9961  
+geoH50   | 0.9933 / 0.9987 / 0.9960   | 0.9951 / 0.9973 / 0.9962  
+### DONE

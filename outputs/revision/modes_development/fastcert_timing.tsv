@@ -1,0 +1,31 @@
+hifi	mm2fast+cert_vs_mm2fast	IDENTICAL
+hifi	mm2fast	rep1	36.16 22502532
+hifi	fastgeo	rep1	29.47 20516728
+hifi	fastcert	rep1	33.08 22026464
+hifi	mm2fast	rep2	35.12 22426516
+hifi	fastgeo	rep2	29.30 20528440
+hifi	fastcert	rep2	33.11 22304264
+hifi	mm2fast	rep3	36.47 22329168
+hifi	fastgeo	rep3	29.36 20533220
+hifi	fastcert	rep3	33.09 22377636
+ont	mm2fast+cert_vs_mm2fast	IDENTICAL
+ont	mm2fast	rep1	66.53 16870264
+ont	fastgeo	rep1	56.54 12269084
+ont	fastcert	rep1	67.85 17456800
+ont	mm2fast	rep2	66.53 17078648
+ont	fastgeo	rep2	57.02 12400576
+ont	fastcert	rep2	68.76 17562324
+ont	mm2fast	rep3	71.67 17293172
+ont	fastgeo	rep3	59.86 12377728
+ont	fastcert	rep3	68.60 17571684
+clr	mm2fast+cert_vs_mm2fast	IDENTICAL
+clr	mm2fast	rep1	32.40 18013376
+clr	fastgeo	rep1	25.36 10893932
+clr	fastcert	rep1	32.18 15345360
+clr	mm2fast	rep2	32.91 18120740
+clr	fastgeo	rep2	24.99 10889892
+clr	fastcert	rep2	33.21 15172064
+clr	mm2fast	rep3	32.77 18239636
+clr	fastgeo	rep3	25.25 10921116
+clr	fastcert	rep3	32.93 15321092
+DONE

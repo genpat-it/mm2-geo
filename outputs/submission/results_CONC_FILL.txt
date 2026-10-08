@@ -1,0 +1,4 @@
+chr22 CLR: samePOS 99.80 sameMAPQ 99.52 CIGARid 98.75 NMid 98.79 | NMworse 0.58 NMbetter 0.64
+chr14 CLR: samePOS 99.98 sameMAPQ 99.97 CIGARid 99.52 NMid 99.53 | NMworse 0.29 NMbetter 0.18
+ecoli ONT: samePOS 100.00 sameMAPQ 100.00 CIGARid 99.94 NMid 99.93 | NMworse 0.03 NMbetter 0.03
+### DONE-CFILL

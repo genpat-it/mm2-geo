@@ -1,0 +1,4 @@
+### Peak memory (Maximum RSS, /usr/bin/time -v; HiFi + ONT, real chr22)
+  HiFi: mm2=23.12 GB  mm2-geo=20.53 GB  mm2-fast=35.99 GB  mm2-fast+geo=31.11 GB
+  ONT: mm2=21.78 GB  mm2-geo=13.83 GB  mm2-fast=25.06 GB  mm2-fast+geo=14.48 GB
+### DONE

@@ -1,0 +1,5 @@
+### uncap behaviour (HiFi full, 155k)
+geo capped vs mm2 : n=155308 pos-id=99.865% cig-id=99.349%
+geo UNCAP  vs mm2 : n=155308 pos-id=99.860% cig-id=99.337%
+UNCAP vs capped   : n=155308 pos-id=99.995% cig-id=99.987%
+### DONE

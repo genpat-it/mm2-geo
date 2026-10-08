@@ -1,0 +1,3 @@
+reads_bases	1228750	9896844806
+cert_identical	yes
+fast_differing_lines	28391	of	873083

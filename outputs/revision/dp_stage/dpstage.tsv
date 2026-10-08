@@ -1,0 +1,17 @@
+data	mode	wall_s	cpu_s	dp_cpu_s
+hifi_chr22	stock	51.72	1586.96	1116.349
+hifi_chr22	fast	35.89	1078.26	634.119
+hifi_chr22	cert	39.19	1185.03	742.058
+ont_chr22	stock	123.16	3790.25	1286.235
+ont_chr22	fast	104.19	3190.95	683.397
+ont_chr22	cert	115.46	3533.08	1026.496
+clr_chr22	stock	45.93	1379.58	1155.067
+clr_chr22	fast	32.89	966.17	744.767
+clr_chr22	cert	41.11	1229.71	1002.150
+ont_chr14	stock	84.02	2458.70	726.324
+ont_chr14	fast	72.56	2104.54	369.252
+ont_chr14	cert	70.32	2013.46	277.624
+hifi_wg138k	stock	59.37	1312.82	870.793
+hifi_wg138k	fast	49.22	959.84	519.333
+hifi_wg138k	cert	48.58	945.37	505.499
+DONE

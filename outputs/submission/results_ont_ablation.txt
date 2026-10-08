@@ -1,0 +1,8 @@
+### ONT mm2(stock) vs mm2-geo | clair3 r1041 sup + rtg vcfeval | speed: mm2 98s, mm2geo 87s (align+sort)
+  clair3 mm2: 132s vars=49761
+  clair3 mm2geo: 1002s vars=44120
+### F1 vs GIAB truth (conf regions)
+aligner  | SNV  P / R / F1            | INDEL  P / R / F1         
+mm2      | 0.9937 / 0.9943 / 0.9940   | 0.7787 / 0.8227 / 0.8001  
+mm2geo   | 0.5022 / 0.4728 / 0.4871   | 0.1176 / 0.0027 / 0.0054  
+### DONE
