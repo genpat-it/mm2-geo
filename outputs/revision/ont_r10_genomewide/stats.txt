@@ -1,0 +1,3 @@
+reads	792854
+bases	15746290279
+cert_identical	no: 2 reads (4 PAF lines) differ; both certified alignments score higher (AS +2), same coordinates

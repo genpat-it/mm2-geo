@@ -16,7 +16,7 @@ Tables S1–S14 and the stress tests).
 | folder | content | table | script |
 |---|---|---|---|
 | `modes_timing/` | `identity.tsv` (certified vs minimap2 hashes), `chr22_timing.tsv` (chr22/chr14, median of 3), `timing.tsv` and `amdahl.tsv` (ONT R9.4.1 genome-wide subset) | Table 2 (end-to-end), S22 | 23 |
-| `dp_stage/` | `dpstage.tsv`: wall, total CPU and DP-stage CPU time per data set and mode; `amdahl.tsv` | Table 2 (DP stage), S21 | 26 |
+| `dp_stage/` | `dpstage.tsv`: wall, total CPU and DP-stage CPU time per data set and mode; `ont_r9_genomewide_amdahl.tsv`: the same for the ONT R9.4.1 genome-wide subset | Table 2 (DP stage), S21 | 26 |
 | `gap_rounds/` | band-doubling rounds and joint (d, E) statistics | S15 | 18 |
 | `discordant_reads/` | discordant reads by severity and GIAB stratification; `eval_geo.txt`: simulated truth | S16 | 19, 20 |
 | `callset_diff/` | `sm_*`/`smhc_*`: small-variant comparison of the heuristic and certified callsets against minimap2 (whole chr22 / GIAB high-confidence); `sv_vcf/`: Sniffles2 SV calls for the nine chr22 BAMs | S17 | 21 |
@@ -25,4 +25,5 @@ Tables S1–S14 and the stress tests).
 | `speed_checks/` | thread counts, output handling, index scope, bioconda and -O3 builds, rebuild from the public tag `submission-2026` (`pubcheck.tsv`, `relcheck.txt`) | S20 | 25 |
 | `input_counts/` | reads, bases, mapped and primary rates per data set | S19 | 29 |
 | `ont_r9_genomewide/` | ONT R9.4.1 genome-wide subset: read counts and certified identity | S22 | 23 |
+| `ont_r10_genomewide/` | ONT R10.4.1 genome-wide subset (10%, seed 42): read counts, certified identity and the 4 differing PAF lines (2 reads, both higher-scoring in the certified mode), timing (3 reps), DP-stage decomposition | S19, S21, S22 | 27 |
 | `modes_development/` | timings of the certified mode during development (score certificate alone, with the one-gap shortcut, with the score-only probe) | S22 | 23 |

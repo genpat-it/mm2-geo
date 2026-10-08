@@ -9,9 +9,12 @@ source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/ont_r10_genomewide;
 FQ=ont_r10_genomewide_10pct.fq
 [ -s $FQ ] || "$SAMTOOLS" view -@16 -b -T GRCh38_no_alt_analysis_set.fna -F 0x900 -s 42.10 "$HG002_ONT_CRAM" | "$SAMTOOLS" fastq -@8 - > $FQ 2>/dev/null
 awk 'NR%4==2{n++;b+=length($0)}END{print "reads "n", bases "b}' $FQ | tee $D/summary.txt
-a=$(MM2_GEO=0 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null | sha256sum | cut -c1-16)
-b=$(MM2_GEO=1 MM2_GEO_CERT=1 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null | sha256sum | cut -c1-16)
-echo "certified identical to minimap2: $([ $a = $b ] && echo yes || echo NO)" | tee -a $D/summary.txt
+MM2_GEO=0 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D/stock.paf
+MM2_GEO=1 MM2_GEO_CERT=1 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D/certified.paf
+# differing PAF lines (with CIGAR) and, per differing record, the alignment score (AS) of minimap2 and certified
+diff $D/stock.paf $D/certified.paf | grep '^[<>]' > $D/discordant_lines.txt
+echo "certified identical to minimap2: $([ -s $D/discordant_lines.txt ] && echo "no, $(cut -c3- $D/discordant_lines.txt | cut -f1 | sort -u | wc -l) reads differ" || echo yes)" | tee -a $D/summary.txt
+awk '{for(i=14;i<=NF;i++) if($i~/^AS:i:/) print $1, $2, $7":"$9"-"$10, $i}' $D/discordant_lines.txt | tee -a $D/summary.txt
 for rep in 1 2 3; do for c in stock heuristic certified; do
   case $c in stock) E="MM2_GEO=0";; heuristic) E="MM2_GEO=1";; certified) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
   /usr/bin/time -f "%e %M" -o $D/t env $E "$MM2GEO" -ax map-ont -t"$THREADS" grch38_ont.mmi $FQ > /dev/null 2>/dev/null
