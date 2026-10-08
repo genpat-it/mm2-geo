@@ -46,16 +46,17 @@ SNIFFLES="${SNIFFLES:-sniffles}"   # structural-variant caller (script 07)
 TRUVARI="${TRUVARI:-truvari}"      # SV benchmarking (script 07)
 
 # ---------------------------------------------------------------------------
-# 4) Conda: profile to source + environment names holding Clair3 and RTG Tools.
-#    (environment.yml ships a single env; set both names to it, or create separate envs.)
-CONDA_PROFILE="${CONDA_PROFILE:-$HOME/miniconda3/etc/profile.d/conda.sh}"
-CONDA_ENV_CLAIR3="${CONDA_ENV_CLAIR3:-c3}"
-CONDA_ENV_RTG="${CONDA_ENV_RTG:-rtg}"
+# 4) Conda: profile to source + environments holding Clair3 and RTG Tools. By default both are the
+#    environment that is active when a script starts (the one created from environment.yml).
+_CONDA_BASE="${CONDA_EXE:+$(dirname "$(dirname "$CONDA_EXE")")}"; _CONDA_BASE="${_CONDA_BASE:-$HOME/miniconda3}"
+CONDA_PROFILE="${CONDA_PROFILE:-$_CONDA_BASE/etc/profile.d/conda.sh}"
+CONDA_ENV_CLAIR3="${CONDA_ENV_CLAIR3:-${CONDA_PREFIX:-mm2-geo-repro}}"
+CONDA_ENV_RTG="${CONDA_ENV_RTG:-${CONDA_PREFIX:-mm2-geo-repro}}"
 CLAIR3="${CLAIR3:-run_clair3.sh}"   # resolves on PATH once CONDA_ENV_CLAIR3 is active
 
 # ---------------------------------------------------------------------------
-# 5) Clair3 model directories (ship with Clair3; adjust to your install).
-CLAIR3_MODELS="${CLAIR3_MODELS:-$HOME/miniconda3/envs/c3/bin/models}"
+# 5) Clair3 model directories (shipped with the bioconda Clair3 package in <env>/bin/models).
+CLAIR3_MODELS="${CLAIR3_MODELS:-${CONDA_PREFIX:-$_CONDA_BASE/envs/mm2-geo-repro}/bin/models}"
 MODEL_HIFI="${MODEL_HIFI:-$CLAIR3_MODELS/hifi}"
 MODEL_ONT="${MODEL_ONT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v500}"
 MODEL_BACT="${MODEL_BACT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v430_bacteria_finetuned}"
