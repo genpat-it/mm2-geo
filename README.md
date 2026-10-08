@@ -1,154 +1,110 @@
-# mm2-geo — reproducibility (companion repository)
+# mm2-geo — reproducibility material
 
-This repository regenerates every table and figure of the mm2-geo paper. The **tool** itself
-(minimap2 v2.30 + the geometric patch, with the gated diagnostic flags) lives in a separate
-repository; this one holds the scripts, small data artifacts and raw outputs.
+This branch regenerates every table and figure of the mm2-geo paper ("Geometry-guided band sizing for
+faster minimap2 gap filling, with a certified mode that reproduces minimap2's output"). The tool itself
+(minimap2 v2.30 plus a single-file patch to `align.c`) is on the `main` branch of
+https://github.com/genpat-it/mm2-geo.
 
-- Tool repository: https://github.com/genpat-it/mm2-geo (tag `submission-2026`)
-- Manuscript: "Geometry-guided band-doubling: a lightweight heuristic for faster minimap2 gap
-  filling with near-identical small-variant calling accuracy".
-- Archival: a permanent Zenodo snapshot (this repo + the tool repo) with a DOI will be deposited
-  **upon acceptance** (no pre-acceptance DOI, to avoid a permanent orphan record).
+| tag | content |
+|---|---|
+| `revision-2026` (tool) | heuristic mode (`MM2_GEO=1`) and certified mode (`MM2_GEO=1 MM2_GEO_CERT=1`) |
+| `submission-2026` (tool) | heuristic mode only, as first released; unchanged in `revision-2026` |
+| `reproducibility-revision-2026` (this branch) | scripts for every table of the paper and its Supplementary Material |
+| `reproducibility-submission-2026` (this branch) | the material of the first submission |
 
-## Layout
-```
-scripts/                one script per table/figure (see map below)
-data/                   small artifacts (regenerable / fetched by accession otherwise):
-  ecoli_strain_assembly.fasta   Flye assembly of SRR9900640 (spike-in base)
-  ecoli_ref_mut.fa              assembly + implanted variants (spike-in reference)
-  ecoli_spikein_truth.vcf.gz    planted truth (regenerable via scripts/15, seed 20260716)
-  genomewide_readnames.txt      read-name manifest of the 138,688-read genome-wide subset
-environment.yml         conda env pinning tool versions (DeepVariant via docker; see file)
-ACCESSIONS.txt          all data accessions / sources (raw reads fetched by accession, not bundled)
-CHECKSUMS.md5           md5 of the data/ artifacts
-geo.patch               copy of the clean geometric patch (canonical copy in the tool repo)
-```
-The DP-cell measurement (Table 3) and the geometry-vs-doubling ablation (Table 4) require the tool
-repo's **gated instrumentation** (`MM2_GEO_STATS`, `MM2_GEO_FIXED`, `MM2_GEO_NODOUBLE`); build the
-tool from the mm2-geo repository, which includes them (zero cost when unset). `geo.patch` is the clean
-upstreamable change only and does not contain those flags.
+A permanent Zenodo snapshot of both branches will be deposited upon acceptance.
 
-## Setup (do this once)
-The pipeline uses standard bioinformatics tools; you set up the environment on your machine.
+## Quick start (from an empty machine)
 
-1. **Create the environment** (all analysis tools):
-   ```bash
-   conda env create -f environment.yml && conda activate mm2-geo-repro
-   ```
-   DeepVariant is not conda-installable — the three-caller cross-check (Table S5) uses
-   `google/deepvariant:1.6.1` from its own image, as in the paper. Everything else is in this env.
-2. **Build the tool** (one binary is BOTH stock minimap2 and mm2-geo):
-   ```bash
-   git clone https://github.com/genpat-it/mm2-geo && cd mm2-geo
-   git checkout submission-2026 && make && cp minimap2 mm2geo
-   ```
-3. **Download the data** by accession into a working directory — see `ACCESSIONS.txt` (GIAB HG002
-   HiFi/ONT/CLR, *E. coli* `SRR9900640`, references, truth sets). Raw reads are large and not bundled.
-4. **Configure** `scripts/config.sh`: set `WORKDIR` (where you put the data), `MM2GEO` (the binary
-   from step 2) and the Clair3/RTG conda env names — or override any of them from the environment.
-5. **Verify** (~30 s, synthetic, no downloads):
-   ```bash
-   bash scripts/smoke_test.sh      # confirms build + samtools + config are wired correctly
-   ```
-6. **Run** any numbered script, e.g. `bash scripts/01_benchmark_grid.sh` (see the map below).
-
-## Configuration (edit once)
-All scripts `source scripts/config.sh`, which defines every path/tool in one place: the working
-directory holding the fetched data, the built `mm2geo` binary, the Clair3/RTG conda environment
-names, the Clair3 model directories and the thread count. **Edit `scripts/config.sh` (or override any
-value from the environment, e.g. `WORKDIR=/data bash scripts/01_benchmark_grid.sh`) to match your
-clone before running anything.** Nothing in the scripts changes the analysis — `config.sh` only says
-where inputs, tools and the binary live. Tools (`samtools`, `bcftools`, `rtg`, ...) resolve on `PATH`
-once the environment from `environment.yml` is active.
-
-## Build and gating
 ```bash
-git clone https://github.com/genpat-it/mm2-geo && cd mm2-geo
-git checkout submission-2026   # exact version reported in the paper
-make
-cp minimap2 mm2geo          # the Makefile emits ./minimap2; we run it as ./mm2geo
+git clone -b reproducibility https://github.com/genpat-it/mm2-geo mm2-geo-repro && cd mm2-geo-repro
+conda env create -f environment.yml && conda activate mm2-geo-repro
+export WORKDIR=/path/with/space          # ~150 GB for "core", ~400 GB with the genome-wide data
+bash scripts/build_tools.sh              # builds every executable from the public tags into $WORKDIR/bin
+bash scripts/fetch_data.sh core          # references, truth sets, stratifications, chr22/chr14 read slices
+bash scripts/smoke_test.sh               # ~30 s sanity check of the build and configuration
+bash scripts/00_verify_output_identity.sh
+# ... then any numbered script; the genome-wide ones need:
+bash scripts/fetch_data.sh genomewide    # complete GIAB HG002 HiFi BAM (121 GB) and ONT R10.4.1 CRAM (104 GB)
 ```
-Environment variables (all default off; unset ⇒ stock minimap2 behaviour):
+
+Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
+once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
+`$WORKDIR/hifi_bench/` (scripts 01–17) and `$WORKDIR/results/` (scripts 00 and 18–29). Timings assume an otherwise idle machine and local storage for the inputs; all
+timing scripts use one executable per comparison, change only environment variables, discard the SAM
+output and report the median of three interleaved runs.
+
+## Executables (`build_tools.sh`)
+
+| config variable | built from | used for |
+|---|---|---|
+| `MM2GEO` | tag `revision-2026` | all heuristic- and certified-mode results |
+| `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode speed checks with the code as first released |
+| `MM2GEO_INSTR` | `revision-2026` + `instrumentation.patch` | per-gap log (`MM2_GEO_GAPLOG`) and DP-stage CPU time (`MM2_GEO_TIMEDP`); output unchanged |
+| `MM2GEO_O3` | `revision-2026` with bioconda's minimap2 compiler flags | build comparison |
+| `MM2FAST`, `MM2FASTGEO` | mm2-fast commit `14fe36c`, without / with `geo_mm2fast.patch` (AVX-512 build when the CPU supports it, else AVX2) | composition with mm2-fast (optional) |
+
+Environment variables of the tool (all off by default; unset means stock minimap2):
 
 | variable | effect |
 |---|---|
-| `MM2_GEO=1` | enable geometry-guided band-doubling |
+| `MM2_GEO=1` | heuristic mode: geometry-sized band, doubled on boundary contact |
+| `MM2_GEO_CERT=1` | with `MM2_GEO=1`: certified mode (score certificate, exact one-gap shortcut, score-only first pass); output identical to minimap2 |
 | `MM2_GEO_MARGIN=m` | band margin (default 20) |
-| `MM2_GEO_STATS=1` | print DP-cell count + band histogram to stderr (collect at `-t1` for band stats) |
-| `MM2_GEO_FIXED=1` | ablation: fixed band `b=m`, ignore geometry |
-| `MM2_GEO_NODOUBLE=1` | ablation: single pass, no retry |
+| `MM2_GEO_STATS=1`, `MM2_GEO_FIXED=1`, `MM2_GEO_NODOUBLE=1` | DP-cell statistics and ablations |
+| `MM2_GEO_GAPLOG=file`, `MM2_GEO_TIMEDP=1` | instrumented build only: per-gap log, DP-stage CPU time |
 
-With `MM2_GEO=0` the executable's alignment records are byte-identical to stock minimap2 2.30
-(headers aside) — verified by `scripts/00_verify_output_identity.sh`.
+## Script → table map
 
-## Software versions
-minimap2 2.30-r1287 · mm2-fast 2.24-r1122 · samtools 1.21 · bcftools 1.23 · Clair3 v2.0.2
-(models `hifi`, `r1041_e82_400bps_sup_v500`, and `..._v430_bacteria_finetuned` for *E. coli*) ·
-DeepVariant 1.6.1 (docker, PACBIO) · RTG Tools 3.13 · Sniffles2 2.7.2 · truvari 5.4.0 ·
-Flye 2.9.6-b1802 · Badread 0.4.1. Compiler: GCC 14.3.1, `-O2 -Wall`.
+Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1; Supplementary: S1–S22).
 
-## Script → table/figure map
-Scripts are numbered in run order; the table/figure each produces is listed here (filenames do
-not embed table numbers, so they stay valid if the layout changes).
-
-| Script | Produces |
+| script | produces |
 |---|---|
-| `00_verify_output_identity.sh` | `MM2_GEO=0` == minimap2 check (Methods) |
-| `01_benchmark_grid.sh` | Table 2 (time / memory / F1) + Figure 2 (F1 bars) |
-| `02_dp_cell_count.sh` | Table 3 (logical DP cells + band stats; uses `MM2_GEO_STATS`) |
-| `03_ablation_cigar_identity.sh` | Table 4, CIGAR-identity columns |
-| `04_ablation_variant_f1.sh` | Table 4, F1 columns (fixed-start / geometry-only / mm2-geo) |
-| `05_alignment_concordance.sh` | Table 6 (placement / MAPQ / CIGAR / NM concordance) |
-| `06_primary_presence.sh` | Supplementary Table S3 (primary-presence counts) |
-| `07_sv_calling.sh` | Table 7 (Sniffles2 + truvari vs GIAB Tier1) |
-| `08_composition_mm2fast_f1.sh` | Table 8, F1 (mm2-fast / mm2-fast-geo); timings from `01` |
-| `09_margin_sweep.sh` | Table 10 (margin sweep m ∈ {5,10,20,40,80}) |
-| `10_thread_scaling.sh` | Table 11 + Figure 3 (1–64 threads) |
-| `11_genomewide_speed.sh` | §3.12 genome-wide speed / memory |
-| `12_genomewide_concordance.sh` | §3.12 genome-wide placement / MAPQ / CIGAR / NM |
-| `13_stress_dense_indels.sh` | §3.10 stress test, dense small indels (Badread) |
-| `14_stress_large_sv.sh` | §3.10 stress test, large structural variants (Badread) |
-| `15_ecoli_plant_variants.py` | helper: implant the spike-in truth (seed 20260716) |
-| `16_ecoli_spikein_f1.sh` | Table 2 *E. coli* row + §3.1 bacterial spike-in (uses `15`) |
-| `17_indel_length_stratified_f1.sh` | Supplementary Table S10 (F1 by indel length; calls `17_stratify_indel.py`) |
+| `00_verify_output_identity.sh` | output identity: unset = minimap2 v2.30, certified = minimap2, heuristic unchanged across tags |
+| `01_benchmark_grid.sh` | Table 1 (heuristic mode: time, memory, small-variant F1) |
+| `02_dp_cell_count.sh` | Table S2 (logical DP cells) |
+| `03_ablation_cigar_identity.sh`, `04_ablation_variant_f1.sh` | Table 3 (geometry vs doubling ablation) |
+| `05_alignment_concordance.sh`, `06_primary_presence.sh` | Tables S6, S4 |
+| `07_sv_calling.sh` | Table S7 (SVs vs GIAB Tier1, heuristic mode) |
+| `08_composition_mm2fast_f1.sh` | Table S13 (F1 with mm2-fast) |
+| `09_margin_sweep.sh` | Table S9 |
+| `10_thread_scaling.sh` | Table S12 |
+| `11_genomewide_speed.sh`, `12_genomewide_concordance.sh` | Table S14 (0.57× genome-wide subset) |
+| `13_stress_dense_indels.sh`, `14_stress_large_sv.sh` | Supplementary section "Stress tests" |
+| `15_ecoli_plant_variants.py`, `16_ecoli_spikein_f1.sh` | *E. coli* spike-in (Table S3 and Supplementary text) |
+| `17_indel_length_stratified_f1.sh` | Table S10 |
+| `18_gap_rounds_dE.sh` | Table S15 (band-doubling rounds, joint (d,E) statistics) |
+| `19_discordant_reads.sh` | Table S16 (discordant reads: severity, GIAB stratifications); uses the output of 18 |
+| `20_simulated_truth.sh` | discordant reads against simulated truth (pbsim3, seed 2024) |
+| `21_callset_diff.sh` | Table S17 (SV and small-variant callsets on the same GRCh38 alignments) |
+| `22_sv_truth_grch37.sh` | Table S17, bottom block (SVs vs GIAB Tier1 for minimap2 / heuristic / certified) |
+| `23_modes_identity_timing.sh` | Table 2 end-to-end columns, Table S22 (both modes, certified identity) |
+| `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes; chr1-only setting) |
+| `25_speed_threads_builds.sh` | Table S20 (threads, output handling, index scope, bioconda and -O3 builds) |
+| `26_dp_stage.sh` | Table 2 DP columns, Table S21 (DP-stage decomposition, Amdahl prediction) |
+| `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S21/S22) |
+| `28_mm2fast_modes.sh` | Table S22, mm2-fast rows |
+| `29_input_counts.sh` | Table S19 (input reads, bases, alignment rates) |
 
-Note: the three-caller cross-check (Table 5, HiFi chr22) uses clair3, bcftools and DeepVariant on
-the same BAM (commands in the manuscript Supplementary); the fixed-`-r` comparison (Table 9) reuses
-`01_benchmark_grid.sh` with minimap2 `-r 20`.
+The three-caller cross-check (Table S5) uses Clair3, bcftools and DeepVariant (`google/deepvariant:1.6.1`)
+on the BAM of `01`; the fixed `-r` comparison (Table S8) reruns `01` with minimap2 `-r 20`.
 
-## Random seeds
-- *E. coli* spike-in: seed `20260716` (hard-coded in `ecoli_plant_variants.py`); regenerates
-  `ref_mut.fa` + `truth.vcf` (2,605 SNPs + 724 indels) deterministically. Sanity: applying the
-  truth VCF to `ref_mut.fa` with `bcftools consensus` reproduces the original assembly exactly.
-- Genome-wide subset: `reads_200k.fq` is a whole-genome random sample of the GIAB HG002 PacBio CCS
-  data (138,688 reads, 1.78 Gb, ~0.57× of GRCh38), sampled without reference to mapping location.
-  The exact sampling command and seed are recorded alongside the read-name manifest in the archive.
+## Data
+`scripts/fetch_data.sh` downloads and prepares every input from public sources (listed in
+`ACCESSIONS.txt`): GRCh38 (GenBank `GCA_000001405.15`), the GRCh38 no-alt analysis set (to decode the ONT
+CRAM locally), GRCh37 chr22, GIAB v4.2.1 small-variant truth, GIAB SV Tier1 v0.6, GIAB v3.3
+stratifications, chr22/chr14 slices of the GIAB HG002 HiFi, ONT R10.4.1 and CLR alignments (streamed),
+the 0.57× genome-wide subset (138,688 reads; read-name manifest in `data/`), the *E. coli* ONT isolate
+(ENA `SRR9900640`, md5-checked) and K-12 MG1655 reference (`NC_000913.3`), pbsim3 reads simulated from
+chr22 (seed 2024), and, with `genomewide`, the complete HiFi BAM and ONT CRAM. Small artifacts are in
+`data/` (*E. coli* strain assembly, spike-in reference and truth, genome-wide read-name manifest; md5 in
+`CHECKSUMS.md5`). The tool patches (`geo.patch` for minimap2 v2.30, `geo_mm2fast.patch` for mm2-fast) are
+taken by `build_tools.sh` from the tool tag, so there is a single copy of each.
 
-## Data provenance (fetched by accession; not bundled)
-- Human GIAB HG002: PacBio HiFi (CCS 15/20 kb, GRCh38), ONT R10.4.1 (2023.05 super-accuracy),
-  PacBio CLR (MtSinai). Small-variant truth: GIAB HG002 GRCh38 benchmark VCF + high-confidence BED.
-  SV truth: GIAB HG002 SV Tier1 v0.6 (GRCh37).
-- *E. coli*: real ONT isolate ENA `SRR9900640`; reference K-12 MG1655 `NC_000913.3`.
+## Software
+minimap2 2.30-r1287 (`v2.30` of lh3/minimap2) · mm2-fast 2.24-r1122 (commit `14fe36c`) · samtools 1.21 ·
+bcftools 1.23 · Clair3 v2.0.2 (models `hifi`, `r1041_e82_400bps_sup_v500`) · DeepVariant 1.6.1 · RTG Tools
+3.13 · Sniffles2 2.7.2 · truvari 5.4.0 · Flye 2.9.6 · Badread 0.4.1 · pbsim3 3.0 · GCC 14.3.1 (`-O2 -Wall`).
 
-## Reproducing a result (pattern)
-Every script writes a `results_*.txt`. Example (benchmark grid):
-```bash
-cd scripts && bash 01_benchmark_grid.sh            # -> results with time, RSS, F1 per row
-```
-The *E. coli* spike-in (real reads + known truth):
-```bash
-flye --nano-raw SRR9900640.fastq --out-dir asm --threads 32
-python 15_ecoli_plant_variants.py                  # -> ref_mut.fa + truth.vcf (seed 20260716)
-bash 16_ecoli_spikein_f1.sh                         # map (mm2/geo) -> clair3 bacterial -> vcfeval
-```
-F1 stratified by indel length (Supplementary Table S10):
-```bash
-cd scripts && bash 17_indel_length_stratified_f1.sh # map (MM2_GEO=0 vs =1) -> clair3 -> vcfeval,
-                                                    # then 17_stratify_indel.py bins by |REF-ALT| length
-```
-
-## Caveat on the E. coli absolute F1
-The spike-in truth is exact, but the strain reference is an unpolished Flye assembly with residual
-errors that generate background calls **equally** for minimap2 and mm2-geo. The absolute F1
-(SNV ~0.90, indel ~0.76) is therefore not comparable to the GIAB human values; the **paired
-minimap2-vs-mm2-geo difference** (ΔSNV +0.0018, ΔINDEL −0.0087) is the intended measure.
+## Seeds
+*E. coli* spike-in `20260716`; simulated chr22 reads `2024`; ONT R10.4.1 genome-wide subset `samtools -s 42.10`.

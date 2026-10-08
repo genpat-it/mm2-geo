@@ -8,9 +8,9 @@ RD="$GW_READS"
 R=hifi_bench/results_WG_CONCORD.txt; : > $R
 export LC_ALL=C
 # read stats
-awk 'NR%4==2{n++; b+=length($0); print length($0)}' $RD | sort -rn > /tmp/wglens.txt
-awk -v tot=$(awk '{s+=$1}END{print s}' /tmp/wglens.txt) 'BEGIN{h=tot/2}{c+=$1; if(c>=h && !done){print "N50",$1; done=1}} END{}' /tmp/wglens.txt >> $R
-awk 'END{}' ; nb=$(awk '{s+=$1}END{print s}' /tmp/wglens.txt); nr=$(wc -l </tmp/wglens.txt)
+awk 'NR%4==2{n++; b+=length($0); print length($0)}' $RD | sort -rn > $TMPDIR/wglens.txt
+awk -v tot=$(awk '{s+=$1}END{print s}' $TMPDIR/wglens.txt) 'BEGIN{h=tot/2}{c+=$1; if(c>=h && !done){print "N50",$1; done=1}} END{}' $TMPDIR/wglens.txt >> $R
+awk 'END{}' ; nb=$(awk '{s+=$1}END{print s}' $TMPDIR/wglens.txt); nr=$(wc -l <$TMPDIR/wglens.txt)
 awk -v nr=$nr -v nb=$nb 'BEGIN{printf "reads %d  bases %d (%.2f Gb)  mean_len %d  approx_cov %.2fx (vs 3.1Gb)\n",nr,nb,nb/1e9,nb/nr,nb/3.1e9}' | tee -a $R
 D=wgc; mkdir -p $D
 # primary: name, RNAME, strand, POS, MAPQ, CIGAR

@@ -16,5 +16,9 @@ dependencies:
   - flye=2.9.6
   - badread=0.4.1
   - python>=3.9
-# minimap2 2.30-r1287 and mm2-fast 2.24-r1122 are built from source
-# (see the mm2-geo tool repository); do not install minimap2 from conda here.
+  - pandas
+  - numpy
+  - pbsim3=3.0        # simulated reads with true alignments (fetch_data.sh)
+  - minimap2=2.30     # bioconda build, used only by the build comparison (25); set BIOCONDA_MM2
+# mm2-geo, stock minimap2 v2.30 and mm2-fast are built from source by scripts/build_tools.sh and
+# scripts/00_verify_output_identity.sh; the conda minimap2 is only the bioconda-build comparison.

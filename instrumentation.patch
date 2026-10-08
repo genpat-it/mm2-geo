@@ -1,0 +1,116 @@
+diff --git a/align.c b/align.c
+index 3f999a8..3c27c39 100644
+--- a/align.c
++++ b/align.c
+@@ -333,8 +333,27 @@ static void mm_append_cigar(mm_reg1_t *r, uint32_t n_cigar, const uint32_t *ciga
+ 	}
+ }
+ 
++// ===== analysis instrumentation (not part of the released tool) =====
++// MM2_GEO_TIMEDP=1: thread-CPU time spent inside ksw2 (all mm_align_pair calls), printed at exit.
++#include <time.h>
++static long long geo_dp_ns = 0, geo_dp_calls = 0; static int geo_timedp = -1;
++static void mm_geo_timedp_dump(void){ fprintf(stderr, "### MM2_GEO_TIMEDP dp_cpu_s=%.3f calls=%lld\n", geo_dp_ns / 1e9, geo_dp_calls); }
++__attribute__((constructor)) static void mm_geo_timedp_init(void){ const char *e = getenv("MM2_GEO_TIMEDP"); geo_timedp = (e && *e && atoi(e))? 1 : 0; if (geo_timedp) atexit(mm_geo_timedp_dump); }
++static inline long long mm_geo_tns(void){ struct timespec t; clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t); return (long long)t.tv_sec * 1000000000LL + t.tv_nsec; }
++static void mm_align_pair_core(void *km, const mm_mapopt_t *opt, int qlen, const uint8_t *qseq, int tlen, const uint8_t *tseq, const uint8_t *junc,
++						  const int8_t *mat, int w, int end_bonus, int zdrop, int ksw_flag, ksw_extz_t *ez);
+ static void mm_align_pair(void *km, const mm_mapopt_t *opt, int qlen, const uint8_t *qseq, int tlen, const uint8_t *tseq, const uint8_t *junc,
+ 						  const int8_t *mat, int w, int end_bonus, int zdrop, int ksw_flag, ksw_extz_t *ez)
++{
++	long long t0;
++	if (geo_timedp <= 0) { mm_align_pair_core(km, opt, qlen, qseq, tlen, tseq, junc, mat, w, end_bonus, zdrop, ksw_flag, ez); return; }
++	t0 = mm_geo_tns();
++	mm_align_pair_core(km, opt, qlen, qseq, tlen, tseq, junc, mat, w, end_bonus, zdrop, ksw_flag, ez);
++	__atomic_fetch_add(&geo_dp_ns, mm_geo_tns() - t0, __ATOMIC_RELAXED);
++	__atomic_fetch_add(&geo_dp_calls, 1, __ATOMIC_RELAXED);
++}
++static void mm_align_pair_core(void *km, const mm_mapopt_t *opt, int qlen, const uint8_t *qseq, int tlen, const uint8_t *tseq, const uint8_t *junc,
++						  const int8_t *mat, int w, int end_bonus, int zdrop, int ksw_flag, ksw_extz_t *ez)
+ {
+ 	if (mm_dbg_flag & MM_DBG_PRINT_ALN_SEQ) {
+ 		int i;
+@@ -746,7 +765,25 @@ static int mm_geo_try_onegap(void *km, const mm_mapopt_t *o, const int8_t *mat,
+ // whether MM2_GEO is on or off, so a paired mm2-vs-geo run gives an honest cell ratio.
+ // The band-distribution / attempt statistics below are recorded only on the geo path.
+ long long ksw_geo_cells = 0; // extern, incremented in ksw2_extd2_sse.c
+-int ksw_geo_count = 0;       // gate: only count when MM2_GEO_STATS set (zero-cost otherwise)
++int ksw_geo_count = 0;
++// MM2_GEO_GAPLOG=<file>: one line per anchor-to-anchor gap (geo and stock paths):
++// path qgap rgap d b0 rounds bfinal ceil E1 Efinal hit_ceil cells_band cells_total
++__thread long long ksw_geo_tl_cells = 0;
++static FILE *geo_gaplog = 0;
++static int mm_geo_excursion(const ksw_extz_t *ez){
++	int e = 0, mx = 0, c;
++	for (c = 0; c < ez->n_cigar; ++c) {
++		int op = ez->cigar[c] & 0xf, ln = ez->cigar[c] >> 4;
++		if (op == MM_CIGAR_INS) e += ln; else if (op == MM_CIGAR_DEL) e -= ln;
++		if (e > mx) mx = e;
++		if (-e > mx) mx = -e;
++	}
++	return mx;
++}
++__attribute__((constructor)) static void mm_geo_gaplog_init(void){
++	const char *g = getenv("MM2_GEO_GAPLOG");
++	if (g && *g && (geo_gaplog = fopen(g, "w")) != 0) { ksw_geo_count = 1; fprintf(geo_gaplog, "path\tqgap\trgap\td\tb0\trounds\tbfinal\tceil\tE1\tEfinal\thit_ceil\tcells_band\tcells_total\n"); }
++}       // gate: only count when MM2_GEO_STATS set (zero-cost otherwise)
+ // Thread-safe band statistics via atomic scalar counters + fixed histograms (bands are
+ // small ints; anything >= GEO_BKT clamps to the last bucket). This lets a single full-chr22
+ // -t32 run report median band, first-pass, mean attempts and reach-cap correctly.
+@@ -974,6 +1011,7 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+ 				mm_idx_getseq(mi, rid, rs, re, tseq);
+ 			}
+ 			mm_get_junc(mi, rid, rs, re, !!(ksw_flag&KSW_EZ_SPLICE_REV), junc);
++			long long gl_c0 = ksw_geo_tl_cells, gl_cband = -1; int gl_path = 0, gl_b0 = bw1, gl_natt = 1, gl_bf = bw1, gl_ceil = bw1, gl_e1 = -1, gl_d = abs((qe - qs) - (re - rs));
+ 			if (geo_on && !is_splice && !is_sr) { // mm2-geo: geometry -> narrow DP band (genomic long-read, non-splice; short-read/splice fall to the stock paths below)
+ 					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb, gb0, ceil_bw;
+ 					int natt = 0, stats = geo_stats, scoreprobed = 0;
+@@ -997,6 +1035,7 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+ 						}
+ 						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, ksw_flag|KSW_EZ_APPROX_MAX, ez);
+ 						++natt;
++						if (geo_gaplog && gl_e1 < 0 && !scoreprobed) gl_e1 = mm_geo_excursion(ez);
+ 						if (gb >= ceil_bw) break;
+ 						if (geo_nodouble) break; // ablation: no geometric retry
+ 						int e = 0, mx = 0, c;
+@@ -1017,6 +1056,7 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+ 						gb <<= 1; if (gb > ceil_bw) gb = ceil_bw;
+ 					}
+ 					if (stats) mm_geo_stat_gap(gb0, gb, natt, (gb >= ceil_bw));
++					gl_path = 1; gl_b0 = gb0; gl_natt = natt; gl_bf = gb; gl_ceil = ceil_bw; gl_d = dd; gl_cband = ksw_geo_tl_cells - gl_c0;
+ 			}
+ 			else if (is_sr || (is_sr_rna && qe - qs == re - rs)) { // perform ungapped alignment
+ 				int32_t max_gapped_score = (qe - qs - 2) * opt->a - 2 * (opt->q + opt->e);
+@@ -1040,6 +1080,12 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+ 			// test Z-drop and inversion Z-drop
+ 			if ((zdrop_code = mm_test_zdrop(km, opt, qseq, tseq, ez->n_cigar, ez->cigar, mat)) != 0)
+ 				mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, bw1, -1, zdrop_code == 2? opt->zdrop_inv : opt->zdrop, ksw_flag, ez); // second pass: lift approximate
++			if (geo_gaplog) {
++				long long ct = ksw_geo_tl_cells - gl_c0; int ef = mm_geo_excursion(ez);
++				if (gl_cband < 0) gl_cband = ct;
++				if (gl_e1 < 0) gl_e1 = ef;
++				fprintf(geo_gaplog, "%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%lld\t%lld\n", gl_path? "geo":"mm2", qe - qs, re - rs, gl_d, gl_b0, gl_natt, gl_bf, gl_ceil, gl_e1, ef, gl_bf >= gl_ceil, gl_cband, ct);
++			}
+ 			// update CIGAR
+ 			if (ez->n_cigar > 0)
+ 				mm_append_cigar(r, ez->n_cigar, ez->cigar);
+diff --git a/ksw2_extd2_sse.c b/ksw2_extd2_sse.c
+index f408044..8aaa535 100644
+--- a/ksw2_extd2_sse.c
++++ b/ksw2_extd2_sse.c
+@@ -7,6 +7,7 @@
+ // Defined in align.c; ksw_geo_count is 0 in normal runs so this adds no measurable cost.
+ extern long long ksw_geo_cells;
+ extern int ksw_geo_count;
++extern __thread long long ksw_geo_tl_cells; // per-thread cells (gap log)
+ 
+ #ifdef __SSE2__
+ #ifdef USE_SIMDE
+@@ -392,6 +393,7 @@ void ksw_extd2_sse(void *km, int qlen, const uint8_t *query, int tlen, const uin
+ 		//for (t = st0; t <= en0; ++t) printf("(%d,%d)\t(%d,%d,%d,%d)\t%d\n", r, t, ((int8_t*)u)[t], ((int8_t*)v)[t], ((int8_t*)x)[t], ((int8_t*)y)[t], H[t]); // for debugging
+ 	}
+ 	if (ksw_geo_count) __atomic_fetch_add(&ksw_geo_cells, geo_lc, __ATOMIC_RELAXED); // one atomic per call
++	if (ksw_geo_count) ksw_geo_tl_cells += geo_lc;
+ 	kfree(km, mem);
+ 	if (!approx_max) kfree(km, H);
+ 	if (with_cigar) { // backtrack

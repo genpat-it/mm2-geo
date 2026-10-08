@@ -1,6 +1,6 @@
 #!/bin/bash
 # UNIFIED CARTESIAN BENCHMARK: {dataset x tech x config} x {median-3 time, median-3 peak-RSS, F1}.
-# Datasets: human chr22, human chr14 (GIAB real); E. coli (planted variants). Tech: HiFi/ONT/CLR.
+# Datasets: human chr22, human chr14 (GIAB HG002). Tech: HiFi/ONT.
 # Configs: mm2 (stock), geo, mm2-fast, mm2-fast+geo. F1 via clair3 + rtg vcfeval.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
@@ -32,7 +32,6 @@ timrss(){ local cmd; cmd="$(alncmd "$1" "$2" "$3" "$4")"; local t=() r=()
 DS=(
  "chr22|chr22_named.fa|chr22_cm.fa|CM000684.2|truth_chr22.vcf.gz|conf_chr22.bed|ref_chr22_sdf|chr22"
  "chr14|ref_chr14.fa|ref_chr14.fa|CM000676.2|truth_chr14.vcf.gz|conf_chr14.bed|ref_chr14_sdf|NONE"
- "ecoli|$ECOLIREF|$ECOLIREF|NC_000913.3|ecoli_bench/truth_ecoli.vcf.gz|NONE|ecoli_bench/ecoli_sdf|NONE"
 )
 # tech per dataset: dsname:techname:preset:reads:model:platform  (model NONE=>no F1)
 TECH=(
@@ -40,9 +39,6 @@ TECH=(
  "chr22:ONT:map-ont:ont_r10_chr22.fq:$M_ONT:ont"
  "chr14:HiFi:map-hifi:hifi_chr14.fq:$M_HIFI:hifi"
  "chr14:ONT:map-ont:ont_r10_chr14.fq:$M_ONT:ont"
- "ecoli:HiFi:map-hifi:ecoli_bench/hifi.fq:$M_HIFI:hifi"
- "ecoli:ONT:map-ont:ecoli_bench/ont.fq:$M_EC_ONT:ont"
- "ecoli:CLR:map-pb:ecoli_bench/clr.fq:NONE:none"
 )
 
 echo "### PART A — TIME + PEAK-MEM (median of 3), all 4 configs" | tee -a $TRES

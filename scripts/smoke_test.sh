@@ -6,7 +6,8 @@
 #   1. the mm2-geo binary ($MM2GEO) runs;
 #   2. MM2_GEO=0 (stock) and MM2_GEO=1 (geo) both produce valid, non-empty alignments;
 #   3. samtools reads the output;
-#   4. the geometric band is actually engaged under MM2_GEO=1 (MM2_GEO_STATS).
+#   4. the geometric band is actually engaged under MM2_GEO=1 (MM2_GEO_STATS);
+#   5. the certified mode (MM2_GEO=1 MM2_GEO_CERT=1) reproduces the stock output exactly.
 # It does NOT check accuracy — only that your build + tools + config are wired correctly.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
@@ -55,6 +56,11 @@ n1=$("$SAMTOOLS" view -c -F0x904 "$T/geo.sam" 2>/dev/null || echo 0)
 # --- 3) geometric band actually engaged ---
 stats=$(MM2_GEO=1 MM2_GEO_STATS=1 "$MM2GEO" -ax map-hifi -t1 "$T/ref.fa" "$T/reads.fq" 2>&1 >/dev/null | grep -c "MM2_GEO_STATS\|MM2_GEO_CELLS")
 [ "${stats:-0}" -ge 1 ] && ok "geometric band engaged under MM2_GEO=1 (diagnostics printed)" || bad "MM2_GEO_STATS produced no diagnostics"
+
+# --- 4) certified mode == stock (SAM records, @PG excluded) ---
+MM2_GEO=1 MM2_GEO_CERT=1 "$MM2GEO" -ax map-hifi -t4 "$T/ref.fa" "$T/reads.fq" 2>/dev/null > "$T/cert.sam"
+if cmp -s <(grep -v '^@PG' "$T/stock.sam") <(grep -v '^@PG' "$T/cert.sam"); then ok "certified mode output identical to stock"
+else bad "certified mode output differs from stock (is \$MM2GEO built from tag revision-2026?)"; fi
 
 rm -rf "$T"
 echo

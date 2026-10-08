@@ -4,8 +4,13 @@ HUMAN — GIAB HG002 (NA24385)
   PacBio HiFi   : GIAB HG002 CCS 15/20 kb chem-2 alignment
                   HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam   (NCBI GIAB FTP)
   ONT R10.4.1   : ONT Open Data GIAB 2023.05 HG002 super-accuracy       PAO83395.pass.cram
+                  https://ont-open-data.s3.amazonaws.com/giab_2023.05/analysis/hg002/sup/PAO83395.pass.cram
+                  (encoded against GRCh38 no-alt analysis set: GCA_000001405.15_GRCh38_no_alt_analysis_set.fna)
+  ONT R9.4.1    : GIAB HG002 ultra-long (2017, Guppy 3.2.4), only for the 3x genome-wide R9.4.1 rows
   PacBio CLR    : GIAB HG002 PacBio CLR, PacBio_MtSinai_NIST            HG002_PacBio_GRCh38.bam
-  reference     : GRCh38 (small-variant/concordance), GRCh37 (structural variants)
+  reference     : GRCh38 GenBank GCA_000001405.15 (CM* names), GRCh37 chr22 (Ensembl 110, SVs)
+  stratifications: GIAB v3.3 GRCh38 segdups, AllTandemRepeatsandHomopolymers_slop5, lowmappabilityall
+  simulated     : pbsim3 v3.0, errhmm SEQUEL model, chr22, depth 5, mean length 15 kb, seed 2024
   chr subsets   : chr22 = CM000684.2, chr14 = CM000676.2 (region-sliced; commands in scripts/)
   small-var truth: GIAB HG002 GRCh38 benchmark VCF + high-confidence BED (Zook et al. 2019)
   SV truth      : GIAB HG002 SV Tier1 v0.6 (GRCh37): HG002_SVs_Tier1_v0.6.vcf.gz + BED (Zook et al. 2020)
@@ -20,4 +25,6 @@ BACTERIAL — E. coli
                   -> data/ecoli_ref_mut.fa + data/ecoli_spikein_truth.vcf.gz
 
 TOOL
-  mm2-geo source + geo.patch : https://github.com/genpat-it/mm2-geo  (tag submission-2026)
+  mm2-geo source : https://github.com/genpat-it/mm2-geo  (tags revision-2026 and submission-2026)
+  patches        : geo.patch (minimap2 v2.30), geo_mm2fast.patch (mm2-fast 14fe36c), instrumentation.patch (analysis only)
+  stock minimap2 : https://github.com/lh3/minimap2 tag v2.30 (2.30-r1287)
