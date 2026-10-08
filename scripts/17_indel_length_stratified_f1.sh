@@ -43,4 +43,4 @@ done
 
 echo "### DONE-STRAT" | tee -a $R
 echo | tee -a $R
-python3 "$(dirname "$0")/17_stratify_indel.py" strat | tee -a $R
+python3 "$SCRIPTS/17_stratify_indel.py" strat | tee -a $R

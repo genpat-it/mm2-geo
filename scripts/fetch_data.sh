@@ -78,13 +78,13 @@ slice "$CLR_BAM_URL"  chr14 clr_chr14.fq
 # ---------- genome-wide 0.57x HiFi subset (read-name manifest, used by scripts 11/12/26) ----------
 if [ ! -s "$GW_READS" ]; then
   log "genome-wide subset from the read-name manifest (streams the full HiFi BAM once)"
-  MAN="$(dirname "$0")/../data/genomewide_readnames.txt"
+  MAN="$REPO/data/genomewide_readnames.txt"
   $S view -@8 -b -F 0x900 -N "$MAN" "$HIFI_BAM_URL" | $S fastq -@8 - > "$GW_READS.part" && mv "$GW_READS.part" "$GW_READS"
 fi
 
 # ---------- E. coli: real ONT isolate (ENA SRR9900640), K-12 MG1655 reference, spike-in artifacts ----------
 # (scripts 06, 15, 16). The spike-in reference/truth and the strain assembly they derive from are in data/.
-DATA="$(cd "$(dirname "$0")/../data" && pwd)"
+DATA="$REPO/data"
 mkdir -p ecoli_real2/flye ecoli_vc
 if [ ! -s ecoli_real2/SRR9900640.fastq ]; then
   get https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR990/000/SRR9900640/SRR9900640_1.fastq.gz ecoli_real2/SRR9900640_1.fastq.gz

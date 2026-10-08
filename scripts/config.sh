@@ -4,6 +4,9 @@
 # overridden from the environment (e.g. `WORKDIR=/data bash 01_benchmark_grid.sh`).
 # Nothing below changes the analysis — only where inputs, tools and the binary are found.
 
+# Absolute paths of this repository (resolved here, before any script changes directory).
+SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; REPO="$(dirname "$SCRIPTS")"
+
 # ---------------------------------------------------------------------------
 # 1) Working directory: where the reference/reads/truth artifacts live.
 #    `bash scripts/fetch_data.sh` downloads and prepares every input here (chr22_named.fa,

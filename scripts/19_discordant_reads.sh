@@ -4,6 +4,6 @@
 # Reuses the PAF files written by 18_gap_rounds_dE.sh.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"
-H="$(cd "$(dirname "$0")" && pwd)"
+H="$SCRIPTS"
 [ -s results/gaplog/hifi_geo0.paf ] || { echo "run 18_gap_rounds_dE.sh first"; exit 1; }
 python3 "$H/19_discord_stats.py" results/gaplog strat conf_chr22.bed | tee results/discordant_reads.txt

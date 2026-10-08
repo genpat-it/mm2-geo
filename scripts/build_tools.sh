@@ -9,7 +9,7 @@
 # scripts/smoke_test.sh checks the build; scripts/00_verify_output_identity.sh checks output identity.
 set -euo pipefail
 source "$(dirname "$0")/config.sh"
-HERE="$(cd "$(dirname "$0")/.." && pwd)"
+HERE="$REPO"
 mkdir -p "$BIN/src"; cd "$BIN/src"
 log(){ echo "[build $(date +%T)] $*"; }
 REPO=https://github.com/genpat-it/mm2-geo

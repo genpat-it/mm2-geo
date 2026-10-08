@@ -16,7 +16,7 @@ R=hifi_bench/results_ADVERSARIAL.txt; : > $R
 med(){ printf '%s\n' "$@"|sort -n|awk '{a[NR]=$1}END{print a[int((NR+1)/2)]}'; }
 
 echo ">> [1] plant dense indels" | tee -a $R
-ADV_SEED=77 python3 make_adversarial.py | tee -a $R
+ADV_SEED=77 python3 "$SCRIPTS/make_adversarial.py" | tee -a $R
 $BGZIP -f $D/truth_adv.vcf; $TABIX -f -p vcf $D/truth_adv.vcf.gz
 
 echo ">> [2] build adversarial sample genome (bcftools consensus)" | tee -a $R
