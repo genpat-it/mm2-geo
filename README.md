@@ -98,10 +98,10 @@ file → table map); a re-run writes the same files into `$WORKDIR`.
 `ACCESSIONS.txt`): GRCh38 (GenBank `GCA_000001405.15`), the GRCh38 no-alt analysis set (to decode the ONT
 CRAM locally), GRCh37 chr22, GIAB v4.2.1 small-variant truth, GIAB SV Tier1 v0.6, GIAB v3.3
 stratifications, chr22/chr14 slices of the GIAB HG002 HiFi, ONT R10.4.1 and CLR alignments (streamed),
-the 0.57× genome-wide subset (138,688 reads; read-name manifest in `data/`), the *E. coli* ONT isolate
+the genome-wide HiFi set (one complete SMRT Cell of the GIAB HG002 CCS 15 kb data, 138,688 reads, ~0.57×, md5-checked), the *E. coli* ONT isolate
 (ENA `SRR9900640`, md5-checked) and K-12 MG1655 reference (`NC_000913.3`), pbsim3 reads simulated from
 chr22 (seed 2024), and, with `genomewide`, the complete HiFi BAM and ONT CRAM. Small artifacts are in
-`data/` (*E. coli* strain assembly, spike-in reference and truth, genome-wide read-name manifest; md5 in
+`data/` (*E. coli* strain assembly, spike-in reference and truth; md5 in
 `CHECKSUMS.md5`). The tool patches (`geo.patch` for minimap2 v2.30, `geo_mm2fast.patch` for mm2-fast) are
 taken by `build_tools.sh` from the tool tag, so there is a single copy of each.
 

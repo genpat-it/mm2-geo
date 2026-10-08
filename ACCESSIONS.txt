@@ -14,8 +14,9 @@ HUMAN — GIAB HG002 (NA24385)
   chr subsets   : chr22 = CM000684.2, chr14 = CM000676.2 (region-sliced; commands in scripts/)
   small-var truth: GIAB HG002 GRCh38 benchmark VCF + high-confidence BED (Zook et al. 2019)
   SV truth      : GIAB HG002 SV Tier1 v0.6 (GRCh37): HG002_SVs_Tier1_v0.6.vcf.gz + BED (Zook et al. 2020)
-  genome-wide   : whole-genome random subset of the same GIAB HG002 PacBio CCS data
-                  (138,688 reads; read-name manifest in data/genomewide_readnames.txt)
+  genome-wide   : one complete SMRT Cell of the GIAB HG002 PacBio CCS 15 kb data (Wenger et al. 2019),
+                  PacBio_CCS_15kb/m54238_180901_011437.Q20.fastq (NCBI GIAB FTP; md5 aee0290a80436b0b7f1f598be70efcbe;
+                  138,688 reads, ~0.57x), aligned unsliced to the whole GRCh38
 
 BACTERIAL — E. coli
   reads         : ENA SRR9900640 (real Oxford Nanopore isolate)

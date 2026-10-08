@@ -75,11 +75,11 @@ slice "$ONT_CRAM_URL" chr14 ont_r10_chr14.fq
 slice "$CLR_BAM_URL"  chr22 clr_chr22.fq
 slice "$CLR_BAM_URL"  chr14 clr_chr14.fq
 
-# ---------- genome-wide 0.57x HiFi subset (read-name manifest, used by scripts 11/12/26) ----------
+# ---------- genome-wide HiFi set: one complete SMRT Cell of the GIAB HG002 CCS 15 kb data (138,688 reads, ~0.57x),
+# used unsliced against the whole GRCh38 (scripts 11, 12, 25, 26) ----------
 if [ ! -s "$GW_READS" ]; then
-  log "genome-wide subset from the read-name manifest (streams the full HiFi BAM once)"
-  MAN="$REPO/data/genomewide_readnames.txt"
-  $S view -@8 -b -F 0x900 -N "$MAN" "$HIFI_BAM_URL" | $S fastq -@8 - > "$GW_READS.part" && mv "$GW_READS.part" "$GW_READS"
+  get $GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb/m54238_180901_011437.Q20.fastq "$GW_READS.dl"
+  echo "aee0290a80436b0b7f1f598be70efcbe  $GW_READS.dl" | md5sum -c --quiet && mv "$GW_READS.dl" "$GW_READS"
 fi
 
 # ---------- E. coli: real ONT isolate (ENA SRR9900640), K-12 MG1655 reference, spike-in artifacts ----------

@@ -67,7 +67,7 @@ MODEL_BACT="${MODEL_BACT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v430_bacteria_fine
 ECOLI_REF="${ECOLI_REF:-$WORKDIR/ecoli_MG1655.fna}"
 # Full GRCh38 + genome-wide HG002 HiFi subset (scripts 11/12).
 GRCH38_REF="${GRCH38_REF:-$WORKDIR/GRCh38.fa}"
-GW_READS="${GW_READS:-$WORKDIR/hifi_genomewide_subset.fq}"   # 138,688 reads, data/genomewide_readnames.txt
+GW_READS="${GW_READS:-$WORKDIR/hifi_genomewide_subset.fq}"   # GIAB HG002 CCS 15 kb, m54238_180901_011437.Q20.fastq
 # Complete GIAB HG002 data sets for the genome-wide benchmarks (fetched by `fetch_data.sh genomewide`).
 HG002_HIFI_BAM="${HG002_HIFI_BAM:-$WORKDIR/HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam}"
 HG002_ONT_CRAM="${HG002_ONT_CRAM:-$WORKDIR/PAO83395.pass.cram}"
