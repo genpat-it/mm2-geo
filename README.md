@@ -70,7 +70,9 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
   but can accept lower-scoring alignments in repetitive sequence; use the
   certified mode for structural-variant or repeat analyses and validated pipelines.
 - Complementary to SIMD acceleration: a port to
-  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) is provided (`geo_mm2fast.patch`).
+  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) is provided (`geo_mm2fast.patch`):
+  on chr22 its certified mode is byte-identical to mm2-fast and 1.16× (HiFi), 1.08× (ONT)
+  and 1.10× (CLR) faster than it; the heuristic mode 1.22×, 1.18× and 1.34×.
 - Short reads (Illumina, `-ax sr`) use minimap2's ungapped path and are
   unaffected.
 
@@ -96,8 +98,11 @@ identity): its boundary-contact test can accept a lower-scoring path when a
 band-leaving insertion–deletion detour is replaced by mismatches, which happens
 mostly in repetitive sequence. The **certified mode** replaces that test with a
 score bound and reproduces minimap2's output; its guarantee is relative to
-minimap2, whose own band, z-drop and chaining remain heuristics, and equal-score
-alternatives (ties) can in rare cases be reported differently.
+minimap2, whose own band, z-drop and chaining remain heuristics. In rare cases the
+output differs: equal-score alternatives (ties) can be reported differently, and
+where minimap2's band misses the best gap alignment the certified mode returns a
+higher-scoring one (12 of 13.7 million reads in the paper's genome-wide runs: nine
+ties, three higher-scoring alignments).
 
 Versions: tag `submission-2026` = heuristic mode only; tag `revision-2026` = heuristic and
 certified modes (the heuristic mode is unchanged).

@@ -1,8 +1,8 @@
 diff --git a/align.c b/align.c
-index d7588a9..e519a71 100644
+index d7588a9..f6117c5 100644
 --- a/align.c
 +++ b/align.c
-@@ -667,6 +667,27 @@ static void mm_fix_bad_ends_splice(void *km, const mm_mapopt_t *opt, const mm_id
+@@ -667,6 +667,75 @@ static void mm_fix_bad_ends_splice(void *km, const mm_mapopt_t *opt, const mm_id
  	}
  }
  
@@ -26,11 +26,59 @@ index d7588a9..e519a71 100644
 +	while (hi - lo > 1) { int mid = lo + (hi - lo) / 2; if (mm_geo_cert_ub(o, ql, tl, mid, d) <= s) hi = mid; else lo = mid; }
 +	return hi;
 +}
++// exact one-gap shortcut and score-only first pass, identical to the minimap2 v2.30 patch (geo.patch)
++static int mm_geo_cert_scoreprobe(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_SCOREPROBE"); v=(e&&*e)?atoi(e):256; if(v<0)v=0;} return v; }
++static int mm_geo_onegap(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_ONEGAP"); v=(e&&*e&&atoi(e))?1:0; if(mm_geo_cert()) v=1;} return v; }
++static int mm_geo_try_onegap(void *km, const mm_mapopt_t *o, const int8_t *mat, int ql, const uint8_t *qs, int tl, const uint8_t *ts, ksw_extz_t *ez)
++{
++	int d = ql > tl? ql - tl : tl - ql, n = ql < tl? ql : tl;
++	int p, best_p = 0, sc = 0, best = KSW_NEG_INF, op, k;
++	long long ub;
++	if (d > 32 || n <= 0) return 0;
++	if (d == 0) {
++		for (k = 0; k < n; ++k) sc += mat[qs[k] * 5 + ts[k]];
++		best = sc;
++		ub = (long long)o->a * (n - 1) - 2LL * mm_geo_gcost(o, 1);
++		op = -1;
++	} else if (ql > tl) {
++		for (k = 0; k < n; ++k) sc += mat[qs[k+d] * 5 + ts[k]];
++		sc -= mm_geo_gcost(o, d); best = sc;
++		for (p = 0; p < n; ++p) {
++			sc += mat[qs[p] * 5 + ts[p]] - mat[qs[p+d] * 5 + ts[p]];
++			if (sc > best) best = sc, best_p = p + 1;
++		}
++		op = MM_CIGAR_INS;
++		ub = (long long)o->a * (n - 1) - mm_geo_gcost(o, d + 1) - mm_geo_gcost(o, 1);
++	} else {
++		for (k = 0; k < n; ++k) sc += mat[qs[k] * 5 + ts[k+d]];
++		sc -= mm_geo_gcost(o, d); best = sc;
++		for (p = 0; p < n; ++p) {
++			sc += mat[qs[p] * 5 + ts[p]] - mat[qs[p] * 5 + ts[p+d]];
++			if (sc > best) best = sc, best_p = p + 1;
++		}
++		op = MM_CIGAR_DEL;
++		ub = (long long)o->a * (n - 1) - mm_geo_gcost(o, d + 1) - mm_geo_gcost(o, 1);
++	}
++	if (d >= 2) { // two same-type runs summing to d
++		int split_cost = 0x7fffffff;
++		for (k = 1; k < d; ++k) { int c = mm_geo_gcost(o, k) + mm_geo_gcost(o, d - k); if (c < split_cost) split_cost = c; }
++		if ((long long)o->a * n - split_cost > ub) ub = (long long)o->a * n - split_cost;
++	}
++	if ((long long)best <= ub) return 0;
++	ksw_reset_extz(ez); ez->score = best;
++	if (d == 0) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, n);
++	else {
++		if (best_p > 0) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, best_p);
++		ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, op, d);
++		if (best_p < n) ez->cigar = ksw_push_cigar(km, &ez->n_cigar, &ez->m_cigar, ez->cigar, MM_CIGAR_MATCH, n - best_p);
++	}
++	return 1;
++}
 +
  static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int qlen, uint8_t *qseq0[2], mm_reg1_t *r, mm_reg1_t *r2, int n_a, mm128_t *a, ksw_extz_t *ez, int splice_flag)
  {
  	int is_sr = !!(opt->flag & MM_F_SR), is_splice = !!(opt->flag & MM_F_SPLICE);
-@@ -838,7 +859,31 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
+@@ -838,7 +907,46 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int
  				mm_idx_getseq(mi, rid, rs, re, tseq);
  			}
  			mm_idx_bed_junc(mi, rid, rs, re, junc);
@@ -39,9 +87,24 @@ index d7588a9..e519a71 100644
 +					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb;
 +					if (dd < 0) dd = -dd;
 +					gb = dd + mm_geo_margin();
++					if (gb < 1) gb = 1;
 +					if (gb > full_bw) gb = full_bw;
++					const int geo_cert = mm_geo_cert(), geo_probe = geo_cert? mm_geo_cert_scoreprobe() : 0;
++					int natt = 0, scoreprobed = 0;
 +					for (;;) {
++						if (natt == 0 && mm_geo_onegap() && mm_geo_try_onegap(km, opt, mat, qe - qs, qseq, re - rs, tseq, ez)) break; // exact <=1-gap shortcut
++						if (geo_cert && !scoreprobed && geo_probe > 0 && (qe - qs >= geo_probe || re - rs >= geo_probe)) { // score-only first pass
++							mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, extra_flag|KSW_EZ_APPROX_MAX|KSW_EZ_SCORE_ONLY, ez);
++							++natt; scoreprobed = 1;
++							if (gb < full_bw) {
++								if (ez->zdropped || ez->score <= KSW_NEG_INF / 2) gb = full_bw;
++								else if ((long long)ez->score < mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd))
++									gb = mm_geo_cert_band(opt, qe - qs, re - rs, dd, ez->score, gb, full_bw);
++							}
++							continue;
++						}
 +						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, gb, -1, opt->zdrop, extra_flag|KSW_EZ_APPROX_MAX, ez);
++						++natt;
 +						if (gb >= full_bw) break;
 +						int e = 0, mx = 0, c;
 +						for (c = 0; c < ez->n_cigar; ++c) {
@@ -50,7 +113,7 @@ index d7588a9..e519a71 100644
 +							if (e > mx) mx = e;
 +							if (-e > mx) mx = -e;
 +						}
-+						if (!mm_geo_cert()) {
++						if (!geo_cert) {
 +							if (mx < gb) break;
 +							gb <<= 1; if (gb > full_bw) gb = full_bw;
 +						} else {
