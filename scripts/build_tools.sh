@@ -14,7 +14,7 @@ mkdir -p "$BIN/src"; cd "$BIN/src"
 log(){ echo "[build $(date +%T)] $*"; }
 REPO=https://github.com/genpat-it/mm2-geo
 [ -d mm2-geo ] || git clone -q "$REPO" mm2-geo
-git -C mm2-geo fetch -q --tags origin
+git -C mm2-geo fetch -q --tags --force origin
 
 build_tag(){ # $1=tag $2=output name $3=extra make args (optional) $4=patch to apply (optional)
   local d="$BIN/src/build_$2"
