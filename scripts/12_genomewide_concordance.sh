@@ -26,5 +26,5 @@ awk -v a=$nmm2 -v b=$ngeo -F'\t' '
 END{printf "primary shared %d (mm2 %d, geo %d)\n",sh,a,b
  printf "same contig %.2f%%  same strand %.2f%%  same POS %.2f%%  same placement(contig+strand+POS) %.2f%%\n",100*sc/sh,100*sst/sh,100*sp/sh,100*place/sh
  printf "same MAPQ %.2f%%  CIGARid %.2f%%\n",100*mq/sh,100*cg/sh
- printf "diff contig %d  mm2-only %d  geo-only %d\n",sh-sc,a-sh,b-sh}' | tee -a $R
+ printf "diff contig %d  mm2-only %d  geo-only %d\n",sh-sc,a-sh,b-sh}' $D/j | tee -a $R
 rm -rf $D; echo "### DONE-WGCONCORD" | tee -a $R
