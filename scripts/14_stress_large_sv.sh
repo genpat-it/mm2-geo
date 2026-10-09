@@ -28,19 +28,24 @@ badread simulate --seed 77 --reference $D/sample_sv.fa --quantity 15x --length 1
    --identity 99.5,100,1 --junk_reads 0 --random_reads 0 --chimeras 0 > $D/sv.fq 2>/dev/null
 echo "   reads: $(($(wc -l < $D/sv.fq)/4))" | tee -a $R
 
-echo ">> [4] alignment time (index build included), median of 3 (32t)" | tee -a $R
-for cfg in mm2 geo; do
-  gf=0; [ "$cfg" = geo ] && gf=1; t=()
+echo ">> [4] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)" | tee -a $R
+[ -s chr22.hifi.mmi ] || $MG -x map-hifi -d chr22.hifi.mmi chr22_named.fa >/dev/null 2>&1
+env_of(){ case $1 in mm2) echo "MM2_GEO=0";; geo) echo "MM2_GEO=1 MM2_GEO_MARGIN=20";; cert) echo "MM2_GEO=1 MM2_GEO_CERT=1";; esac; }
+for cfg in mm2 geo cert; do
+  t=()
   for i in 1 2 3; do
-    /usr/bin/time -f "%e" bash -c "MM2_GEO=$gf MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 chr22_named.fa $D/sv.fq >/dev/null 2>/dev/null" 2>$D/t.t
+    /usr/bin/time -f "%e" bash -c "$(env_of $cfg) $MG -ax map-hifi -t32 chr22.hifi.mmi $D/sv.fq >/dev/null 2>/dev/null" 2>$D/t.t
     t+=("$(cat $D/t.t)")
   done
   printf "   %-4s time median: %ss  (runs: %s)\n" "$cfg" "$(med "${t[@]}")" "${t[*]}" | tee -a $R
 done
 
-echo ">> [5] CIGAR concordance geo vs stock (accuracy proxy; clair3 can't score big indels)" | tee -a $R
-# primary alignments only (-F 0x900), name-sorted, compare CIGAR per shared read
-MM2_GEO=0 $MG -ax map-hifi -t32 chr22_named.fa $D/sv.fq 2>/dev/null | q "$SAMTOOLS" view -F 0x900 - | awk '{print $1"\t"$6}' | sort > $D/mm2.cig
-MM2_GEO=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 chr22_named.fa $D/sv.fq 2>/dev/null | q "$SAMTOOLS" view -F 0x900 - | awk '{print $1"\t"$6}' | sort > $D/geo.cig
-join -t$'\t' $D/mm2.cig $D/geo.cig | awk -F'\t' '{n++; if($2==$3)id++} END{printf "   shared primaries: %d  CIGAR-identical: %d (%.2f%%)\n", n, id, (n?100*id/n:0)}' | tee -a $R
+echo ">> [5] placement and CIGAR concordance vs stock, heuristic (geo) and certified (cert) (accuracy proxy; clair3 can't score big indels)" | tee -a $R
+# primary alignments only (-F 0x900): read, mapped flag, contig, strand, position, CIGAR; name-sorted
+ex(){ q "$SAMTOOLS" view -F 0x900 - | awk 'BEGIN{OFS="\t"}{print $1, (and($2,4)?"u":"m"), $3, (and($2,16)?"-":"+"), $4, $6}' | LC_ALL=C sort -t$'\t' -k1,1; }
+for cfg in mm2 geo cert; do env $(env_of $cfg) $MG -ax map-hifi -t32 chr22.hifi.mmi $D/sv.fq 2>/dev/null | ex > $D/$cfg.prim; done
+for cfg in geo cert; do
+  LC_ALL=C join -t$'\t' $D/mm2.prim $D/$cfg.prim | awk -F'\t' -v c=$cfg '{n++; if($2=="m")ma++; if($7=="m")mb++; if($2=="m" && $7=="m"){both++; if($3==$8 && $4==$9 && $5==$10)pl++; if($6==$11)id++}}
+    END{printf "   %-4s reads %d  mapped mm2/%s %d/%d  of reads mapped by both (%d): same placement (contig+strand+POS) %.2f%%, CIGAR-identical %.2f%%\n", c, n, c, ma, mb, both, 100*pl/both, 100*id/both}' | tee -a $R
+done
 echo "### DONE-ADVSV" | tee -a $R
