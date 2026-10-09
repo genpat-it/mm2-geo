@@ -1,0 +1,11 @@
+==== hifi ====
+hifi fixed-narrow                        SNV/INDEL 0.9961/0.9892
+hifi fixed-doubling                      SNV/INDEL 0.9963/0.9895
+hifi geometry-only                       SNV/INDEL 0.9958/0.9963
+hifi mm2-geo                             SNV/INDEL 0.9958/0.9961
+==== ont ====
+ont fixed-narrow                         SNV/INDEL 0.9837/0.7645
+ont fixed-doubling                       SNV/INDEL 0.9836/0.7661
+ont geometry-only                        SNV/INDEL 0.9952/0.8000
+ont mm2-geo                              SNV/INDEL 0.9951/0.8004
+### DONE-ABLF1

@@ -6,6 +6,13 @@ heuristic mode (`MM2_GEO=1`), `cert` the certified mode (`MM2_GEO=1 MM2_GEO_CERT
 minimap2 (`MM2_GEO` unset or 0). Timings are wall-clock seconds and peak RSS in kB (`/usr/bin/time`); `load=`
 is the 1-minute load average when each run started.
 
+## `cleanroom/` — re-run from a fresh clone
+
+Outputs of the numbered scripts (core data, scripts 00–23, 25, 26, 28, 29) run on a fresh clone of this branch with the
+conda environment from `environment.yml`, executables from `build_tools.sh` and inputs from `fetch_data.sh`;
+`status.tsv` lists each script's exit code and run time. Inputs were checked to be byte-identical to those of the
+paper; inputs and timing outputs of this run were on network storage, which slows the 32-thread runs that write the SAM to disk.
+
 ## `submission/` — first submission
 
 `results_*.txt` written by scripts 01–17 into `$WORKDIR/hifi_bench/` (Table 1, Table 3, Supplementary

@@ -1,0 +1,67 @@
+2026-10-09 02:44:53,794 [INFO] Truvari v5.4.0
+2026-10-09 02:44:53,794 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/ont_stock.sv.vcf.gz -c results/callset/ont_heuristic.sv.vcf.gz -o results/callset/sv_ont_heuristic --passonly
+2026-10-09 02:44:53,794 [INFO] Params:
+{
+    "base": "$WORKDIR/results/callset/ont_stock.sv.vcf.gz",
+    "comp": "$WORKDIR/results/callset/ont_heuristic.sv.vcf.gz",
+    "output": "results/callset/sv_ont_heuristic",
+    "includebed": null,
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "SAMPLE",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": true,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 02:44:53,907 [INFO] Zipped 1231 variants Counter({'base': 619, 'comp': 612})
+2026-10-09 02:44:53,907 [INFO] 500 chunks of 1231 variants Counter({'comp': 598, 'base': 587, '__filtered': 46})
+2026-10-09 02:44:54,105 [INFO] Stats: {
+    "TP-base": 556,
+    "TP-comp": 556,
+    "FP": 16,
+    "FN": 31,
+    "precision": 0.972027972027972,
+    "recall": 0.9471890971039182,
+    "f1": 0.9594477998274374,
+    "base cnt": 587,
+    "comp cnt": 572,
+    "TP-comp_TP-gt": 552,
+    "TP-comp_FP-gt": 4,
+    "TP-base_TP-gt": 552,
+    "TP-base_FP-gt": 4,
+    "gt_concordance": 0.9928057553956835,
+    "gt_matrix": {
+        "(0, 1)": {
+            "(0, 1)": 451,
+            "(1, 1)": 1
+        },
+        "(1, 1)": {
+            "(1, 1)": 101,
+            "(0, 1)": 3
+        }
+    }
+}
+2026-10-09 02:44:54,105 [INFO] Finished bench

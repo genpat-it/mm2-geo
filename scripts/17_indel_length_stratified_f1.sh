@@ -26,12 +26,12 @@ run(){ local tech=$1 preset=$2 reads=$3 mdl=$4 aln=$5 geo=$6   # aln: mm2|geo ; 
   MM2_GEO=$geo $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -T $TMPDIR/srt_$tag -o $W/b.bam -
   q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $W/b.bam > $W/b2.bam; mv $W/b2.bam $W/b.bam
   q "$SAMTOOLS" index $W/b.bam
-  conda activate "$CONDA_ENV_CLAIR3"; rm -rf $W/c3
+  conda_on "$CONDA_ENV_CLAIR3"; rm -rf $W/c3
   $C3 --bam_fn=$W/b.bam --ref_fn=$CR --threads=32 --platform=$tech --model_path=$mdl \
       --output=$W/c3 --ctg_name=$CT --bed_fn=$BD >$W/c3.log 2>&1
-  conda deactivate; conda activate "$CONDA_ENV_RTG"; rm -rf $W/ev
-  rtg vcfeval -b $TR -c $W/c3/merge_output.vcf.gz -t $SF -e $BD -o $W/ev >/dev/null 2>&1 || { echo "    $tag: rtg vcfeval FAILED (see $W/c3.log)" | tee -a $R; conda deactivate; return; }
-  conda deactivate
+  conda_off; conda_on "$CONDA_ENV_RTG"; rm -rf $W/ev
+  rtg vcfeval -b $TR -c $W/c3/merge_output.vcf.gz -t $SF -e $BD -o $W/ev >/dev/null 2>&1 || { echo "    $tag: rtg vcfeval FAILED (see $W/c3.log)" | tee -a $R; conda_off; return; }
+  conda_off
   echo "    eval retained: $W/ev (tp-baseline/fp/fn)" | tee -a $R
 }
 

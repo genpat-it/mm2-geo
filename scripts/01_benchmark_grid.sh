@@ -61,15 +61,15 @@ dobam(){ # $1 cfg $2 preset $3 alignref $4 reads $5 reheaderFrom $6 reheaderTo $
   "$SAMTOOLS" index -@8 $7 2>/dev/null; }
 f1row(){ # label bam clairref ctg model plat truth bed sdf
   local lab=$1 bam=$2 cref=$3 ctg=$4 mdl=$5 plat=$6 tr=$7 bd=$8 sf=$9
-  conda activate "$CONDA_ENV_CLAIR3"; rm -rf $S/c3
+  conda_on "$CONDA_ENV_CLAIR3"; rm -rf $S/c3
   local bedarg=""; [ "$bd" != "NONE" ] && bedarg="--bed_fn=$bd" || bedarg="--include_all_ctgs"
   $C3 --bam_fn=$bam --ref_fn=$cref --threads=32 --platform=$plat --model_path=$mdl --output=$S/c3 --ctg_name=$ctg $bedarg >$S/c3.log 2>&1
-  conda deactivate; conda activate "$CONDA_ENV_RTG"; rm -rf $S/ev
+  conda_off; conda_on "$CONDA_ENV_RTG"; rm -rf $S/ev
   local sqarg=""; [ "$bd" = "NONE" ] && sqarg="--squash-ploidy"
   local ebed=""; [ "$bd" != "NONE" ] && ebed="-e $bd"
-  rtg vcfeval -b $tr -c $S/c3/merge_output.vcf.gz -t $sf $ebed $sqarg -o $S/ev >/dev/null 2>&1 || { echo "  $lab FAIL"|tee -a $FRES; conda deactivate; return; }
+  rtg vcfeval -b $tr -c $S/c3/merge_output.vcf.gz -t $sf $ebed $sqarg -o $S/ev >/dev/null 2>&1 || { echo "  $lab FAIL"|tee -a $FRES; conda_off; return; }
   read ts ti < <(tc $S/ev/tp.vcf.gz); read fps fpi < <(tc $S/ev/fp.vcf.gz); read fns fni < <(tc $S/ev/fn.vcf.gz); read tbs tbi < <(tc $S/ev/tp-baseline.vcf.gz)
-  conda deactivate
+  conda_off
   awk -v ts=$ts -v ti=$ti -v fps=$fps -v fpi=$fpi -v fns=$fns -v fni=$fni -v tbs=$tbs -v tbi=$tbi -v l="$lab" \
    'function f(tp,fp,tb,fn, p,r){p=(tp+fp)?tp/(tp+fp):0;r=(tb+fn)?tb/(tb+fn):0;return sprintf("%.4f/%.4f/%.4f",p,r,(p+r)?2*p*r/(p+r):0)}
     BEGIN{printf "  %-22s SNV %-22s INDEL %-22s\n",l,f(ts,fps,tbs,fns),f(ti,fpi,tbi,fni)}' | tee -a $FRES; }

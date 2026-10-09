@@ -1,0 +1,15 @@
+== hifi
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes
+== ont
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes
+== clr
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes

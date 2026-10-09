@@ -1,0 +1,24 @@
+
+== hifi: shared primaries 154,618; CIGAR differs 817 (0.53%); lower AS 814 (0.53%); median dAS -160
+   AS loss <1%: 0.21% of reads
+   AS loss 1-5%: 0.18% of reads
+   AS loss >5%: 0.13% of reads
+   truncated or split: 0.034% of reads
+   all shared segdup=27.0%  lowmap=23.7%  TR/homopolymer=11.2%  outside high-confidence=24.8%
+   lower AS   segdup=42.3%  lowmap=34.2%  TR/homopolymer=19.8%  outside high-confidence=51.4%
+
+== ont: shared primaries 114,522; CIGAR differs 1,852 (1.62%); lower AS 1,782 (1.56%); median dAS -32
+   AS loss <1%: 1.00% of reads
+   AS loss 1-5%: 0.44% of reads
+   AS loss >5%: 0.12% of reads
+   truncated or split: 0.048% of reads
+   all shared segdup=20.7%  lowmap=17.2%  TR/homopolymer=15.6%  outside high-confidence=26.6%
+   lower AS   segdup=43.6%  lowmap=40.5%  TR/homopolymer=54.8%  outside high-confidence=76.0%
+
+== clr: shared primaries 250,504; CIGAR differs 2,516 (1.00%); lower AS 2,438 (0.97%); median dAS -48
+   AS loss <1%: 0.39% of reads
+   AS loss 1-5%: 0.33% of reads
+   AS loss >5%: 0.25% of reads
+   truncated or split: 0.015% of reads
+   all shared segdup=21.8%  lowmap=17.9%  TR/homopolymer=6.4%  outside high-confidence=20.3%
+   lower AS   segdup=43.1%  lowmap=32.8%  TR/homopolymer=36.3%  outside high-confidence=52.1%

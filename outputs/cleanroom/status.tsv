@@ -1,0 +1,37 @@
+[run 23:08:59] commit 7b9bdd6 ONT R10.4.1 genome-wide: outputs; script 27 keeps the PAFs and reports differing reads with scores
+00	00_verify_output_identity.sh	exit=0	17 min	23:26:27
+29	29_input_counts.sh	exit=0	17 min	23:43:49
+18	18_gap_rounds_dE.sh	exit=0	11 min	23:55:41
+19	19_discordant_reads.sh	exit=0	0 min	23:56:24
+20	20_simulated_truth.sh	exit=0	0 min	23:56:40
+23	23_modes_identity_timing.sh	exit=0	59 min	00:56:27
+26	26_dp_stage.sh	exit=0	16 min	01:12:43
+02	02_dp_cell_count.sh	exit=0	5 min	01:18:00
+03	03_ablation_cigar_identity.sh	exit=0	13 min	01:31:20
+05	05_alignment_concordance.sh	exit=0	5 min	01:36:42
+06	06_primary_presence.sh	exit=0	11 min	01:48:23
+16	16_ecoli_spikein_f1.sh	exit=0	18 min	02:06:38
+21	21_callset_diff.sh	exit=0	45 min	02:52:13
+22	22_sv_truth_grch37.sh	exit=0	14 min	03:07:08
+07	07_sv_calling.sh	exit=0	6 min	03:13:43
+01	01_benchmark_grid.sh	exit=0	113 min	05:07:40
+04	04_ablation_variant_f1.sh	exit=0	38 min	05:45:51
+09	09_margin_sweep.sh	exit=0	77 min	07:03:26
+17	17_indel_length_stratified_f1.sh	exit=0	18 min	07:21:58
+08	08_composition_mm2fast_f1.sh	exit=0	36 min	07:58:11
+10	10_thread_scaling.sh	exit=0	175 min	10:53:48
+11	11_genomewide_speed.sh	exit=0	6 min	11:00:42
+12	12_genomewide_concordance.sh	exit=0	2 min	11:03:22
+13	13_stress_dense_indels.sh	exit=0	58 min	12:01:29
+14	14_stress_large_sv.sh	exit=0	41 min	12:42:41
+25	25_speed_threads_builds.sh	exit=0	250 min	16:53:40
+28	28_mm2fast_modes.sh	exit=0	22 min	17:16:25
+[run 17:16:25] ALL_DONE
+[rerun 17:16:34] commit a27f700 Stress tests: pre-built index for timing, certified mode added, placement and CIGAR concordance over reads mapped by both
+12	12_genomewide_concordance.sh (rerun)	exit=0	2 min	17:19:05
+11	11_genomewide_speed.sh (rerun)	exit=0	8 min	17:27:26
+[rerun 17:27:26] RERUN_DONE
+[rerun2 17:27:28] commit a27f700 Stress tests: pre-built index for timing, certified mode added, placement and CIGAR concordance over reads mapped by both
+13	13_stress_dense_indels.sh (rerun)	exit=0	61 min	18:28:55
+14	14_stress_large_sv.sh (rerun)	exit=0	44 min	19:13:13
+[rerun2 19:13:13] RERUN2_DONE

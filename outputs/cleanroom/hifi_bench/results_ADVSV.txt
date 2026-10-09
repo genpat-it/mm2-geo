@@ -1,0 +1,16 @@
+>> [1] plant LARGE indels (300-1500bp)
+planted 13040 indels into chr22 (non-N region 10511000-50807467), L in [300,1500], step 3000
+>> [2] build large-SV sample (bcftools consensus)
+Note: applying IUPAC codes based on FORMAT/GT in sample SAMPLE
+Applied 13040 variants
+   sample bp: 50732505
+>> [3] simulate HiFi 15x
+   reads: 63485
+>> [4] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)
+   mm2  time median: 45.49s  (runs: 45.63 45.49 44.79)
+   geo  time median: 31.15s  (runs: 31.14 31.15 31.27)
+   cert time median: 39.65s  (runs: 39.65 39.73 39.21)
+>> [5] placement and CIGAR concordance vs stock, heuristic (geo) and certified (cert) (accuracy proxy; clair3 can't score big indels)
+   geo  reads 63485  mapped mm2/geo 49367/49367  of reads mapped by both (49367): same placement (contig+strand+POS) 76.11%, CIGAR-identical 69.21%
+   cert reads 63485  mapped mm2/cert 49367/49367  of reads mapped by both (49367): same placement (contig+strand+POS) 100.00%, CIGAR-identical 100.00%
+### DONE-ADVSV

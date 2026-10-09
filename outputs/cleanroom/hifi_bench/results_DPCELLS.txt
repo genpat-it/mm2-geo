@@ -1,0 +1,7 @@
+==== HiFi (full chr22) ====
+HiFi  mm2_cells=1721636376524  geo_cells=793163105741  rel=46.1%  reduction=2.17x
+  ### MM2_GEO_STATS gaps=10668727 first_pass=99.85% mean_attempts=1.002 reach_max=0.00% binit_median=20 binit_p90=22 bfinal_median=20 bfinal_p90=22
+==== ONT (full chr22) ====
+ONT  mm2_cells=2322071274416  geo_cells=1045713711500  rel=45.0%  reduction=2.22x
+  ### MM2_GEO_STATS gaps=10800162 first_pass=99.90% mean_attempts=1.001 reach_max=0.00% binit_median=21 binit_p90=26 bfinal_median=21 bfinal_p90=26
+### MECHDEF-DONE

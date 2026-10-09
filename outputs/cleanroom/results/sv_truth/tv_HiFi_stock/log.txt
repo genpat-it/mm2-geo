@@ -1,0 +1,71 @@
+2026-10-09 02:53:46,157 [INFO] Truvari v5.4.0
+2026-10-09 02:53:46,157 [INFO] Command <cleanroom>/env/bin/truvari bench -b sv/truth_22.vcf.gz -c results/sv_truth/HiFi_stock.vcf.gz --includebed sv/tier1_22.bed -o results/sv_truth/tv_HiFi_stock
+2026-10-09 02:53:46,157 [INFO] Params:
+{
+    "base": "$WORKDIR/sv/truth_22.vcf.gz",
+    "comp": "$WORKDIR/results/sv_truth/HiFi_stock.vcf.gz",
+    "output": "results/sv_truth/tv_HiFi_stock",
+    "includebed": "$WORKDIR/sv/tier1_22.bed",
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "HG002",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": false,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 02:53:46,181 [INFO] Including 610 bed regions
+2026-10-09 02:53:46,361 [INFO] Zipped 583 variants Counter({'base': 380, 'comp': 203})
+2026-10-09 02:53:46,361 [INFO] 255 chunks of 583 variants Counter({'base': 273, 'comp': 203, '__filtered': 107})
+2026-10-09 02:53:46,654 [INFO] Stats: {
+    "TP-base": 180,
+    "TP-comp": 180,
+    "FP": 20,
+    "FN": 93,
+    "precision": 0.9,
+    "recall": 0.6593406593406593,
+    "f1": 0.7610993657505285,
+    "base cnt": 273,
+    "comp cnt": 200,
+    "TP-comp_TP-gt": 165,
+    "TP-comp_FP-gt": 15,
+    "TP-base_TP-gt": 165,
+    "TP-base_FP-gt": 15,
+    "gt_concordance": 0.9166666666666666,
+    "gt_matrix": {
+        "(1, 1)": {
+            "(0, 1)": 10,
+            "(1, 1)": 75
+        },
+        "(0, 1)": {
+            "(0, 1)": 90,
+            "(1, 1)": 4
+        },
+        "(None, None)": {
+            "(0, 1)": 1
+        }
+    }
+}
+2026-10-09 02:53:46,654 [INFO] Finished bench

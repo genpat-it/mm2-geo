@@ -30,7 +30,7 @@ echo "   reads: $(($(wc -l < $D/adv.fq)/4))" | tee -a $R
 
 echo ">> [4] index ref + build SDF" | tee -a $R
 q "$SAMTOOLS" faidx chr22_named.fa
-conda activate "$CONDA_ENV_RTG"; rm -rf $D/sdf; rtg format -o $D/sdf chr22_named.fa >/dev/null 2>&1; conda deactivate
+conda_on "$CONDA_ENV_RTG"; rm -rf $D/sdf; rtg format -o $D/sdf chr22_named.fa >/dev/null 2>&1; conda_off
 
 echo ">> [5] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)" | tee -a $R
 [ -s chr22.hifi.mmi ] || $MG -x map-hifi -d chr22.hifi.mmi chr22_named.fa >/dev/null 2>&1
@@ -50,13 +50,13 @@ for cfg in mm2 geo cert; do
   case $cfg in mm2) E="MM2_GEO=0";; geo) E="MM2_GEO=1 MM2_GEO_MARGIN=20";; cert) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
   env $E $MG -ax map-hifi -t32 chr22_named.fa $D/adv.fq 2>/dev/null | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
   q "$SAMTOOLS" index $D/b.bam
-  conda activate "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
+  conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
   $C3 --bam_fn=$D/b.bam --ref_fn=chr22_named.fa --threads=32 --platform=hifi --model_path=$M_HIFI --output=$D/c3 --ctg_name=chr22 --include_all_ctgs --enable_long_indel >$D/c3.log 2>&1
-  conda deactivate; conda activate "$CONDA_ENV_RTG"; rm -rf $D/ev
+  conda_off; conda_on "$CONDA_ENV_RTG"; rm -rf $D/ev
   if ! rtg vcfeval -b $D/truth_adv.vcf.gz -c $D/c3/merge_output.vcf.gz -t $D/sdf --squash-ploidy -o $D/ev >/dev/null 2>&1; then
-    echo "   $cfg vcfeval FAIL" | tee -a $R; conda deactivate; continue; fi
+    echo "   $cfg vcfeval FAIL" | tee -a $R; conda_off; continue; fi
   read ts ti < <(tc $D/ev/tp.vcf.gz); read fps fpi < <(tc $D/ev/fp.vcf.gz); read fns fni < <(tc $D/ev/fn.vcf.gz); read tbs tbi < <(tc $D/ev/tp-baseline.vcf.gz)
-  conda deactivate
+  conda_off
   awk -v ts=$ts -v ti=$ti -v fps=$fps -v fpi=$fpi -v fns=$fns -v fni=$fni -v tbs=$tbs -v tbi=$tbi -v c="$cfg" \
    'function f(tp,fp,tb,fn, p,r){p=(tp+fp)?tp/(tp+fp):0;r=(tb+fn)?tb/(tb+fn):0;return sprintf("%.4f/%.4f/%.4f",p,r,(p+r)?2*p*r/(p+r):0)}
     BEGIN{printf "   %-4s SNV %-22s INDEL %-22s\n",c,f(ts,fps,tbs,fns),f(ti,fpi,tbi,fni)}' | tee -a $R

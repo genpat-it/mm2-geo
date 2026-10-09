@@ -1,0 +1,7 @@
+N50 12832
+reads 138688  bases 1780423685 (1.78 Gb)  mean_len 12837  approx_cov 0.57x (vs 3.1Gb)
+primary shared 137900 (mm2 137920, geo 137900)
+same contig 99.92%  same strand 99.96%  same POS 99.73%  same placement(contig+strand+POS) 99.73%
+same MAPQ 99.54%  CIGARid 99.29%
+diff contig 104  mm2-only 20  geo-only 0
+### DONE-WGCONCORD

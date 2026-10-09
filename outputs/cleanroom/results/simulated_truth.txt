@@ -1,0 +1,4 @@
+heuristic vs minimap2:
+differing reads 24; evaluated 24; bases at the true position: minimap2 356165 (81.82%), other 352861 (81.06%); closer to the truth: {'minimap2': 22, 'other': 1, 'tie': 1}
+certified vs minimap2:
+differing reads 0; evaluated 0; bases at the true position: minimap2 0 (0.00%), other 0 (0.00%); closer to the truth: {'minimap2': 0, 'other': 0, 'tie': 0}

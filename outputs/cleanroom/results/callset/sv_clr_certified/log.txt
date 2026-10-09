@@ -1,0 +1,65 @@
+2026-10-09 02:52:12,526 [INFO] Truvari v5.4.0
+2026-10-09 02:52:12,526 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/clr_stock.sv.vcf.gz -c results/callset/clr_certified.sv.vcf.gz -o results/callset/sv_clr_certified --passonly
+2026-10-09 02:52:12,526 [INFO] Params:
+{
+    "base": "$WORKDIR/results/callset/clr_stock.sv.vcf.gz",
+    "comp": "$WORKDIR/results/callset/clr_certified.sv.vcf.gz",
+    "output": "results/callset/sv_clr_certified",
+    "includebed": null,
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "SAMPLE",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": true,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 02:52:12,652 [INFO] Zipped 1038 variants Counter({'base': 519, 'comp': 519})
+2026-10-09 02:52:12,652 [INFO] 453 chunks of 1038 variants Counter({'comp': 514, 'base': 497, '__filtered': 27})
+2026-10-09 02:52:12,876 [INFO] Stats: {
+    "TP-base": 497,
+    "TP-comp": 497,
+    "FP": 0,
+    "FN": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "base cnt": 497,
+    "comp cnt": 497,
+    "TP-comp_TP-gt": 497,
+    "TP-comp_FP-gt": 0,
+    "TP-base_TP-gt": 497,
+    "TP-base_FP-gt": 0,
+    "gt_concordance": 1.0,
+    "gt_matrix": {
+        "(1, 1)": {
+            "(1, 1)": 90
+        },
+        "(0, 1)": {
+            "(0, 1)": 407
+        }
+    }
+}
+2026-10-09 02:52:12,876 [INFO] Finished bench

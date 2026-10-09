@@ -31,14 +31,14 @@ mrun(){ local tech=$1 preset=$2 reads=$3 mdl=$4
     if [ "$m" = 5 ] || [ "$m" = 20 ] || [ "$m" = 80 ]; then
       MM2_GEO=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
       q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $D/b.bam > $D/b2.bam; mv $D/b2.bam $D/b.bam; q "$SAMTOOLS" index $D/b.bam
-      conda activate "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
+      conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
       $C3 --bam_fn=$D/b.bam --ref_fn=$CR --threads=32 --platform=$tech --model_path=$mdl --output=$D/c3 --ctg_name=$CT --bed_fn=$BD >$D/c3.log 2>&1
-      conda deactivate; conda activate "$CONDA_ENV_RTG"; rm -rf $D/ev
+      conda_off; conda_on "$CONDA_ENV_RTG"; rm -rf $D/ev
       if rtg vcfeval -b $TR -c $D/c3/merge_output.vcf.gz -t $SF -e $BD -o $D/ev >/dev/null 2>&1; then
         read ts ti < <(tc $D/ev/tp.vcf.gz); read fps fpi < <(tc $D/ev/fp.vcf.gz); read fns fni < <(tc $D/ev/fn.vcf.gz); read tbs tbi < <(tc $D/ev/tp-baseline.vcf.gz)
         f1=$(awk -v ts=$ts -v ti=$ti -v fps=$fps -v fpi=$fpi -v fns=$fns -v fni=$fni -v tbs=$tbs -v tbi=$tbi 'function F(tp,fp,tb,fn, p,r){p=(tp+fp)?tp/(tp+fp):0;r=(tb+fn)?tb/(tb+fn):0;return (p+r)?2*p*r/(p+r):0} BEGIN{printf "%.4f/%.4f", F(ts,fps,tbs,fns), F(ti,fpi,tbi,fni)}')
       fi
-      conda deactivate
+      conda_off
     fi
     awk -v t=$tech -v m=$m -v tm="$(med "${t[@]}")" -v c=$cid -v f="$f1" 'BEGIN{printf "   %-4s m=%-3s time %ss  CIGARid %s%%  SNV/INDEL-F1 %s\n",t,m,tm,c,f}' | tee -a $R
   done

@@ -1,0 +1,68 @@
+2026-10-09 03:05:23,976 [INFO] Truvari v5.4.0
+2026-10-09 03:05:23,977 [INFO] Command <cleanroom>/env/bin/truvari bench -b sv/truth_22.vcf.gz -c results/sv_truth/CLR_heuristic.vcf.gz --includebed sv/tier1_22.bed -o results/sv_truth/tv_CLR_heuristic
+2026-10-09 03:05:23,977 [INFO] Params:
+{
+    "base": "$WORKDIR/sv/truth_22.vcf.gz",
+    "comp": "$WORKDIR/results/sv_truth/CLR_heuristic.vcf.gz",
+    "output": "results/sv_truth/tv_CLR_heuristic",
+    "includebed": "$WORKDIR/sv/tier1_22.bed",
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "HG002",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": false,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 03:05:24,060 [INFO] Including 610 bed regions
+2026-10-09 03:05:24,221 [INFO] Zipped 582 variants Counter({'base': 380, 'comp': 202})
+2026-10-09 03:05:24,222 [INFO] 255 chunks of 582 variants Counter({'base': 273, 'comp': 202, '__filtered': 107})
+2026-10-09 03:05:24,436 [INFO] Stats: {
+    "TP-base": 174,
+    "TP-comp": 174,
+    "FP": 28,
+    "FN": 99,
+    "precision": 0.8613861386138614,
+    "recall": 0.6373626373626373,
+    "f1": 0.7326315789473684,
+    "base cnt": 273,
+    "comp cnt": 202,
+    "TP-comp_TP-gt": 131,
+    "TP-comp_FP-gt": 43,
+    "TP-base_TP-gt": 131,
+    "TP-base_FP-gt": 43,
+    "gt_concordance": 0.7528735632183908,
+    "gt_matrix": {
+        "(1, 1)": {
+            "(1, 1)": 41,
+            "(0, 1)": 41
+        },
+        "(0, 1)": {
+            "(0, 1)": 90,
+            "(1, 1)": 2
+        }
+    }
+}
+2026-10-09 03:05:24,436 [INFO] Finished bench

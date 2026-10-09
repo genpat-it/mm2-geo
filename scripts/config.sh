@@ -56,6 +56,14 @@ CONDA_PROFILE="${CONDA_PROFILE:-$_CONDA_BASE/etc/profile.d/conda.sh}"
 CONDA_ENV_CLAIR3="${CONDA_ENV_CLAIR3:-${CONDA_PREFIX:-mm2-geo-repro}}"
 CONDA_ENV_RTG="${CONDA_ENV_RTG:-${CONDA_PREFIX:-mm2-geo-repro}}"
 CLAIR3="${CLAIR3:-run_clair3.sh}"   # resolves on PATH once CONDA_ENV_CLAIR3 is active
+# conda_on ENV / conda_off: switch to ENV for one tool and back. When ENV is already the active environment
+# (the default, a single environment from environment.yml) both are no-ops, so that a plain `conda deactivate`
+# can never drop the scripts into the base environment.
+conda_on(){ _CONDA_SWITCHED=0
+  case "$1" in "${CONDA_PREFIX:-}"|"${CONDA_DEFAULT_ENV:-}") return 0;; esac
+  type conda >/dev/null 2>&1 || source "$CONDA_PROFILE"
+  conda activate "$1" && _CONDA_SWITCHED=1; }
+conda_off(){ [ "${_CONDA_SWITCHED:-0}" = 1 ] && conda deactivate; _CONDA_SWITCHED=0; }
 
 # ---------------------------------------------------------------------------
 # 5) Clair3 model directories (shipped with the bioconda Clair3 package in <env>/bin/models).

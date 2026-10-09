@@ -1,0 +1,6 @@
+### WHOLE-GENOME speed (real genome-wide HG002 HiFi 138688 reads -> GRCh38 full), mm2 vs geo, 32t, one untimed warm-up run, then median of 3 interleaved runs
+   mm2  time 59.85s  RSS 24.8GB (median of 3)
+   geo  time 47.90s  RSS 22.9GB (median of 3)
+   primary alignments: mm2 138688, geo 138688
+   concordance (138688 shared): samePOS 99.71% sameMAPQ 99.53% CIGARid 99.28% NMid 98.74%
+### DONE-WG

@@ -1,0 +1,9 @@
+hifi  fixed-narrow     shared 155308 CIGARid 79.91%
+hifi  fixed-doubling   shared 155308 CIGARid 80.03%
+hifi  geometry-only    shared 155308 CIGARid 99.13%
+hifi  mm2-geo          shared 155308 CIGARid 99.35%
+ont   fixed-narrow     shared 114992 CIGARid 66.58%
+ont   fixed-doubling   shared 114992 CIGARid 66.93%
+ont   geometry-only    shared 114992 CIGARid 97.83%
+ont   mm2-geo          shared 114992 CIGARid 98.34%
+### DONE-ABLCIGAR

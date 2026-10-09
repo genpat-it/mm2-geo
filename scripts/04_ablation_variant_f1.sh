@@ -14,12 +14,12 @@ tc(){ zcat "$1" 2>/dev/null | awk '!/^#/{if(length($4)==1&&length($5)==1)s++;els
 f1(){ local tag=$1 tech=$2 preset=$3 reads=$4 mdl=$5 env=$6
   eval "MM2_GEO=1 $env $MG -ax $preset -t32 $AR $reads 2>/dev/null" | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
   q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $D/b.bam > $D/b2.bam; mv $D/b2.bam $D/b.bam; q "$SAMTOOLS" index $D/b.bam
-  conda activate "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
+  conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
   $C3 --bam_fn=$D/b.bam --ref_fn=$CR --threads=32 --platform=$tech --model_path=$mdl --output=$D/c3 --ctg_name=$CT --bed_fn=$BD >$D/c3.log 2>&1
-  conda deactivate; conda activate "$CONDA_ENV_RTG"; rm -rf $D/ev
-  rtg vcfeval -b $TR -c $D/c3/merge_output.vcf.gz -t $SF -e $BD -o $D/ev >/dev/null 2>&1 || { echo "$tag: rtg vcfeval FAILED (see $D/c3.log)" | tee -a $R; conda deactivate; return; }
+  conda_off; conda_on "$CONDA_ENV_RTG"; rm -rf $D/ev
+  rtg vcfeval -b $TR -c $D/c3/merge_output.vcf.gz -t $SF -e $BD -o $D/ev >/dev/null 2>&1 || { echo "$tag: rtg vcfeval FAILED (see $D/c3.log)" | tee -a $R; conda_off; return; }
   read ts ti < <(tc $D/ev/tp.vcf.gz); read fps fpi < <(tc $D/ev/fp.vcf.gz); read fns fni < <(tc $D/ev/fn.vcf.gz); read tbs tbi < <(tc $D/ev/tp-baseline.vcf.gz)
-  conda deactivate
+  conda_off
   awk -v t="$tag" -v ts=$ts -v ti=$ti -v fps=$fps -v fpi=$fpi -v fns=$fns -v fni=$fni -v tbs=$tbs -v tbi=$tbi 'function F(tp,fp,tb,fn,p,r){p=(tp+fp)?tp/(tp+fp):0;r=(tb+fn)?tb/(tb+fn):0;return (p+r)?2*p*r/(p+r):0}BEGIN{printf "%-40s SNV/INDEL %.4f/%.4f\n",t,F(ts,fps,tbs,fns),F(ti,fpi,tbi,fni)}' | tee -a $R
 }
 for TE in "hifi map-hifi hifi_chr22.fq $M_HIFI" "ont map-ont ont_r10_chr22.fq $M_ONT"; do

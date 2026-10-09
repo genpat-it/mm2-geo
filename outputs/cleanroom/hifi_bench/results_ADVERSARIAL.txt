@@ -1,0 +1,18 @@
+>> [1] plant dense indels
+planted 48947 indels into chr22 (non-N region 10511000-50807467), L in [10,60], step 800
+>> [2] build adversarial sample genome (bcftools consensus)
+Note: applying IUPAC codes based on FORMAT/GT in sample SAMPLE
+Applied 48947 variants
+   sample bp: 50821628
+>> [3] simulate HiFi 20x (badread)
+   reads: 84429
+>> [4] index ref + build SDF
+>> [5] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)
+   mm2  time median: 66.87s  (runs: 67.95 66.02 66.87)
+   geo  time median: 24.78s  (runs: 24.70 24.82 24.78)
+   cert time median: 31.66s  (runs: 31.66 31.82 31.51)
+>> [6] F1 (clair3 hifi + rtg vcfeval vs planted indels)
+   mm2  SNV 0.0000/0.0000/0.0000   INDEL 0.9976/0.9994/0.9985  
+   geo  SNV 0.0000/0.0000/0.0000   INDEL 0.9955/0.9991/0.9973  
+   cert SNV 0.0000/0.0000/0.0000   INDEL 0.9976/0.9994/0.9985  
+### DONE-ADV

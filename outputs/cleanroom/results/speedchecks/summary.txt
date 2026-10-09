@@ -1,0 +1,1 @@
+heuristic mode identical in submission-2026 and revision-2026 (chr22 HiFi): yes

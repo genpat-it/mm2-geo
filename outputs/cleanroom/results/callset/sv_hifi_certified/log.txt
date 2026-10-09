@@ -1,0 +1,65 @@
+2026-10-09 02:22:39,020 [INFO] Truvari v5.4.0
+2026-10-09 02:22:39,020 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/hifi_stock.sv.vcf.gz -c results/callset/hifi_certified.sv.vcf.gz -o results/callset/sv_hifi_certified --passonly
+2026-10-09 02:22:39,020 [INFO] Params:
+{
+    "base": "$WORKDIR/results/callset/hifi_stock.sv.vcf.gz",
+    "comp": "$WORKDIR/results/callset/hifi_certified.sv.vcf.gz",
+    "output": "results/callset/sv_hifi_certified",
+    "includebed": null,
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "SAMPLE",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": true,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 02:22:39,175 [INFO] Zipped 1414 variants Counter({'base': 707, 'comp': 707})
+2026-10-09 02:22:39,175 [INFO] 532 chunks of 1414 variants Counter({'comp': 699, 'base': 665, '__filtered': 50})
+2026-10-09 02:22:39,333 [INFO] Stats: {
+    "TP-base": 665,
+    "TP-comp": 665,
+    "FP": 0,
+    "FN": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "base cnt": 665,
+    "comp cnt": 665,
+    "TP-comp_TP-gt": 665,
+    "TP-comp_FP-gt": 0,
+    "TP-base_TP-gt": 665,
+    "TP-base_FP-gt": 0,
+    "gt_concordance": 1.0,
+    "gt_matrix": {
+        "(1, 1)": {
+            "(1, 1)": 165
+        },
+        "(0, 1)": {
+            "(0, 1)": 500
+        }
+    }
+}
+2026-10-09 02:22:39,333 [INFO] Finished bench

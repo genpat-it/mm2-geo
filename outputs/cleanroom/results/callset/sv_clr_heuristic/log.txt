@@ -1,0 +1,66 @@
+2026-10-09 02:52:11,495 [INFO] Truvari v5.4.0
+2026-10-09 02:52:11,495 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/clr_stock.sv.vcf.gz -c results/callset/clr_heuristic.sv.vcf.gz -o results/callset/sv_clr_heuristic --passonly
+2026-10-09 02:52:11,496 [INFO] Params:
+{
+    "base": "$WORKDIR/results/callset/clr_stock.sv.vcf.gz",
+    "comp": "$WORKDIR/results/callset/clr_heuristic.sv.vcf.gz",
+    "output": "results/callset/sv_clr_heuristic",
+    "includebed": null,
+    "extend": 0,
+    "debug": false,
+    "reference": null,
+    "refdist": 500,
+    "pctseq": 0.7,
+    "pctsize": 0.7,
+    "pctovl": 0.0,
+    "typeignore": false,
+    "no_roll": false,
+    "chunksize": 1000,
+    "bSample": "SAMPLE",
+    "cSample": "SAMPLE",
+    "dup_to_ins": false,
+    "bnddist": 100,
+    "sizemin": 50,
+    "sizefilt": 30,
+    "sizemax": 50000,
+    "passonly": true,
+    "no_ref": false,
+    "pick": "single",
+    "ignore_monref": true,
+    "check_multi": true,
+    "check_monref": true,
+    "no_single_bnd": true,
+    "write_resolved": false,
+    "decompose": true,
+    "short_circuit": false,
+    "skip_gt": false,
+    "max_resolve": 25000
+}
+2026-10-09 02:52:11,632 [INFO] Zipped 1030 variants Counter({'base': 519, 'comp': 511})
+2026-10-09 02:52:11,632 [INFO] 456 chunks of 1030 variants Counter({'comp': 503, 'base': 497, '__filtered': 30})
+2026-10-09 02:52:11,939 [INFO] Stats: {
+    "TP-base": 474,
+    "TP-comp": 474,
+    "FP": 13,
+    "FN": 23,
+    "precision": 0.973305954825462,
+    "recall": 0.9537223340040242,
+    "f1": 0.9634146341463415,
+    "base cnt": 497,
+    "comp cnt": 487,
+    "TP-comp_TP-gt": 469,
+    "TP-comp_FP-gt": 5,
+    "TP-base_TP-gt": 469,
+    "TP-base_FP-gt": 5,
+    "gt_concordance": 0.989451476793249,
+    "gt_matrix": {
+        "(1, 1)": {
+            "(1, 1)": 84,
+            "(0, 1)": 5
+        },
+        "(0, 1)": {
+            "(0, 1)": 385
+        }
+    }
+}
+2026-10-09 02:52:11,939 [INFO] Finished bench
