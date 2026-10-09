@@ -1,6 +1,6 @@
-2026-10-09 02:52:12,526 [INFO] Truvari v5.4.0
-2026-10-09 02:52:12,526 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/clr_stock.sv.vcf.gz -c results/callset/clr_certified.sv.vcf.gz -o results/callset/sv_clr_certified --passonly
-2026-10-09 02:52:12,526 [INFO] Params:
+2026-10-09 19:18:16,996 [INFO] Truvari v5.4.0
+2026-10-09 19:18:16,996 [INFO] Command <cleanroom>/env/bin/truvari bench -b results/callset/clr_stock.sv.vcf.gz -c results/callset/clr_certified.sv.vcf.gz -o results/callset/sv_clr_certified --passonly
+2026-10-09 19:18:16,996 [INFO] Params:
 {
     "base": "$WORKDIR/results/callset/clr_stock.sv.vcf.gz",
     "comp": "$WORKDIR/results/callset/clr_certified.sv.vcf.gz",
@@ -36,9 +36,9 @@
     "skip_gt": false,
     "max_resolve": 25000
 }
-2026-10-09 02:52:12,652 [INFO] Zipped 1038 variants Counter({'base': 519, 'comp': 519})
-2026-10-09 02:52:12,652 [INFO] 453 chunks of 1038 variants Counter({'comp': 514, 'base': 497, '__filtered': 27})
-2026-10-09 02:52:12,876 [INFO] Stats: {
+2026-10-09 19:18:17,128 [INFO] Zipped 1038 variants Counter({'base': 519, 'comp': 519})
+2026-10-09 19:18:17,128 [INFO] 453 chunks of 1038 variants Counter({'comp': 514, 'base': 497, '__filtered': 27})
+2026-10-09 19:18:17,319 [INFO] Stats: {
     "TP-base": 497,
     "TP-comp": 497,
     "FP": 0,
@@ -62,4 +62,4 @@
         }
     }
 }
-2026-10-09 02:52:12,876 [INFO] Finished bench
+2026-10-09 19:18:17,320 [INFO] Finished bench

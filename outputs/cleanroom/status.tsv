@@ -35,3 +35,13 @@
 13	13_stress_dense_indels.sh (rerun)	exit=0	61 min	18:28:55
 14	14_stress_large_sv.sh (rerun)	exit=0	44 min	19:13:13
 [rerun2 19:13:13] RERUN2_DONE
+[rerun3 19:16:31] env -i, commit a0cba11 conda_on/conda_off: never fall back to the base environment; clean-room outputs
+21	(rerun3, env -i)	exit=0	1 min	19:18:17
+16	(rerun3, env -i)	exit=0	18 min	19:36:28
+17	(rerun3, env -i)	exit=0	19 min	19:55:32
+04	(rerun3, env -i)	exit=0	38 min	20:33:37
+08	(rerun3, env -i)	exit=0	36 min	21:09:46
+13	(rerun3, env -i)	exit=0	61 min	22:11:32
+09	(rerun3, env -i)	exit=0	77 min	23:28:55
+01	(rerun3, env -i)	exit=0	113 min	01:21:58
+[rerun3 01:21:58] RERUN3_DONE

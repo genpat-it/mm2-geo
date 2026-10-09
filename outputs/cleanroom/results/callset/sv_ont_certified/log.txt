@@ -1,6 +1,6 @@
-2026-10-09 02:45:02,798 [INFO] Truvari v5.4.0
-2026-10-09 02:45:02,798 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/ont_stock.sv.vcf.gz -c results/callset/ont_certified.sv.vcf.gz -o results/callset/sv_ont_certified --passonly
-2026-10-09 02:45:02,798 [INFO] Params:
+2026-10-09 19:17:43,719 [INFO] Truvari v5.4.0
+2026-10-09 19:17:43,719 [INFO] Command <cleanroom>/env/bin/truvari bench -b results/callset/ont_stock.sv.vcf.gz -c results/callset/ont_certified.sv.vcf.gz -o results/callset/sv_ont_certified --passonly
+2026-10-09 19:17:43,719 [INFO] Params:
 {
     "base": "$WORKDIR/results/callset/ont_stock.sv.vcf.gz",
     "comp": "$WORKDIR/results/callset/ont_certified.sv.vcf.gz",
@@ -36,9 +36,9 @@
     "skip_gt": false,
     "max_resolve": 25000
 }
-2026-10-09 02:45:02,914 [INFO] Zipped 1238 variants Counter({'base': 619, 'comp': 619})
-2026-10-09 02:45:02,914 [INFO] 497 chunks of 1238 variants Counter({'comp': 611, 'base': 587, '__filtered': 40})
-2026-10-09 02:45:03,145 [INFO] Stats: {
+2026-10-09 19:17:43,878 [INFO] Zipped 1238 variants Counter({'base': 619, 'comp': 619})
+2026-10-09 19:17:43,878 [INFO] 497 chunks of 1238 variants Counter({'comp': 611, 'base': 587, '__filtered': 40})
+2026-10-09 19:17:44,086 [INFO] Stats: {
     "TP-base": 587,
     "TP-comp": 587,
     "FP": 0,
@@ -62,4 +62,4 @@
         }
     }
 }
-2026-10-09 02:45:03,145 [INFO] Finished bench
+2026-10-09 19:17:44,086 [INFO] Finished bench

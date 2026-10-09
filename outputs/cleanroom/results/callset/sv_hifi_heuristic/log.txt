@@ -1,6 +1,6 @@
-2026-10-09 02:22:28,586 [INFO] Truvari v5.4.0
-2026-10-09 02:22:28,586 [INFO] Command /home/IZSNT/a.deruvo/miniconda3/bin/truvari bench -b results/callset/hifi_stock.sv.vcf.gz -c results/callset/hifi_heuristic.sv.vcf.gz -o results/callset/sv_hifi_heuristic --passonly
-2026-10-09 02:22:28,586 [INFO] Params:
+2026-10-09 19:16:50,000 [INFO] Truvari v5.4.0
+2026-10-09 19:16:50,000 [INFO] Command <cleanroom>/env/bin/truvari bench -b results/callset/hifi_stock.sv.vcf.gz -c results/callset/hifi_heuristic.sv.vcf.gz -o results/callset/sv_hifi_heuristic --passonly
+2026-10-09 19:16:50,001 [INFO] Params:
 {
     "base": "$WORKDIR/results/callset/hifi_stock.sv.vcf.gz",
     "comp": "$WORKDIR/results/callset/hifi_heuristic.sv.vcf.gz",
@@ -36,9 +36,9 @@
     "skip_gt": false,
     "max_resolve": 25000
 }
-2026-10-09 02:22:28,805 [INFO] Zipped 1407 variants Counter({'base': 707, 'comp': 700})
-2026-10-09 02:22:28,806 [INFO] 533 chunks of 1407 variants Counter({'comp': 695, 'base': 665, '__filtered': 47})
-2026-10-09 02:22:29,089 [INFO] Stats: {
+2026-10-09 19:16:50,198 [INFO] Zipped 1407 variants Counter({'base': 707, 'comp': 700})
+2026-10-09 19:16:50,198 [INFO] 533 chunks of 1407 variants Counter({'comp': 695, 'base': 665, '__filtered': 47})
+2026-10-09 19:16:50,387 [INFO] Stats: {
     "TP-base": 635,
     "TP-comp": 635,
     "FP": 26,
@@ -64,4 +64,4 @@
         }
     }
 }
-2026-10-09 02:22:29,089 [INFO] Finished bench
+2026-10-09 19:16:50,387 [INFO] Finished bench
