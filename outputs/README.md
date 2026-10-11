@@ -8,7 +8,7 @@ is the 1-minute load average when each run started.
 
 ## `cleanroom/` — re-run from a fresh clone
 
-Outputs of the numbered scripts (core data, scripts 00–23, 25, 26, 28, 29) run on a fresh clone of this branch with the
+Outputs of every numbered script (00–29, including the genome-wide scripts 24 and 27) run on a fresh clone of this branch with the
 conda environment from `environment.yml`, executables from `build_tools.sh` and inputs from `fetch_data.sh`;
 `status.tsv` lists each script's exit code and run time. Inputs were checked to be byte-identical to those of the
 paper; inputs and timing outputs of this run were on network storage, which slows the 32-thread runs that write the SAM to disk.
@@ -28,7 +28,7 @@ Tables S1–S14 and the stress tests).
 | `discordant_reads/` | discordant reads by severity and GIAB stratification; `eval_geo.txt`: simulated truth | S16 | 19, 20 |
 | `callset_diff/` | `sm_*`/`smhc_*`: small-variant comparison of the heuristic and certified callsets against minimap2 (whole chr22 / GIAB high-confidence); `sv_vcf/`: Sniffles2 SV calls for the nine chr22 BAMs | S17 | 21 |
 | `sv_truth_grch37/` | SV calls against GIAB Tier1 v0.6 for minimap2 / heuristic / certified | S17 (bottom) | 22 |
-| `genomewide/` | full-coverage HG002 HiFi per chromosome (`wg_perchr.tsv`, `rerun_chr11.tsv`), certified identity (`wg_cert.tsv`, `chr8_check.txt`), chr1-only setting (`chr1only_full.tsv`) | S18 | 24 |
+| `genomewide/` | full-coverage HG002 HiFi per chromosome: heuristic series (`wg_perchr.tsv`, `rerun_chr11.tsv`); both modes with the released executables, used for the certified series (`wg_modes_release.tsv`, identical to `cleanroom/results/genomewide/perchr.tsv`); the 10 chr8 reads whose certified output differs (`chr8_discordant_release.paf`: nine equal-score ties, one higher-scoring; `chr8_check.txt`: the same reads in a development build); chr1-only setting (`chr1only_full.tsv`) | S18 | 24 |
 | `speed_checks/` | thread counts, output handling, index scope, bioconda and -O3 builds, rebuild from the public tag `submission-2026` (`pubcheck.tsv`, `relcheck.txt`) | S20 | 25 |
 | `input_counts/` | reads, bases, mapped and primary rates per data set | S19 | 29 |
 | `ont_r9_genomewide/` | ONT R9.4.1 genome-wide subset: read counts and certified identity | S22 | 23 |

@@ -45,3 +45,12 @@
 09	(rerun3, env -i)	exit=0	77 min	23:28:55
 01	(rerun3, env -i)	exit=0	113 min	01:21:58
 [rerun3 01:21:58] RERUN3_DONE
+11	11_genomewide_speed.sh	exit=0	6 min	11:00:42
+12	12_genomewide_concordance.sh	exit=0	2 min	11:03:22
+12	12_genomewide_concordance.sh (rerun)	exit=0	2 min	17:19:05
+11	11_genomewide_speed.sh (rerun)	exit=0	8 min	17:27:26
+[gw 11:11:59] tag reproducibility-revision-2026 5f74e34
+fetch genomewide	exit=0	113 min	13:05:03
+27	(genome-wide, env -i)	exit=0	381 min	19:26:08
+24	(genome-wide, env -i)	exit=0	1027 min	12:33:24
+[gw 12:33:24] GW_DONE

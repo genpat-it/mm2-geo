@@ -1,0 +1,26 @@
+chr1: heuristic 1.35x  certified 1.25x  certified identical: yes
+chr2: heuristic 1.31x  certified 1.49x  certified identical: yes
+chr3: heuristic 1.49x  certified 1.61x  certified identical: yes
+chr4: heuristic 1.34x  certified 1.26x  certified identical: yes
+chr5: heuristic 1.31x  certified 1.50x  certified identical: yes
+chr6: heuristic 1.52x  certified 1.76x  certified identical: yes
+chr7: heuristic 1.31x  certified 1.46x  certified identical: yes
+chr8: heuristic 1.31x  certified 1.49x  certified identical: no
+chr9: heuristic 1.29x  certified 1.42x  certified identical: yes
+chr10: heuristic 1.29x  certified 1.28x  certified identical: yes
+chr11: heuristic 1.27x  certified 1.38x  certified identical: yes
+chr12: heuristic 1.32x  certified 1.42x  certified identical: yes
+chr13: heuristic 1.31x  certified 1.36x  certified identical: yes
+chr14: heuristic 1.31x  certified 1.46x  certified identical: yes
+chr15: heuristic 1.30x  certified 1.38x  certified identical: yes
+chr16: heuristic 1.26x  certified 1.27x  certified identical: yes
+chr17: heuristic 1.37x  certified 1.28x  certified identical: yes
+chr18: heuristic 1.22x  certified 1.25x  certified identical: yes
+chr19: heuristic 1.19x  certified 1.31x  certified identical: yes
+chr20: heuristic 1.34x  certified 1.32x  certified identical: yes
+chr21: heuristic 1.31x  certified 1.34x  certified identical: yes
+chr22: heuristic 1.23x  certified 1.22x  certified identical: yes
+chrX: heuristic 1.30x  certified 1.41x  certified identical: yes
+chrY: heuristic 1.76x  certified 1.72x  certified identical: yes
+other: heuristic 1.30x  certified 1.16x  certified identical: yes
+whole genome: heuristic 1.34x  certified 1.35x
