@@ -41,6 +41,7 @@ output and report the median of three interleaved runs.
 | `MM2GEO` | tag `revision-2026` | all heuristic- and certified-mode results |
 | `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode speed checks with the code as first released |
 | `MM2GEO_INSTR` | `revision-2026` + `instrumentation.patch` | per-gap log (`MM2_GEO_GAPLOG`) and DP-stage CPU time (`MM2_GEO_TIMEDP`); output unchanged |
+| `MM2GEO_ORACLE` | `revision-2026` + `cert_oracle.patch` | per-gap check of the certified mode against the full band (`MM2_GEO_CERT_ORACLE`); output unchanged |
 | `MM2GEO_O3` | `revision-2026` with bioconda's minimap2 compiler flags | build comparison |
 | `MM2FAST`, `MM2FASTGEO` | mm2-fast commit `14fe36c`, without / with `geo_mm2fast.patch` (AVX-512 build when the CPU supports it, else AVX2) | composition with mm2-fast (optional) |
 
@@ -85,6 +86,8 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S21/S22) |
 | `28_mm2fast_modes.sh` | Table S22, mm2-fast rows |
 | `29_input_counts.sh` | Table S19 (input reads, bases, alignment rates) |
+| `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
+| `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |
 
 The three-caller cross-check (Table S5) uses Clair3, bcftools and DeepVariant (`google/deepvariant:1.6.1`)
 on the BAM of `01`; the fixed `-r` comparison (Table S8) reruns `01` with minimap2 `-r 20`.

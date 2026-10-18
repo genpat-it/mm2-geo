@@ -24,11 +24,14 @@ WORKDIR="${WORKDIR:-/path/to/mm2geo-workdir}"   # <-- SET THIS (or export WORKDI
 #      MM2GEO_INSTR  revision-2026 + instrumentation.patch: adds MM2_GEO_GAPLOG (per-gap log) and
 #                    MM2_GEO_TIMEDP (DP-stage CPU time); analysis only, same output
 #      MM2GEO_O3     revision-2026 rebuilt with bioconda's minimap2 compiler flags (-O3 ...)
+#      MM2GEO_ORACLE revision-2026 + cert_oracle.patch: adds MM2_GEO_CERT_ORACLE (per-gap check of the
+#                    certified mode against the full band); analysis only, same output
 BIN="${BIN:-$WORKDIR/bin}"
 MM2GEO="${MM2GEO:-$BIN/mm2geo}"
 MM2GEO_SUB="${MM2GEO_SUB:-$BIN/mm2geo_submission}"
 MM2GEO_INSTR="${MM2GEO_INSTR:-$BIN/mm2geo_instr}"
 MM2GEO_O3="${MM2GEO_O3:-$BIN/mm2geo_o3}"
+MM2GEO_ORACLE="${MM2GEO_ORACLE:-$BIN/mm2geo_oracle}"   # revision-2026 + cert_oracle.patch (script 30; same output)
 # stock minimap2 2.30 from bioconda (build-comparison script only): `conda install -c bioconda minimap2=2.30`
 BIOCONDA_MM2="${BIOCONDA_MM2:-minimap2}"
 MM2GEO_SRC="${MM2GEO_SRC:-$BIN/src/mm2-geo}"

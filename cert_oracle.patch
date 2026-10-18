@@ -1,0 +1,23 @@
+--- a/align.c
++++ b/align.c
+@@ -679,6 +679,7 @@
+ // so the traceback is computed only once, at the band that is finally accepted.
+ static int mm_geo_cert_scoreprobe(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_SCOREPROBE"); v=(e&&*e)?atoi(e):256; if(v<0)v=0;} return v; }
+ static int mm_geo_onegap(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_ONEGAP"); v=(e&&*e&&atoi(e))?1:0; if(mm_geo_cert()) v=1;} return v; }
++static int mm_geo_oracle(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_ORACLE"); v=(e&&*e)?atoi(e):0;} return v; }
+ static inline int mm_geo_gcost(const mm_mapopt_t *o, int l){ int c1 = o->q + l * o->e, c2 = o->q2 + l * o->e2; return c1 < c2? c1 : c2; }
+ static inline long long mm_geo_cert_ub(const mm_mapopt_t *o, int ql, int tl, int b, int d)
+ {
+@@ -1016,6 +1017,12 @@
+ 						if (mx < gb) break;
+ 						gb <<= 1; if (gb > ceil_bw) gb = ceil_bw;
+ 					}
++					if ((geo_cert || mm_geo_oracle() == 2) && mm_geo_oracle() && gb < ceil_bw && !ez->zdropped && ez->score > KSW_NEG_INF / 2) { // ORACLE: certified gap vs widest band, z-drop off
++						ksw_extz_t ez2; memset(&ez2, 0, sizeof(ksw_extz_t));
++						mm_align_pair(km, opt, qe - qs, qseq, re - rs, tseq, junc, mat, ceil_bw, -1, -1, ksw_flag|KSW_EZ_SCORE_ONLY, &ez2);
++						fprintf(stderr, "ORC\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", qe - qs, re - rs, dd, gb0, gb, ceil_bw, ez->score, ez2.score, ez2.zdropped);
++						kfree(km, ez2.cigar);
++					}
+ 					if (stats) mm_geo_stat_gap(gb0, gb, natt, (gb >= ceil_bw));
+ 			}
+ 			else if (is_sr || (is_sr_rna && qe - qs == re - rs)) { // perform ungapped alignment

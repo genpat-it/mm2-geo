@@ -3,6 +3,7 @@
 #   mm2geo             tag revision-2026 (heuristic + certified modes), default Makefile (-O2)
 #   mm2geo_submission  tag submission-2026 (heuristic mode as first released)
 #   mm2geo_instr       revision-2026 + instrumentation.patch (MM2_GEO_GAPLOG, MM2_GEO_TIMEDP; same output)
+#   mm2geo_oracle      revision-2026 + cert_oracle.patch (MM2_GEO_CERT_ORACLE; same output)
 #   mm2geo_o3          revision-2026 built with bioconda's minimap2 flags (-O3 ...)
 #   mm2fast / mm2fastgeo  mm2-fast commit 14fe36c, unpatched / with geo_mm2fast.patch (optional: needs a
 #                      x86-64 CPU with AVX2; skipped with a warning if the build fails)
@@ -28,6 +29,7 @@ build_tag(){ # $1=tag $2=output name $3=extra make args (optional) $4=patch to a
 build_tag revision-2026   mm2geo
 build_tag submission-2026 mm2geo_submission
 build_tag revision-2026   mm2geo_instr "" "$HERE/instrumentation.patch"
+build_tag revision-2026   mm2geo_oracle "" "$HERE/cert_oracle.patch"
 # bioconda minimap2 recipe: CFLAGS="${CFLAGS} -g -Wall -O3 -Wc++-compat" on top of conda-forge's default CFLAGS
 build_tag revision-2026   mm2geo_o3 "-march=nocona -mtune=haswell -ftree-vectorize -fPIC -fstack-protector-strong -fno-plt -O2 -ffunction-sections -pipe -g -Wall -O3 -Wc++-compat"
 

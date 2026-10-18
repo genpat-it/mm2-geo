@@ -1,0 +1,7 @@
+control_heuristic_hifi_chr22	gaps_checked=10667941	violations=34833	max_excess=14526	equal_score=99.6735%	full_band_skipped=0
+hifi_chr22	gaps_checked=10667869	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
+ont_r10_chr22	gaps_checked=10796359	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
+clr_chr22	gaps_checked=6556177	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
+dense_indels	gaps_checked=1444359	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
+large_sv	gaps_checked=1569142	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
+ecoli_ont	gaps_checked=25949739	violations=0	max_excess=0	equal_score=100.0000%	full_band_skipped=0
