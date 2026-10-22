@@ -16,7 +16,8 @@ paper; inputs and timing outputs of this run were on network storage, which slow
 ## `submission/` — first submission
 
 `results_*.txt` written by scripts 01–17 into `$WORKDIR/hifi_bench/` (Table 1, Table 3, Supplementary
-Tables S1–S14 and the stress tests).
+Tables S1–S14 and the stress tests); `results_2ndcaller_bcftools.txt`, `results_3rdcaller_dv.txt` (Table S5,
+now script 32) and `results_KILLER_f1.txt` (Table S8, now script 33).
 
 ## `revision/` — revised manuscript
 
@@ -33,4 +34,5 @@ Tables S1–S14 and the stress tests).
 | `input_counts/` | reads, bases, mapped and primary rates per data set | S19 | 29 |
 | `ont_r9_genomewide/` | ONT R9.4.1 genome-wide subset: read counts and certified identity | S22 | 23 |
 | `ont_r10_genomewide/` | ONT R10.4.1 genome-wide subset (10%, seed 42): read counts, certified identity and the 4 differing PAF lines (2 reads, both higher-scoring in the certified mode), timing (3 reps), DP-stage decomposition | S19, S21, S22 | 27 |
+| `cert_oracle/` | per-gap oracle of the certified mode (`summary.tsv`) and exhaustive check of the score bound (`bound_exhaustive.tsv`) | S23 | 30, 31 |
 | `modes_development/` | timings of the certified mode during development (score certificate alone, with the one-gap shortcut, with the score-only probe) | S22 | 23 |

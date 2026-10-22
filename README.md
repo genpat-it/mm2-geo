@@ -88,9 +88,10 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `29_input_counts.sh` | Table S19 (input reads, bases, alignment rates) |
 | `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
 | `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |
+| `32_three_callers.sh` | Table S5 (Clair3, bcftools and DeepVariant on minimap2 and heuristic-mode BAMs; DeepVariant via docker) |
+| `33_fixed_r_band.sh` | Table S8 (minimap2 `-r 20,20` vs default vs heuristic mode: time and F1) |
 
-The three-caller cross-check (Table S5) uses Clair3, bcftools and DeepVariant (`google/deepvariant:1.6.1`)
-on the BAM of `01`; the fixed `-r` comparison (Table S8) reruns `01` with minimap2 `-r 20`.
+Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 
 ## Raw outputs
 The summary files of the runs reported in the paper are in `outputs/` (see `outputs/README.md` for the
