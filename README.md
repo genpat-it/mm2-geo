@@ -57,7 +57,7 @@ Environment variables of the tool (all off by default; unset means stock minimap
 
 ## Script → table map
 
-Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1; Supplementary: S1–S22).
+Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1; Supplementary: S1–S23).
 
 | script | produces |
 |---|---|
