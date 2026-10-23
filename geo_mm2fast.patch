@@ -1,5 +1,5 @@
 diff --git a/align.c b/align.c
-index d7588a9..f6117c5 100644
+index d7588a9..8d013c7 100644
 --- a/align.c
 +++ b/align.c
 @@ -667,6 +667,75 @@ static void mm_fix_bad_ends_splice(void *km, const mm_mapopt_t *opt, const mm_id
@@ -9,10 +9,10 @@ index d7588a9..f6117c5 100644
 +// mm2-geo band-doubling grafted onto mm2-fast (env MM2_GEO=1, MM2_GEO_MARGIN default 20)
 +static int mm_geo_enabled(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO"); v=(e&&*e&&atoi(e))?1:0;} return v; }
 +static int mm_geo_margin(void){ static int m=-1; if(m<0){const char*e=getenv("MM2_GEO_MARGIN"); m=(e&&*e)?atoi(e):20; if(m<0)m=0;} return m; }
-+// certified acceptance (MM2_GEO_CERT=1): any path leaving the band |i-j|<=b contains an insertion and a deletion run
++// certified acceptance (default; MM2_GEO_FAST=1 = heuristic): any path leaving the band |i-j|<=b contains an insertion and a deletion run
 +// totalling >= (b+1)+(b+1-d), so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d); accept when S >= U(b),
 +// otherwise realign once with the smallest band that the bound certifies.
-+static int mm_geo_cert(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT"); v=(e&&*e)?atoi(e):0;} return v; }
++static int mm_geo_cert(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_FAST"); v=(e&&*e&&atoi(e))?0:1;} return v; }
 +static inline int mm_geo_gcost(const mm_mapopt_t *o, int l){ int c1 = o->q + l * o->e, c2 = o->q2 + l * o->e2; return c1 < c2? c1 : c2; }
 +static inline long long mm_geo_cert_ub(const mm_mapopt_t *o, int ql, int tl, int b, int d){
 +	int L1 = b + 1, L2 = b + 1 - d, L;

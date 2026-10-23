@@ -2,8 +2,8 @@
 
 **Geometry-guided band sizing for the minimap2 gap-filling DP** — a small,
 runtime-gated patch on top of [minimap2](https://github.com/lh3/minimap2) v2.30
-that reduces the between-anchor dynamic programming, with a **heuristic mode** and a
-**certified mode** whose output is identical to minimap2's.
+that reduces the between-anchor dynamic programming. Its default **certified mode** reproduces
+minimap2's output; an opt-in **heuristic mode** trades exact equivalence for speed on some data.
 
 > mm2-geo is minimap2 v2.30 (Li, 2018; MIT license, preserved in `LICENSE.txt`)
 > plus a compact, self-contained change in `align.c`. With `MM2_GEO` unset the executable produces
@@ -30,20 +30,24 @@ make
 cp minimap2 mm2geo   # the Makefile emits ./minimap2; run it as ./mm2geo below
 # stock minimap2 behaviour (output-identical to minimap2 2.30):
 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-# heuristic mode:
+# certified mode (recommended; output identical to minimap2):
 MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-# certified mode (output identical to minimap2):
-MM2_GEO=1 MM2_GEO_CERT=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
+# heuristic mode (opt-in; faster on some data, not output-identical):
+MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 ```
 
-- `MM2_GEO=1` — heuristic mode: geometry-sized band, doubled when the returned path
-  touches the band boundary (a heuristic acceptance test).
-- `MM2_GEO_CERT=1` — certified mode: a band is accepted only when the in-band
-  score provably exceeds that of any path leaving it; otherwise the gap is
-  realigned once with the smallest band the bound certifies. Includes an exact
-  one-gap shortcut and a score-only first pass on gaps of at least 256 bp
-  (`MM2_GEO_CERT_SCOREPROBE=<int>`, 0 disables). Output is identical to minimap2's.
-- `MM2_GEO_ONEGAP=1` — the exact one-gap shortcut alone (implied by `MM2_GEO_CERT=1`).
+- `MM2_GEO=1` — certified mode (the default): the band is sized from the anchor
+  geometry and accepted only when the in-band score provably exceeds that of any
+  path leaving it; otherwise the gap is realigned once with the smallest band the
+  bound certifies. Includes an exact one-gap shortcut and a score-only first pass on
+  gaps of at least 256 bp (`MM2_GEO_CERT_SCOREPROBE=<int>`, 0 disables). Output is
+  identical to minimap2's, except for rare equal-score ties and alignments that score
+  higher than minimap2's (see below).
+- `MM2_GEO_FAST=1` — heuristic mode: geometry-sized band, doubled when the returned
+  path touches the band boundary (a heuristic acceptance test). This is the mode of
+  the first release (tag `submission-2026`, where it was selected by `MM2_GEO=1` alone).
+- `MM2_GEO_CERT=1` — accepted for compatibility with earlier commands; no effect.
+- `MM2_GEO_ONEGAP=1` — with `MM2_GEO_FAST=1`, adds the exact one-gap shortcut alone.
 - `MM2_GEO_MARGIN=<int>` — initial band margin (default 20).
 
 **Diagnostic flags** (gated; zero measurable cost when unset — a single
@@ -87,8 +91,8 @@ git clone https://github.com/bwa-mem2/mm2-fast && cd mm2-fast
 git checkout 14fe36c100f6c2aab224d000f3903ca5909640cd
 git apply /path/to/geo_mm2fast.patch
 make            # see the mm2-fast README for its build requirements
-MM2_GEO=1 ./minimap2 ...                  # heuristic mode
-MM2_GEO=1 MM2_GEO_CERT=1 ./minimap2 ...   # certified mode (output identical to mm2-fast)
+MM2_GEO=1 ./minimap2 ...                  # certified mode (output identical to mm2-fast)
+MM2_GEO=1 MM2_GEO_FAST=1 ./minimap2 ...   # heuristic mode
 ```
 
 ## Honest note
@@ -104,8 +108,8 @@ where minimap2's band misses the best gap alignment the certified mode returns a
 higher-scoring one (12 of 13.7 million reads in the paper's genome-wide runs: nine
 ties, three higher-scoring alignments).
 
-Versions: tag `submission-2026` = heuristic mode only; tag `revision-2026` = heuristic and
-certified modes (the heuristic mode is unchanged).
+Versions: tag `submission-2026` = heuristic mode only (selected by `MM2_GEO=1`); tag `revision-2026` =
+certified mode as the default (`MM2_GEO=1`) and the unchanged heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`).
 
 ## Reproducibility
 
