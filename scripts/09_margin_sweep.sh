@@ -1,6 +1,6 @@
 #!/bin/bash
 # Margin ablation: chr22 HiFi + ONT, m in {5,10,20,40,80}.
-# time (median-3) + CIGAR-identity vs stock (all m) + clair3 F1 (m=5,20,80).
+# time (median-3) + CIGAR-identity vs stock (all m) + clair3 F1 (every m).
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
 cd "$WORKDIR"
@@ -24,12 +24,12 @@ mrun(){ local tech=$1 preset=$2 reads=$3 mdl=$4
   MM2_GEO=0 $MG -ax $preset -t32 $AR $reads 2>/dev/null | cigs > $D/stock.cig
   for m in 5 10 20 40 80; do
     local t=()
-    for i in 1 2 3; do /usr/bin/time -f "%e" bash -c "MM2_GEO=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads >/dev/null 2>/dev/null" 2>$D/t.t; t+=("$(cat $D/t.t)"); done
-    MM2_GEO=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads 2>/dev/null | cigs > $D/geo.cig
+    for i in 1 2 3; do /usr/bin/time -f "%e" bash -c "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads >/dev/null 2>/dev/null" 2>$D/t.t; t+=("$(cat $D/t.t)"); done
+    MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads 2>/dev/null | cigs > $D/geo.cig
     local cid=$(join -t$'\t' $D/stock.cig $D/geo.cig | awk -F'\t' '{n++;if($2==$3)id++}END{printf "%.2f",(n?100*id/n:0)}')
     local f1="(skip)"
-    if [ "$m" = 5 ] || [ "$m" = 20 ] || [ "$m" = 80 ]; then
-      MM2_GEO=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
+    if true; then
+      MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=$m $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
       q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $D/b.bam > $D/b2.bam; mv $D/b2.bam $D/b.bam; q "$SAMTOOLS" index $D/b.bam
       conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
       $C3 --bam_fn=$D/b.bam --ref_fn=$CR --threads=32 --platform=$tech --model_path=$mdl --output=$D/c3 --ctg_name=$CT --bed_fn=$BD >$D/c3.log 2>&1

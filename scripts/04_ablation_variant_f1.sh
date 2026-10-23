@@ -12,7 +12,7 @@ export LC_ALL=C; q(){ "$@" 2>/dev/null; }
 D=ablf1; mkdir -p $D; R=hifi_bench/results_ABLATION_F1.txt; : > $R
 tc(){ zcat "$1" 2>/dev/null | awk '!/^#/{if(length($4)==1&&length($5)==1)s++;else i++}END{printf "%d %d",s+0,i+0}'; }
 f1(){ local tag=$1 tech=$2 preset=$3 reads=$4 mdl=$5 env=$6
-  eval "MM2_GEO=1 $env $MG -ax $preset -t32 $AR $reads 2>/dev/null" | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
+  eval "MM2_GEO=1 MM2_GEO_FAST=1 $env $MG -ax $preset -t32 $AR $reads 2>/dev/null" | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
   q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $D/b.bam > $D/b2.bam; mv $D/b2.bam $D/b.bam; q "$SAMTOOLS" index $D/b.bam
   conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3
   $C3 --bam_fn=$D/b.bam --ref_fn=$CR --threads=32 --platform=$tech --model_path=$mdl --output=$D/c3 --ctg_name=$CT --bed_fn=$BD >$D/c3.log 2>&1

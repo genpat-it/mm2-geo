@@ -1,5 +1,5 @@
 #!/bin/bash
-# Alignment concordance mm2 vs geo (chr22, GRCh38): primary reads only.
+# Alignment concordance mm2 vs geo (Table S6: chr22 HiFi/ONT/CLR, chr14 CLR, E. coli ONT): primary reads only.
 # Reports %same-POS, %same-MAPQ, %same-CIGAR, and NM (edit-distance) / AS (score) deltas.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
@@ -13,10 +13,10 @@ extract(){ # bam-stream -> name POS MAPQ CIGAR NM AS   (primary only)
     for(i=12;i<=NF;i++){if($i~/^NM:i:/){nm=substr($i,6)} if($i~/^AS:i:/){as=substr($i,6)}}
     print $1,$4,$5,$6,nm,as}' | sort -k1,1
 }
-run(){ local tech=$1 preset=$2 reads=$3
+run(){ local tech=$1 preset=$2 reads=$3 REF=${4:-chr22_named.fa}
   echo ">> $tech concordance (mm2 vs geo)" | tee -a $R
   MM2_GEO=0 $MG -ax $preset -t32 $REF $reads 2>/dev/null | extract > $D/$tech.mm2
-  MM2_GEO=1 MM2_GEO_MARGIN=20 $MG -ax $preset -t32 $REF $reads 2>/dev/null | extract > $D/$tech.geo
+  MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax $preset -t32 $REF $reads 2>/dev/null | extract > $D/$tech.geo
   join -t$'\t' $D/$tech.mm2 $D/$tech.geo | awk -F'\t' '
     {n++;
      if($2==$7)pos++; if($3==$8)mapq++; if($4==$9)cig++;
@@ -29,4 +29,7 @@ run(){ local tech=$1 preset=$2 reads=$3
 }
 run HiFi map-hifi hifi_chr22.fq
 run ONT  map-ont  ont_r10_chr22.fq
+run CLR  map-pb   clr_chr22.fq
+run CLR-chr14 map-pb clr_chr14.fq ref_chr14.fa
+run Ecoli-ONT map-ont ecoli_real2/SRR9900640.fastq "$ECOLI_REF"
 rm -rf $D; echo "### DONE-CONC" | tee -a $R

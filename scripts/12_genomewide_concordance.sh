@@ -16,7 +16,7 @@ D=wgc; mkdir -p $D
 # primary: name, RNAME, strand, POS, MAPQ, CIGAR
 ex(){ $SAM view -F 0x904 - 2>/dev/null | awk 'BEGIN{OFS="\t"}{s=and($2,16)?"-":"+"; print $1,$3,s,$4,$5,$6}' | LC_ALL=C sort -t$'\t' -k1,1; }
 MM2_GEO=0 $MG -ax map-hifi -t32 $REF $RD 2>/dev/null | ex > $D/mm2
-MM2_GEO=1 $MG -ax map-hifi -t32 $REF $RD 2>/dev/null | ex > $D/geo
+MM2_GEO=1 MM2_GEO_FAST=1 $MG -ax map-hifi -t32 $REF $RD 2>/dev/null | ex > $D/geo
 nmm2=$(wc -l <$D/mm2); ngeo=$(wc -l <$D/geo)
 join -t$'\t' $D/mm2 $D/geo > $D/j
 awk -v a=$nmm2 -v b=$ngeo -F'\t' '

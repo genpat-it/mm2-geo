@@ -13,7 +13,7 @@ for T in "HiFi map-hifi chr22.hifi.mmi hifi_chr22.fq" "ONT map-ont chr22.ont.mmi
   # mm2 cells
   mc=$(MM2_GEO=0 MM2_GEO_STATS=1 $MG -ax $pre -t32 $idx $rd 2>&1 >/dev/null | grep MM2_GEO_CELLS | grep -o 'dp_cells=[0-9]*' | cut -d= -f2)
   # geo cells + band stats (one run)
-  MM2_GEO=1 MM2_GEO_STATS=1 $MG -ax $pre -t32 $idx $rd 2>$TMPDIR/geo_$tech.err >/dev/null
+  MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_STATS=1 $MG -ax $pre -t32 $idx $rd 2>$TMPDIR/geo_$tech.err >/dev/null
   gc=$(grep MM2_GEO_CELLS $TMPDIR/geo_$tech.err | grep -o 'dp_cells=[0-9]*' | cut -d= -f2)
   st=$(grep MM2_GEO_STATS $TMPDIR/geo_$tech.err)
   awk -v t=$tech -v m=$mc -v g=$gc 'BEGIN{printf "%s  mm2_cells=%s  geo_cells=%s  rel=%.1f%%  reduction=%.2fx\n",t,m,g,(m?100*g/m:0),(g?m/g:0)}' | tee -a $R

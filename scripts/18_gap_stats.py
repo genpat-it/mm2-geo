@@ -14,5 +14,5 @@ for t in ['hifi','ont','clr','wg138k']:
     tab=g.groupby('dbin',observed=False).agg(pct=('d',lambda s:100*len(s)/n),
         first_pass_rejected=('E1',lambda s:100*(s>=g.loc[s.index,'b0']).mean()),
         mean_rounds=('rounds','mean'),max_rounds=('rounds','max'),
-        E50=('Efinal','median'),E99=('Efinal',lambda s:s.quantile(.99)),Emax=('Efinal','max'))
+        E50=('Efinal','median'),E90=('Efinal',lambda s:s.quantile(.90)),E99=('Efinal',lambda s:s.quantile(.99)),Emax=('Efinal','max'))
     print(tab.round(3).to_string())

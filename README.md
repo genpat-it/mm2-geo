@@ -1,13 +1,13 @@
 # mm2-geo — reproducibility material
 
-This branch regenerates every table and figure of the mm2-geo paper ("Geometry-guided band sizing for
-faster minimap2 gap filling, with a certified mode that reproduces minimap2's output"). The tool itself
+This branch regenerates every table and figure of the mm2-geo paper ("Geometry-guided band sizing with a
+score certificate: faster minimap2 gap filling that reproduces its output"). The tool itself
 (minimap2 v2.30 plus a single-file patch to `align.c`) is on the `main` branch of
 https://github.com/genpat-it/mm2-geo.
 
 | tag | content |
 |---|---|
-| `revision-2026` (tool) | heuristic mode (`MM2_GEO=1`) and certified mode (`MM2_GEO=1 MM2_GEO_CERT=1`) |
+| `revision-2026` (tool) | certified mode (`MM2_GEO=1`, the default) and heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`) |
 | `submission-2026` (tool) | heuristic mode only, as first released; unchanged in `revision-2026` |
 | `reproducibility-revision-2026` (this branch) | scripts for every table of the paper and its Supplementary Material |
 | `reproducibility-submission-2026` (this branch) | the material of the first submission |
@@ -26,6 +26,13 @@ bash scripts/smoke_test.sh               # ~30 s sanity check of the build and c
 bash scripts/00_verify_output_identity.sh
 # ... then any numbered script; the genome-wide ones need:
 bash scripts/fetch_data.sh genomewide    # complete GIAB HG002 HiFi BAM (121 GB) and ONT R10.4.1 CRAM (104 GB)
+```
+
+Or everything in one command (build, data, smoke test and every numbered script in dependency order; one log
+per step and a summary of exit codes in `$WORKDIR/logs/status.tsv`; completed steps are skipped on a re-run):
+
+```bash
+bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27 and 34
 ```
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
@@ -49,8 +56,9 @@ Environment variables of the tool (all off by default; unset means stock minimap
 
 | variable | effect |
 |---|---|
-| `MM2_GEO=1` | heuristic mode: geometry-sized band, doubled on boundary contact |
-| `MM2_GEO_CERT=1` | with `MM2_GEO=1`: certified mode (score certificate, exact one-gap shortcut, score-only first pass); output identical to minimap2 |
+| `MM2_GEO=1` | certified mode (default): geometry-sized band accepted by the score certificate, exact one-gap shortcut, score-only first pass; output identical to minimap2 |
+| `MM2_GEO_FAST=1` | with `MM2_GEO=1`: heuristic mode (geometry-sized band, doubled on boundary contact), as selected by `MM2_GEO=1` alone in `submission-2026` |
+| `MM2_GEO_CERT=1` | accepted for compatibility; no effect |
 | `MM2_GEO_MARGIN=m` | band margin (default 20) |
 | `MM2_GEO_STATS=1`, `MM2_GEO_FIXED=1`, `MM2_GEO_NODOUBLE=1` | DP-cell statistics and ablations |
 | `MM2_GEO_GAPLOG=file`, `MM2_GEO_TIMEDP=1` | instrumented build only: per-gap log, DP-stage CPU time |
@@ -90,6 +98,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |
 | `32_three_callers.sh` | Table S5 (Clair3, bcftools and DeepVariant on minimap2 and heuristic-mode BAMs; DeepVariant via docker) |
 | `33_fixed_r_band.sh` | Table S8 (minimap2 `-r 20,20` vs default vs heuristic mode: time and F1) |
+| `34_ont_r9_genomewide.sh` | ONT R9.4.1 genome-wide subset (Tables S19, S21, S22; first 20 GB of the GIAB ultra-long Guppy 3.2.4 FASTQ) |
 
 Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 
@@ -104,7 +113,7 @@ CRAM locally), GRCh37 chr22, GIAB v4.2.1 small-variant truth, GIAB SV Tier1 v0.6
 stratifications, chr22/chr14 slices of the GIAB HG002 HiFi, ONT R10.4.1 and CLR alignments (streamed),
 the genome-wide HiFi set (one complete SMRT Cell of the GIAB HG002 CCS 15 kb data, 138,688 reads, ~0.57×, md5-checked), the *E. coli* ONT isolate
 (ENA `SRR9900640`, md5-checked) and K-12 MG1655 reference (`NC_000913.3`), pbsim3 reads simulated from
-chr22 (seed 2024), and, with `genomewide`, the complete HiFi BAM and ONT CRAM. Small artifacts are in
+chr22 (seed 2024), and, with `genomewide`, the complete HiFi BAM and ONT CRAM, and the ONT R9.4.1 genome-wide subset (streamed from GIAB, checked by read and base counts). Small artifacts are in
 `data/` (*E. coli* strain assembly, spike-in reference and truth; md5 in
 `CHECKSUMS.md5`). The tool patches (`geo.patch` for minimap2 v2.30, `geo_mm2fast.patch` for mm2-fast) are
 taken by `build_tools.sh` from the tool tag, so there is a single copy of each.

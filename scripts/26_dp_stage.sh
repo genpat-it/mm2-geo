@@ -7,7 +7,7 @@ source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/dpstage; mkdir -p $
 echo -e "data\tmode\twall_s\tcpu_s\tdp_cpu_s" > $D/dpstage.tsv
 for s in "hifi_chr22 map-hifi chr22_named.fa hifi_chr22.fq" "ont_chr22 map-ont chr22_named.fa ont_r10_chr22.fq" "clr_chr22 map-pb chr22_named.fa clr_chr22.fq" "ont_chr14 map-ont ref_chr14.fa ont_r10_chr14.fq" "hifi_genomewide_subset map-hifi grch38_hifi.mmi $GW_READS"; do set -- $s
   for c in stock heuristic certified; do
-    case $c in stock) E="MM2_GEO=0";; heuristic) E="MM2_GEO=1";; certified) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
+    case $c in stock) E="MM2_GEO=0";; heuristic) E="MM2_GEO=1 MM2_GEO_FAST=1";; certified) E="MM2_GEO=1";; esac
     /usr/bin/time -f "%e %U %S" -o $D/t env $E MM2_GEO_TIMEDP=1 "$MM2GEO_INSTR" -ax $2 -t"$THREADS" $3 $4 > /dev/null 2> $D/err
     read e u s < $D/t; echo -e "$1\t$c\t$e\t$(echo "$u + $s" | bc)\t$(grep -o 'dp_cpu_s=[0-9.]*' $D/err | cut -d= -f2)" | tee -a $D/dpstage.tsv
   done

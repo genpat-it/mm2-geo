@@ -7,7 +7,7 @@ source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/callset; mkdir -p $
 source "$CONDA_PROFILE"
 for s in "hifi map-hifi hifi_chr22.fq hifi $MODEL_HIFI" "ont map-ont ont_r10_chr22.fq ont $MODEL_ONT" "clr map-pb clr_chr22.fq none none"; do set -- $s
   for c in stock heuristic certified; do
-    case $c in stock) E="MM2_GEO=0";; heuristic) E="MM2_GEO=1";; certified) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
+    case $c in stock) E="MM2_GEO=0";; heuristic) E="MM2_GEO=1 MM2_GEO_FAST=1";; certified) E="MM2_GEO=1";; esac
     b=$D/${1}_$c.bam
     [ -s $b.bai ] || { env $E "$MM2GEO" -ax $2 -t"$THREADS" chr22_named.fa $3 2>/dev/null | "$SAMTOOLS" sort -@8 -m2G -o $b - 2>/dev/null
       "$SAMTOOLS" reheader -c 'sed "s/SN:chr22/SN:CM000684.2/"' $b > $b.tmp && mv $b.tmp $b; "$SAMTOOLS" index $b; }

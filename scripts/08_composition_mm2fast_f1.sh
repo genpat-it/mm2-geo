@@ -24,13 +24,13 @@ f1(){ local tag=$1 tech=$2 preset=$3 reads=$4 mdl=$5 bin=$6 env=$7
   awk -v t="$tag" -v ts=$ts -v ti=$ti -v fps=$fps -v fpi=$fpi -v fns=$fns -v fni=$fni -v tbs=$tbs -v tbi=$tbi 'function F(tp,fp,tb,fn,p,r){p=(tp+fp)?tp/(tp+fp):0;r=(tb+fn)?tb/(tb+fn):0;return (p+r)?2*p*r/(p+r):0}BEGIN{printf "%-22s SNV/INDEL %.4f/%.4f\n",t,F(ts,fps,tbs,fns),F(ti,fpi,tbi,fni)}' | tee -a $R
 }
 f1 "hifi mm2-fast"     hifi map-hifi hifi_chr22.fq $M_HIFI $MF  ""
-f1 "hifi mm2-fast-geo" hifi map-hifi hifi_chr22.fq $M_HIFI $MFG "MM2_GEO=1 MM2_GEO_MARGIN=20"
+f1 "hifi mm2-fast-geo" hifi map-hifi hifi_chr22.fq $M_HIFI $MFG "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20"
 f1 "ont mm2-fast"      ont  map-ont  ont_r10_chr22.fq $M_ONT $MF  ""
-f1 "ont mm2-fast-geo"  ont  map-ont  ont_r10_chr22.fq $M_ONT $MFG "MM2_GEO=1 MM2_GEO_MARGIN=20"
+f1 "ont mm2-fast-geo"  ont  map-ont  ont_r10_chr22.fq $M_ONT $MFG "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20"
 # chr14 ONT composition (dataset-dependence row, Supplementary Table S13): ref_chr14.fa is already
 # named CM000676.2, so the reheader in f1() is a no-op here.
 AR=ref_chr14.fa; CR=ref_chr14.fa; CT=CM000676.2; TR=truth_chr14.vcf.gz; BD=conf_chr14.bed; SF=ref_chr14_sdf
 q "$SAMTOOLS" faidx ref_chr14.fa
 f1 "c14 ont mm2-fast"     ont map-ont ont_r10_chr14.fq $M_ONT $MF  ""
-f1 "c14 ont mm2-fast-geo" ont map-ont ont_r10_chr14.fq $M_ONT $MFG "MM2_GEO=1 MM2_GEO_MARGIN=20"
+f1 "c14 ont mm2-fast-geo" ont map-ont ont_r10_chr14.fq $M_ONT $MFG "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20"
 rm -rf $D; echo "### DONE-COMPF1" | tee -a $R

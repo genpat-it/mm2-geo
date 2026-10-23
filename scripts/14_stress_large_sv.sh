@@ -30,7 +30,7 @@ echo "   reads: $(($(wc -l < $D/sv.fq)/4))" | tee -a $R
 
 echo ">> [4] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)" | tee -a $R
 [ -s chr22.hifi.mmi ] || $MG -x map-hifi -d chr22.hifi.mmi chr22_named.fa >/dev/null 2>&1
-env_of(){ case $1 in mm2) echo "MM2_GEO=0";; geo) echo "MM2_GEO=1 MM2_GEO_MARGIN=20";; cert) echo "MM2_GEO=1 MM2_GEO_CERT=1";; esac; }
+env_of(){ case $1 in mm2) echo "MM2_GEO=0";; geo) echo "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20";; cert) echo "MM2_GEO=1";; esac; }
 for cfg in mm2 geo cert; do
   t=()
   for i in 1 2 3; do

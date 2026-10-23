@@ -1,6 +1,6 @@
 #!/bin/bash
 # Supplementary Table S10: small-variant F1 stratified by indel length.
-# Stock minimap2 (MM2_GEO=0) vs mm2-geo (MM2_GEO=1) on the SAME binary, HiFi + ONT chr22.
+# Stock minimap2 (MM2_GEO=0) vs mm2-geo (MM2_GEO=1 MM2_GEO_FAST=1) on the SAME binary, HiFi + ONT chr22.
 # Runs Clair3 + rtg vcfeval retaining tp-baseline/fp/fn, then 17_stratify_indel.py bins by
 # indel length L=|len(REF)-len(ALT)| into SNV / 1 / 2-5 / 6-15 / 16-50 bp and recomputes F1.
 set -uo pipefail

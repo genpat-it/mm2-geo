@@ -11,7 +11,7 @@ tc(){ zcat "$1" 2>/dev/null | awk '!/^#/{if(length($4)==1&&length($5)==1)s++;els
 run(){ # cfg preset reads -> command
   case $1 in default) echo "env MM2_GEO=0 $MM2GEO -ax $2 -t$THREADS chr22_named.fa $3";;
              r20)     echo "env MM2_GEO=0 $MM2GEO -ax $2 -r 20,20 -t$THREADS chr22_named.fa $3";;
-             geo)     echo "env MM2_GEO=1 MM2_GEO_MARGIN=$4 $MM2GEO -ax $2 -t$THREADS chr22_named.fa $3";; esac; }
+             geo)     echo "env MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=$4 $MM2GEO -ax $2 -t$THREADS chr22_named.fa $3";; esac; }
 for t in "HiFi map-hifi hifi_chr22.fq $MODEL_HIFI hifi 20" "ONT map-ont ont_r10_chr22.fq $MODEL_ONT ont 50"; do
   read tech preset reads model plat m <<< "$t"
   for cfg in default r20 geo; do

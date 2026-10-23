@@ -1,6 +1,6 @@
 #!/bin/bash
 # Table 7 / Supplementary Table S8: structural-variant F1, stock minimap2 (MM2_GEO=0) vs mm2-geo
-# (MM2_GEO=1) on the SAME binary -> Sniffles2 -> truvari, vs GIAB HG002 SV Tier1 v0.6 (GRCh37 chr22).
+# (MM2_GEO=1 MM2_GEO_FAST=1) on the SAME binary -> Sniffles2 -> truvari, vs GIAB HG002 SV Tier1 v0.6 (GRCh37 chr22).
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
 cd "$WORKDIR"

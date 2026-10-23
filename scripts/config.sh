@@ -18,8 +18,8 @@ WORKDIR="${WORKDIR:-/path/to/mm2geo-workdir}"   # <-- SET THIS (or export WORKDI
 # 2) Executables. `bash scripts/build_tools.sh` builds all of them into $WORKDIR/bin from the tool
 #    repository (github.com/genpat-it/mm2-geo); one executable is both stock minimap2 (MM2_GEO unset)
 #    and mm2-geo.
-#      MM2GEO        tag revision-2026: heuristic mode (MM2_GEO=1) and certified mode (MM2_GEO=1 MM2_GEO_CERT=1)
-#      MM2GEO_SUB    tag submission-2026: the originally released heuristic mode (unchanged
+#      MM2GEO        tag revision-2026: heuristic mode (MM2_GEO=1 MM2_GEO_FAST=1) and certified mode (MM2_GEO=1)
+#      MM2GEO_SUB    tag submission-2026: the originally released heuristic mode (selected there by MM2_GEO=1; unchanged
 #                    in revision-2026); the heuristic-mode speed scripts can be run with either
 #      MM2GEO_INSTR  revision-2026 + instrumentation.patch: adds MM2_GEO_GAPLOG (per-gap log) and
 #                    MM2_GEO_TIMEDP (DP-stage CPU time); analysis only, same output
@@ -82,6 +82,7 @@ GW_READS="${GW_READS:-$WORKDIR/hifi_genomewide_subset.fq}"   # GIAB HG002 CCS 15
 # Complete GIAB HG002 data sets for the genome-wide benchmarks (fetched by `fetch_data.sh genomewide`).
 HG002_HIFI_BAM="${HG002_HIFI_BAM:-$WORKDIR/HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam}"
 HG002_ONT_CRAM="${HG002_ONT_CRAM:-$WORKDIR/PAO83395.pass.cram}"
+ONT_R9_READS="${ONT_R9_READS:-$WORKDIR/ont_r9_genomewide_3x.fq}"   # first 20 GB of GIAB HG002 ultra-long Guppy 3.2.4 FASTQ
 # pbsim3 reads simulated from GRCh38 chr22 with their true alignments (MAF), for the simulated-truth check.
 SIM_READS="${SIM_READS:-$WORKDIR/sim/chr22sim.fq}"
 SIM_MAF="${SIM_MAF:-$WORKDIR/sim/chr22sim.maf}"

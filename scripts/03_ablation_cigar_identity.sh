@@ -11,10 +11,10 @@ D=abcf; mkdir -p $D
 for TE in "hifi map-hifi hifi_chr22.fq" "ont map-ont ont_r10_chr22.fq"; do
   set -- $TE; tech=$1; pre=$2; rd=$3
   MM2_GEO=0 $MG -ax $pre -t32 $AR $rd 2>/dev/null | ex > $D/base
-  for cfg in "fixed-narrow|MM2_GEO=1 MM2_GEO_FIXED=1 MM2_GEO_NODOUBLE=1" \
-             "fixed-doubling|MM2_GEO=1 MM2_GEO_FIXED=1" \
-             "geometry-only|MM2_GEO=1 MM2_GEO_NODOUBLE=1" \
-             "mm2-geo|MM2_GEO=1"; do
+  for cfg in "fixed-narrow|MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_FIXED=1 MM2_GEO_NODOUBLE=1" \
+             "fixed-doubling|MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_FIXED=1" \
+             "geometry-only|MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_NODOUBLE=1" \
+             "mm2-geo|MM2_GEO=1 MM2_GEO_FAST=1"; do
     name="${cfg%%|*}"; env="${cfg#*|}"
     eval "$env $MG -ax $pre -t32 $AR $rd 2>/dev/null" | ex > $D/cfg
     join -t$'\t' $D/base $D/cfg | awk -v t=$tech -v n="$name" -F'\t' '{c++; if($2==$3)m++}END{printf "%-5s %-16s shared %d CIGARid %.2f%%\n",t,n,c,100*m/c}' | tee -a $R

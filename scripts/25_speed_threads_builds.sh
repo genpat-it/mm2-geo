@@ -16,5 +16,5 @@ for rep in 1 2 3; do for g in 0 1; do run "grch38:t32:geo=$g:rep$rep" "$MM2GEO_S
 for t in 4 32; do for rep in 1 2 3; do
   run "bioconda:t$t:rep$rep" "$BIOCONDA_MM2" MM2_GEO=0 $t $D/chr1.mmi "$GW_READS" /dev/null
   for g in 0 1; do run "O3:t$t:geo=$g:rep$rep" "$MM2GEO_O3" MM2_GEO=$g $t $D/chr1.mmi "$GW_READS" /dev/null; done; done; done
-same=$(cmp -s <(MM2_GEO=1 "$MM2GEO_SUB" -cx map-hifi -t8 chr22_named.fa hifi_chr22.fq 2>/dev/null) <(MM2_GEO=1 "$MM2GEO" -cx map-hifi -t8 chr22_named.fa hifi_chr22.fq 2>/dev/null) && echo yes || echo NO)
+same=$(cmp -s <(MM2_GEO=1 MM2_GEO_FAST=1 "$MM2GEO_SUB" -cx map-hifi -t8 chr22_named.fa hifi_chr22.fq 2>/dev/null) <(MM2_GEO=1 MM2_GEO_FAST=1 "$MM2GEO" -cx map-hifi -t8 chr22_named.fa hifi_chr22.fq 2>/dev/null) && echo yes || echo NO)
 echo "heuristic mode identical in submission-2026 and revision-2026 (chr22 HiFi): $same" | tee -a $D/summary.txt

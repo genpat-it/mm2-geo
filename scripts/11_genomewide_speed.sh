@@ -22,7 +22,7 @@ for cfg in mm2 geo; do
 done
 ex(){ $SAM view -F 0x900 - 2>/dev/null | awk 'BEGIN{OFS="\t"}{nm="NA";for(i=12;i<=NF;i++)if($i~/^NM:i:/)nm=substr($i,6);print $1,$4,$5,$6,nm}'|sort -k1,1; }
 MM2_GEO=0 $MG -ax map-hifi -t32 $D/grch38.mmi $RD 2>/dev/null | tee >($SAM view -c -F 0x900 - 2>/dev/null >$D/nmap_mm2) | ex >$D/mm2
-MM2_GEO=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 $D/grch38.mmi $RD 2>/dev/null | ex >$D/geo
+MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 $D/grch38.mmi $RD 2>/dev/null | ex >$D/geo
 echo "   primary alignments: mm2 $(cat $D/nmap_mm2 2>/dev/null), geo $(wc -l <$D/geo)" | tee -a $R
 join -t$'\t' $D/mm2 $D/geo | awk -F'\t' '{n++;if($2==$6)p++;if($3==$7)mq++;if($4==$8)cg++;if($5!="NA"&&$9!="NA"&&$5==$9)nm++}
   END{printf "   concordance (%d shared): samePOS %.2f%% sameMAPQ %.2f%% CIGARid %.2f%% NMid %.2f%%\n",n,100*p/n,100*mq/n,100*cg/n,100*nm/n}' | tee -a $R

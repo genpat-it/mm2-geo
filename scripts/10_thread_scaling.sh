@@ -16,9 +16,9 @@ echo "subset reads: $(($(wc -l < $SUB)/4))" | tee -a $R
 
 cmd(){ case $1 in
   mm2)     echo "MM2_GEO=0 $MG -ax map-hifi -t$2 chr22_named.fa $SUB";;
-  geo)     echo "MM2_GEO=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t$2 chr22_named.fa $SUB";;
+  geo)     echo "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t$2 chr22_named.fa $SUB";;
   fast)    echo "$MF -ax map-hifi -t$2 chr22_named.fa $SUB";;
-  fastgeo) echo "MM2_GEO=1 MM2_GEO_MARGIN=20 $MFG -ax map-hifi -t$2 chr22_named.fa $SUB";;
+  fastgeo) echo "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MFG -ax map-hifi -t$2 chr22_named.fa $SUB";;
  esac; }
 # runs: single at <=2 threads, median-of-3 at >=4
 trun(){ local c; c="$(cmd "$1" "$2")"; local n=3; [ "$2" -le 2 ] && n=1; local t=()

@@ -2,7 +2,7 @@
 
 Summary files as produced by the runs reported in the paper. Large intermediates (BAM, SAM/PAF, read files)
 are not included; the scripts in `scripts/` regenerate them. In these files `fast` and `geo` denote the
-heuristic mode (`MM2_GEO=1`), `cert` the certified mode (`MM2_GEO=1 MM2_GEO_CERT=1`), and `mm2`/`stock`
+heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`; `MM2_GEO=1` in `submission-2026`), `cert` the certified mode (`MM2_GEO=1`, the default in `revision-2026`; written `MM2_GEO=1 MM2_GEO_CERT=1` in earlier runs), and `mm2`/`stock`
 minimap2 (`MM2_GEO` unset or 0). Timings are wall-clock seconds and peak RSS in kB (`/usr/bin/time`); `load=`
 is the 1-minute load average when each run started.
 

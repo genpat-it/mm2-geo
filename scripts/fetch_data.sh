@@ -26,6 +26,7 @@ GIAB=https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab
 HIFI_BAM_URL=$GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_CCS_15kb_20kb_chemistry2/GRCh38/HG002.SequelII.merged_15kb_20kb.GRCh38.duplomap.bam
 CLR_BAM_URL=$GIAB/data/AshkenazimTrio/HG002_NA24385_son/PacBio_MtSinai_NIST/PacBio_minimap2_bam/HG002_PacBio_GRCh38.bam
 ONT_CRAM_URL=https://ont-open-data.s3.amazonaws.com/giab_2023.05/analysis/hg002/sup/PAO83395.pass.cram
+ONT_R9_URL=$GIAB/data/AshkenazimTrio/HG002_NA24385_son/Ultralong_OxfordNanopore/guppy-V3.2.4_2020-01-22/HG002_ONT-UL_GIAB_20200122.fastq.gz
 TRUTH_URL=$GIAB/release/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38
 SV_URL=https://ftp-trace.ncbi.nlm.nih.gov/giab/ftp/data/AshkenazimTrio/analysis/NIST_SVs_Integration_v0.6
 STRAT_URL=$GIAB/release/genome-stratifications/v3.3/GRCh38@all
@@ -105,6 +106,17 @@ get "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NC_
 if [ "$MODE" = genomewide ] || [ "$MODE" = all ]; then
   get "$HIFI_BAM_URL" "$HG002_HIFI_BAM"; get "$HIFI_BAM_URL.bai" "$HG002_HIFI_BAM.bai"
   get "$ONT_CRAM_URL" "$HG002_ONT_CRAM"; get "$ONT_CRAM_URL.crai" "$HG002_ONT_CRAM.crai"
+  # ONT R9.4.1 genome-wide subset: the first 20 GB (uncompressed, complete records only) of the GIAB HG002
+  # ultra-long Guppy 3.2.4 FASTQ, streamed (the 180 GB file is not stored); checked by read/base counts and md5
+  if [ ! -s "$ONT_R9_READS" ]; then
+    log "stream first 20 GB of $ONT_R9_URL -> $ONT_R9_READS"
+    curl -fsSL --retry 5 "$ONT_R9_URL" 2>/dev/null | gzip -dc 2>/dev/null | head -c 20000000000 | \
+      awk '{buf[NR%4]=$0} NR%4==0{print buf[1]"\n"buf[2]"\n"buf[3]"\n"buf[0]}' > "$ONT_R9_READS.part"
+    rb=$(awk 'NR%4==2{n++;b+=length($0)}END{print n" "b}' "$ONT_R9_READS.part")
+    if [ "$rb" = "1228750 9896844806" ] && echo "948425787aa1c9a6745753aa1b0d6d7b  $ONT_R9_READS.part" | md5sum -c --quiet; then
+      mv "$ONT_R9_READS.part" "$ONT_R9_READS"
+    else log "ERROR: ONT R9.4.1 subset has reads/bases $rb (expected 1228750 9896844806)"; exit 1; fi
+  fi
 fi
 # ---------- simulated reads with known true alignments (pbsim3 v3.0, chr22, seed 2024) ----------
 if [ ! -s "$SIM_READS" ] && command -v "$PBSIM" >/dev/null 2>&1; then

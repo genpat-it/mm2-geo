@@ -9,7 +9,7 @@ set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/cert_oracle; mkdir -p $D
 : > $D/summary.tsv
 run(){ # name preset ref reads oracle_mode cert
-  env MM2_GEO=1 MM2_GEO_CERT=$6 MM2_GEO_CERT_ORACLE=$5 "$MM2GEO_ORACLE" -cx $2 -t"$THREADS" $3 $4 2> >(grep '^ORC' | gzip > $D/$1.orc.gz) > /dev/null
+  env MM2_GEO=1 MM2_GEO_FAST=$((1-$6)) MM2_GEO_CERT_ORACLE=$5 "$MM2GEO_ORACLE" -cx $2 -t"$THREADS" $3 $4 2> >(grep '^ORC' | gzip > $D/$1.orc.gz) > /dev/null
   wait; sleep 2
   zcat $D/$1.orc.gz | awk -v n=$1 '{g++; if($10){z++; next} if($9==$8) eq++; if($9>$8){v++; if($9-$8>mx) mx=$9-$8}}
     END{printf "%s\tgaps_checked=%d\tviolations=%d\tmax_excess=%d\tequal_score=%.4f%%\tfull_band_skipped=%d\n", n, g, v+0, mx+0, 100*eq/(g-z), z+0}' | tee -a $D/summary.tsv

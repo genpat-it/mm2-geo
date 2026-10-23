@@ -1,6 +1,7 @@
 #!/bin/bash
 # UNIFIED CARTESIAN BENCHMARK: {dataset x tech x config} x {median-3 time, median-3 peak-RSS, F1}.
-# Datasets: human chr22, human chr14 (GIAB HG002). Tech: HiFi/ONT.
+# Datasets: human chr22, human chr14 (GIAB HG002). Tech: HiFi/ONT (time, memory, F1) and CLR (time, memory; no
+# small-variant caller model for CLR).
 # Configs: mm2 (stock), geo, mm2-fast, mm2-fast+geo. F1 via clair3 + rtg vcfeval.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
@@ -19,9 +20,9 @@ med(){ printf '%s\n' "$@"|sort -n|awk '{a[NR]=$1}END{print a[int((NR+1)/2)]}'; }
 
 alncmd(){ case $1 in
   mm2)     echo "MM2_GEO=0 $MG -ax $2 -t32 $3 $4";;
-  geo)     echo "MM2_GEO=1 MM2_GEO_MARGIN=20 $MG -ax $2 -t32 $3 $4";;
+  geo)     echo "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax $2 -t32 $3 $4";;
   fast)    echo "$MF -ax $2 -t32 $3 $4";;
-  fastgeo) echo "MM2_GEO=1 MM2_GEO_MARGIN=20 $MFG -ax $2 -t32 $3 $4";;
+  fastgeo) echo "MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MFG -ax $2 -t32 $3 $4";;
  esac; }
 timrss(){ local cmd; cmd="$(alncmd "$1" "$2" "$3" "$4")"; local t=() r=()
   for i in 1 2 3; do /usr/bin/time -f "%e %M" bash -c "$cmd >/dev/null 2>/dev/null" 2>$S/tr.t
@@ -39,6 +40,8 @@ TECH=(
  "chr22:ONT:map-ont:ont_r10_chr22.fq:$M_ONT:ont"
  "chr14:HiFi:map-hifi:hifi_chr14.fq:$M_HIFI:hifi"
  "chr14:ONT:map-ont:ont_r10_chr14.fq:$M_ONT:ont"
+ "chr22:CLR:map-pb:clr_chr22.fq:NONE:none"
+ "chr14:CLR:map-pb:clr_chr14.fq:NONE:none"
 )
 
 echo "### PART A — TIME + PEAK-MEM (median of 3), all 4 configs" | tee -a $TRES

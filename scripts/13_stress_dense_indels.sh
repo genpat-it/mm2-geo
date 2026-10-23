@@ -35,7 +35,7 @@ conda_on "$CONDA_ENV_RTG"; rm -rf $D/sdf; rtg format -o $D/sdf chr22_named.fa >/
 echo ">> [5] alignment time (pre-built map-hifi index, so index construction is not timed), median of 3 (32t)" | tee -a $R
 [ -s chr22.hifi.mmi ] || $MG -x map-hifi -d chr22.hifi.mmi chr22_named.fa >/dev/null 2>&1
 for cfg in mm2 geo cert; do
-  case $cfg in mm2) E="MM2_GEO=0";; geo) E="MM2_GEO=1 MM2_GEO_MARGIN=20";; cert) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
+  case $cfg in mm2) E="MM2_GEO=0";; geo) E="MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20";; cert) E="MM2_GEO=1";; esac
   t=()
   for i in 1 2 3; do
     /usr/bin/time -f "%e" bash -c "$E $MG -ax map-hifi -t32 chr22.hifi.mmi $D/adv.fq >/dev/null 2>/dev/null" 2>$D/t.t
@@ -47,7 +47,7 @@ done
 echo ">> [6] F1 (clair3 hifi + rtg vcfeval vs planted indels)" | tee -a $R
 tc(){ zcat "$1" 2>/dev/null | awk '!/^#/{if(length($4)==1&&length($5)==1)s++;else i++}END{printf "%d %d",s+0,i+0}'; }
 for cfg in mm2 geo cert; do
-  case $cfg in mm2) E="MM2_GEO=0";; geo) E="MM2_GEO=1 MM2_GEO_MARGIN=20";; cert) E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
+  case $cfg in mm2) E="MM2_GEO=0";; geo) E="MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20";; cert) E="MM2_GEO=1";; esac
   env $E $MG -ax map-hifi -t32 chr22_named.fa $D/adv.fq 2>/dev/null | q "$SAMTOOLS" sort -@8 -o $D/b.bam -
   q "$SAMTOOLS" index $D/b.bam
   conda_on "$CONDA_ENV_CLAIR3"; rm -rf $D/c3

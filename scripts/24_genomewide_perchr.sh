@@ -14,14 +14,14 @@ for p in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 ch
   "$SAMTOOLS" view -@8 -b -F 0x900 "$HG002_HIFI_BAM" $reg | "$SAMTOOLS" fastq -@8 - > $fq 2>/dev/null
   nr=$(awk 'NR%4==1{n++}END{print n+0}' $fq)
   MM2_GEO=0 "$MM2GEO" -cx map-hifi -t"$THREADS" $IDX $fq 2>/dev/null | sort -S4G > tmp_wg/a.paf
-  MM2_GEO=1 MM2_GEO_CERT=1 "$MM2GEO" -cx map-hifi -t"$THREADS" $IDX $fq 2>/dev/null | sort -S4G > tmp_wg/b.paf
+  MM2_GEO=1 "$MM2GEO" -cx map-hifi -t"$THREADS" $IDX $fq 2>/dev/null | sort -S4G > tmp_wg/b.paf
   # identical, or no:<number of reads whose PAF lines differ> (differing lines kept in discordant_<partition>.paf)
   if cmp -s tmp_wg/a.paf tmp_wg/b.paf; then idn=yes
   else diff tmp_wg/a.paf tmp_wg/b.paf | grep '^[<>]' > $D/discordant_$p.paf; idn="no:$(awk '{print $2}' $D/discordant_$p.paf | sort -u | wc -l)"; fi
   rm -f tmp_wg/a.paf tmp_wg/b.paf
   for rep in 1 2 3; do
     for c in stock_sub heuristic stock certified; do
-      case $c in stock_sub) X="$MM2GEO_SUB"; E="MM2_GEO=0";; heuristic) X="$MM2GEO_SUB"; E="MM2_GEO=1";; stock) X="$MM2GEO"; E="MM2_GEO=0";; certified) X="$MM2GEO"; E="MM2_GEO=1 MM2_GEO_CERT=1";; esac
+      case $c in stock_sub) X="$MM2GEO_SUB"; E="MM2_GEO=0";; heuristic) X="$MM2GEO_SUB"; E="MM2_GEO=1 MM2_GEO_FAST=1";; stock) X="$MM2GEO"; E="MM2_GEO=0";; certified) X="$MM2GEO"; E="MM2_GEO=1";; esac
       /usr/bin/time -f "%e %M" -o tmp_wg/t env $E "$X" -ax map-hifi -t"$THREADS" $IDX $fq > /dev/null 2>/dev/null
       echo -e "$p\t$nr\t$idn\t$c\t$rep\t$(cat tmp_wg/t)" >> $D/perchr.tsv
     done

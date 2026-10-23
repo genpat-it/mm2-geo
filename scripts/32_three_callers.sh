@@ -19,7 +19,7 @@ score(){ # label vcf
     BEGIN{printf "  %-24s SNV P/R/F1 %-22s INDEL P/R/F1 %-22s\n",l,f(ts,fps,tbs,fns),f(ti,fpi,tbi,fni)}' | tee -a $R; }
 echo "### HiFi chr22: minimap2 vs heuristic mode (m=20), three callers" | tee -a $R
 for cfg in mm2 geo; do
-  E="MM2_GEO=0"; [ $cfg = geo ] && E="MM2_GEO=1 MM2_GEO_MARGIN=20"
+  E="MM2_GEO=0"; [ $cfg = geo ] && E="MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_MARGIN=20"
   env $E "$MM2GEO" -ax map-hifi -t"$THREADS" chr22_named.fa hifi_chr22.fq 2>/dev/null | "$SAMTOOLS" sort -@8 -o $S/tmp.bam - 2>/dev/null
   "$SAMTOOLS" reheader -c 'sed "s/SN:chr22/SN:CM000684.2/"' $S/tmp.bam > $S/$cfg.bam 2>/dev/null; rm -f $S/tmp.bam
   "$SAMTOOLS" index -@8 $S/$cfg.bam
