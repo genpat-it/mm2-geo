@@ -14,7 +14,7 @@ MM2_GEO=0 $MG -ax map-hifi -t32 $D/grch38.mmi $RD >/dev/null 2>/dev/null
 : > $D/times
 for rep in 1 2 3; do for cfg in mm2 geo; do
   gf=0; [ "$cfg" = geo ] && gf=1
-  /usr/bin/time -f "%e %M" bash -c "MM2_GEO=$gf MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 $D/grch38.mmi $RD >/dev/null 2>/dev/null" 2>$D/t
+  /usr/bin/time -f "%e %M" bash -c "MM2_GEO=$gf MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax map-hifi -t32 $D/grch38.mmi $RD >/dev/null 2>/dev/null" 2>$D/t
   echo "$cfg $(cat $D/t)" >> $D/times
 done; done
 for cfg in mm2 geo; do

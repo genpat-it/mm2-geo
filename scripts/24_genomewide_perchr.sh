@@ -27,7 +27,7 @@ for p in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 ch
     done
   done
   [ $p = chr1 ] && { "$SAMTOOLS" faidx "$GRCH38_REF" CM000663.2 > tmp_wg/chr1.fa; "$MM2GEO" -x map-hifi -d tmp_wg/chr1.mmi tmp_wg/chr1.fa > /dev/null 2>&1
-    for rep in 1 2 3; do for g in 0 1; do /usr/bin/time -f "%e %M" -o tmp_wg/t env MM2_GEO=$g "$MM2GEO_SUB" -ax map-hifi -t"$THREADS" tmp_wg/chr1.mmi $fq > /dev/null 2>/dev/null
+    for rep in 1 2 3; do for g in 0 1; do /usr/bin/time -f "%e %M" -o tmp_wg/t env MM2_GEO=$g MM2_GEO_FAST=1 "$MM2GEO_SUB" -ax map-hifi -t"$THREADS" tmp_wg/chr1.mmi $fq > /dev/null 2>/dev/null
       echo -e "chr1_only_reference\tgeo=$g\trep$rep\t$(cat tmp_wg/t)" >> $D/chr1_only.tsv; done; done; }
   rm -f $fq
 done

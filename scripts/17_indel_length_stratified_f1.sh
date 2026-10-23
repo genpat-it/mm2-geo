@@ -23,7 +23,7 @@ run(){ local tech=$1 preset=$2 reads=$3 mdl=$4 aln=$5 geo=$6   # aln: mm2|geo ; 
   local tag="${tech}_${aln}"; local W=$OUT/$tag
   echo ">>> $tag (MM2_GEO=$geo)" | tee -a $R
   rm -rf $W; mkdir -p $W
-  MM2_GEO=$geo $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -T $TMPDIR/srt_$tag -o $W/b.bam -
+  MM2_GEO=$geo MM2_GEO_FAST=1 $MG -ax $preset -t32 $AR $reads 2>/dev/null | q "$SAMTOOLS" sort -@8 -T $TMPDIR/srt_$tag -o $W/b.bam -
   q "$SAMTOOLS" reheader -c "sed \"s/SN:chr22/SN:$CT/\"" $W/b.bam > $W/b2.bam; mv $W/b2.bam $W/b.bam
   q "$SAMTOOLS" index $W/b.bam
   conda_on "$CONDA_ENV_CLAIR3"; rm -rf $W/c3

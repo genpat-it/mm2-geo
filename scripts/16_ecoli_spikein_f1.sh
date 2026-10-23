@@ -16,7 +16,7 @@ $SAM faidx $REF
 conda_on "$CONDA_ENV_RTG"; rm -rf ecoli_vc/sdf; rtg format -o ecoli_vc/sdf $REF >/dev/null 2>&1; conda_off
 tc(){ zcat "$1" 2>/dev/null | awk '!/^#/{if(length($4)==1&&length($5)==1)s++;else i++}END{printf "%d %d",s+0,i+0}'; }
 f1(){ local tag=$1 G=$2
-  MM2_GEO=$G MM2_GEO_MARGIN=20 $MG -ax map-ont -t32 $REF $RD 2>/dev/null | q $SAM sort -@8 -o ecoli_vc/$tag.bam -
+  MM2_GEO=$G MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 $MG -ax map-ont -t32 $REF $RD 2>/dev/null | q $SAM sort -@8 -o ecoli_vc/$tag.bam -
   q $SAM index ecoli_vc/$tag.bam
   conda_on "$CONDA_ENV_CLAIR3"; rm -rf ecoli_vc/c3_$tag
   $C3 --bam_fn=ecoli_vc/$tag.bam --ref_fn=$REF --threads=32 --platform=ont \

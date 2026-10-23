@@ -30,7 +30,7 @@ run(){ local tech=$1 preset=$2 reads=$3
   echo ">> $tech (SV F1 vs GIAB Tier1, GRCh37 chr22)" | tee -a "$R"
   for cfg in mm2 geo; do
     local gf=0; [ "$cfg" = geo ] && gf=1
-    MM2_GEO=$gf MM2_GEO_MARGIN=20 "$MM2GEO" -ax "$preset" -t"$THREADS" "$REF" "$WORKDIR/$reads" 2>/dev/null \
+    MM2_GEO=$gf MM2_GEO_FAST=1 MM2_GEO_MARGIN=20 "$MM2GEO" -ax "$preset" -t"$THREADS" "$REF" "$WORKDIR/$reads" 2>/dev/null \
       | "$SAMTOOLS" sort -@8 -o "$S/${tech}_${cfg}.bam" - 2>/dev/null
     "$SAMTOOLS" index "$S/${tech}_${cfg}.bam"
     "$SNIFFLES" --input "$S/${tech}_${cfg}.bam" --vcf "$S/${tech}_${cfg}_sv.vcf.gz" --reference "$REF" --threads 16 \
