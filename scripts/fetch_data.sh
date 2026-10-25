@@ -110,8 +110,9 @@ if [ "$MODE" = genomewide ] || [ "$MODE" = all ]; then
   # ultra-long Guppy 3.2.4 FASTQ, streamed (the 180 GB file is not stored); checked by read/base counts and md5
   if [ ! -s "$ONT_R9_READS" ]; then
     log "stream first 20 GB of $ONT_R9_URL -> $ONT_R9_READS"
-    curl -fsSL --retry 5 "$ONT_R9_URL" 2>/dev/null | gzip -dc 2>/dev/null | head -c 20000000000 | \
-      awk '{buf[NR%4]=$0} NR%4==0{print buf[1]"\n"buf[2]"\n"buf[3]"\n"buf[0]}' > "$ONT_R9_READS.part"
+    # head closes the stream after 20 GB, so curl/gzip end on SIGPIPE: that is expected, not an error
+    ( set +o pipefail; curl -fsSL --retry 5 "$ONT_R9_URL" 2>/dev/null | gzip -dc 2>/dev/null | head -c 20000000000 | \
+      awk '{buf[NR%4]=$0} NR%4==0{print buf[1]"\n"buf[2]"\n"buf[3]"\n"buf[0]}' > "$ONT_R9_READS.part" )
     rb=$(awk 'NR%4==2{n++;b+=length($0)}END{print n" "b}' "$ONT_R9_READS.part")
     if [ "$rb" = "1228750 9896844806" ] && echo "948425787aa1c9a6745753aa1b0d6d7b  $ONT_R9_READS.part" | md5sum -c --quiet; then
       mv "$ONT_R9_READS.part" "$ONT_R9_READS"
