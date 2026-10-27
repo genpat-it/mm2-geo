@@ -37,7 +37,7 @@ MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 ```
 
 - `MM2_GEO=1` — certified mode (the default): the band is sized from the anchor
-  geometry and accepted only when the in-band score provably exceeds that of any
+  geometry and accepted only when the in-band score is provably at least that of any
   path leaving it; otherwise the gap is realigned once with the smallest band the
   bound certifies. Includes an exact one-gap shortcut and a score-only first pass on
   gaps of at least 256 bp (`MM2_GEO_CERT_SCOREPROBE=<int>`, 0 disables). Output is
@@ -63,18 +63,19 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 
 | data | heuristic mode | certified mode (identical output) |
 |---|---|---|
-| HiFi | 1.38× | 1.24× (1.22× genome-wide, 53×) |
+| HiFi | 1.38× | 1.24× (1.35× genome-wide, 53×) |
 | ONT | 1.15–1.19× | 1.07–1.19× |
 | CLR | 1.41× | 1.11× |
 
-- The DP stage itself becomes 1.5–2.0× faster in the heuristic mode and 1.15–2.6×
+- The DP stage itself becomes 1.5–2.0× faster in the heuristic mode and 1.15–2.5×
   faster in the certified mode; the rest of the run is unchanged, so the
   end-to-end gain follows the share of run time spent in DP (Amdahl's law).
 - The heuristic mode keeps small-variant F1 unchanged in GIAB high-confidence regions
   but can accept lower-scoring alignments in repetitive sequence; use the
   certified mode for structural-variant or repeat analyses and validated pipelines.
 - Complementary to SIMD acceleration: a port to
-  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) is provided (`geo_mm2fast.patch`):
+  [mm2-fast](https://github.com/bwa-mem2/mm2-fast) is provided (`geo_mm2fast.patch`, for the
+  genomic presets; spliced alignment is not covered):
   on chr22 its certified mode is byte-identical to mm2-fast and 1.16× (HiFi), 1.08× (ONT)
   and 1.10× (CLR) faster than it; the heuristic mode 1.22×, 1.18× and 1.34×.
 - Short reads (Illumina, `-ax sr`) use minimap2's ungapped path and are
@@ -82,9 +83,13 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 
 ## Applying to minimap2 and mm2-fast
 
-`geo.patch` applies to stock minimap2 v2.30 (`align.c` only). mm2-fast restructures the
+`geo.patch` applies to stock minimap2 v2.30 (`align.c` only). It is the minimal production patch:
+heuristic and certified modes without the diagnostic flags (`MM2_GEO_STATS`, `MM2_GEO_FIXED`,
+`MM2_GEO_NODOUBLE`), which are in this tree (together with a DP-cell counter in `ksw2_extd2_sse.c`).
+mm2-fast restructures the
 gap-filling loop, so it needs its own port, `geo_mm2fast.patch` (heuristic and certified modes),
-which applies to mm2-fast commit `14fe36c`:
+which applies to mm2-fast commit `14fe36c` and covers the genomic presets (map-hifi, map-ont,
+map-pb, ...; not spliced alignment):
 
 ```bash
 git clone https://github.com/bwa-mem2/mm2-fast && cd mm2-fast
@@ -102,11 +107,13 @@ identity): its boundary-contact test can accept a lower-scoring path when a
 band-leaving insertion–deletion detour is replaced by mismatches, which happens
 mostly in repetitive sequence. The **certified mode** replaces that test with a
 score bound and reproduces minimap2's output; its guarantee is relative to
-minimap2, whose own band, z-drop and chaining remain heuristics. In rare cases the
-output differs: equal-score alternatives (ties) can be reported differently, and
-where minimap2's band misses the best gap alignment the certified mode returns a
-higher-scoring one (12 of 13.7 million reads in the paper's genome-wide runs: nine
-ties, three higher-scoring alignments).
+minimap2, whose own band, z-drop and chaining remain heuristics. Each accepted band carries
+a proof that no wider band (up to minimap2's) scores higher, and the returned traceback is
+checked to attain that score (a path running along the band edge can be traced back
+inconsistently by the banded kernel; such a gap is realigned with minimap2's band), so the
+certified gap score equals minimap2's. The only possible read-level differences are
+equal-score alternative tracebacks, which can also change minimap2's CIGAR-based z-drop
+decision downstream.
 
 Versions: tag `submission-2026` = heuristic mode only (selected by `MM2_GEO=1`); tag `revision-2026` =
 certified mode as the default (`MM2_GEO=1`) and the unchanged heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`).

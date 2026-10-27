@@ -695,12 +695,24 @@ static int mm_geo_cert_band(const mm_mapopt_t *o, int ql, int tl, int d, long lo
 	while (hi - lo > 1) { int mid = lo + (hi - lo) / 2; if (mm_geo_cert_ub(o, ql, tl, mid, d) <= s) hi = mid; else lo = mid; }
 	return hi;
 }
+static long long mm_geo_cigar_score(const mm_mapopt_t *o, const int8_t *mat, const uint8_t *qs, const uint8_t *ts, const ksw_extz_t *ez)
+{ // score of the returned CIGAR under the scoring of the DP (certified mode: checked against the band score)
+	long long s = 0; int qi = 0, ti = 0, c, k;
+	for (c = 0; c < ez->n_cigar; ++c) {
+		int op = ez->cigar[c] & 0xf, ln = ez->cigar[c] >> 4;
+		if (op == MM_CIGAR_MATCH) { for (k = 0; k < ln; ++k) s += mat[qs[qi + k] * 5 + ts[ti + k]]; qi += ln; ti += ln; }
+		else if (op == MM_CIGAR_INS) { s -= mm_geo_gcost(o, ln); qi += ln; }
+		else if (op == MM_CIGAR_DEL) { s -= mm_geo_gcost(o, ln); ti += ln; }
+	}
+	return s;
+}
 static int mm_geo_try_onegap(void *km, const mm_mapopt_t *o, const int8_t *mat, int ql, const uint8_t *qs, int tl, const uint8_t *ts, ksw_extz_t *ez)
 {
 	int d = ql > tl? ql - tl : tl - ql, n = ql < tl? ql : tl;
 	int p, best_p = 0, sc = 0, best = KSW_NEG_INF, op, k;
 	long long ub;
 	if (d > 32 || n <= 0) return 0;
+	if (o->max_sw_mat > 0 && (int64_t)ql * tl > o->max_sw_mat) return 0; // minimap2 skips such gaps; leave them to the DP path
 	if (d == 0) {
 		for (k = 0; k < n; ++k) sc += mat[qs[k] * 5 + ts[k]];
 		best = sc;
@@ -1009,7 +1021,12 @@ static void mm_align1(void *km, const mm_mapopt_t *opt, const mm_idx_t *mi, int 
 						}
 						if (geo_cert) { // certified acceptance: score bound instead of boundary contact
 							if (!ez->zdropped && ez->score > KSW_NEG_INF / 2) {
-								if ((long long)ez->score >= mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd)) break;
+								if ((long long)ez->score >= mm_geo_cert_ub(opt, qe - qs, re - rs, gb, dd)) {
+									// the certificate covers the band score; accept only if the traceback attains it (a path running
+									// along the band edge can be traced back inconsistently), else fall back to minimap2's band
+									if (mm_geo_cigar_score(opt, mat, qseq, tseq, ez) == ez->score) break;
+									gb = ceil_bw; continue;
+								}
 								gb = mm_geo_cert_band(opt, qe - qs, re - rs, dd, ez->score, gb, ceil_bw);
 							} else gb = ceil_bw;
 							continue;
