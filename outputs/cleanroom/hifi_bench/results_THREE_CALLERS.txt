@@ -1,0 +1,8 @@
+### HiFi chr22: minimap2 vs heuristic mode (m=20), three callers
+  clair3 mm2               SNV P/R/F1 0.9932/0.9987/0.9959   INDEL P/R/F1 0.9953/0.9973/0.9963  
+  bcftools mm2             SNV P/R/F1 0.9475/0.9962/0.9712   INDEL P/R/F1 0.6966/0.8535/0.7671  
+  deepvariant mm2          SNV P/R/F1 0.9962/0.9985/0.9974   INDEL P/R/F1 0.9919/0.9927/0.9923  
+  clair3 geo               SNV P/R/F1 0.9929/0.9987/0.9958   INDEL P/R/F1 0.9951/0.9971/0.9961  
+  bcftools geo             SNV P/R/F1 0.9475/0.9962/0.9712   INDEL P/R/F1 0.6966/0.8535/0.7671  
+  deepvariant geo          SNV P/R/F1 0.9968/0.9986/0.9977   INDEL P/R/F1 0.9919/0.9927/0.9923  
+### DONE

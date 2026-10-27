@@ -1,0 +1,2 @@
+reads 1228750, bases 9896844806
+certified identical to minimap2: yes

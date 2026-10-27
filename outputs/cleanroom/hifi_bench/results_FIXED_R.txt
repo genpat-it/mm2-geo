@@ -1,0 +1,7 @@
+  HiFi default   time    48.9s  SNV F1 0.9959  INDEL F1 0.9963
+  HiFi r20       time    17.9s  SNV F1 0.9959  INDEL F1 0.9840
+  HiFi geo       time    35.3s  SNV F1 0.9958  INDEL F1 0.9961
+  ONT default    time   144.4s  SNV F1 0.9940  INDEL F1 0.8001
+  ONT r20        time   156.1s  SNV F1 0.9883  INDEL F1 0.7715
+  ONT geo        time   120.8s  SNV F1 0.9951  INDEL F1 0.8003
+### DONE

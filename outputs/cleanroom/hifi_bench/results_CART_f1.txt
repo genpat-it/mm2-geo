@@ -11,4 +11,6 @@
   chr14 HiFi geo         SNV 0.9996/0.9997/0.9997   INDEL 0.9977/0.9979/0.9978  
   chr14 ONT mm2          SNV 0.9991/0.9957/0.9974   INDEL 0.8219/0.8497/0.8356  
   chr14 ONT geo          SNV 0.9991/0.9961/0.9976   INDEL 0.8211/0.8491/0.8349  
+  chr22 CLR: no caller model (CLR) — time/mem only
+  chr14 CLR: no caller model (CLR) — time/mem only
 ### DONE-B

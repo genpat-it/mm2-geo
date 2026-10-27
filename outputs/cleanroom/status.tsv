@@ -1,56 +1,39 @@
-[run 23:08:59] commit 7b9bdd6 ONT R10.4.1 genome-wide: outputs; script 27 keeps the PAFs and reports differing reads with scores
-00	00_verify_output_identity.sh	exit=0	17 min	23:26:27
-29	29_input_counts.sh	exit=0	17 min	23:43:49
-18	18_gap_rounds_dE.sh	exit=0	11 min	23:55:41
-19	19_discordant_reads.sh	exit=0	0 min	23:56:24
-20	20_simulated_truth.sh	exit=0	0 min	23:56:40
-23	23_modes_identity_timing.sh	exit=0	59 min	00:56:27
-26	26_dp_stage.sh	exit=0	16 min	01:12:43
-02	02_dp_cell_count.sh	exit=0	5 min	01:18:00
-03	03_ablation_cigar_identity.sh	exit=0	13 min	01:31:20
-05	05_alignment_concordance.sh	exit=0	5 min	01:36:42
-06	06_primary_presence.sh	exit=0	11 min	01:48:23
-16	16_ecoli_spikein_f1.sh	exit=0	18 min	02:06:38
-21	21_callset_diff.sh	exit=0	45 min	02:52:13
-22	22_sv_truth_grch37.sh	exit=0	14 min	03:07:08
-07	07_sv_calling.sh	exit=0	6 min	03:13:43
-01	01_benchmark_grid.sh	exit=0	113 min	05:07:40
-04	04_ablation_variant_f1.sh	exit=0	38 min	05:45:51
-09	09_margin_sweep.sh	exit=0	77 min	07:03:26
-17	17_indel_length_stratified_f1.sh	exit=0	18 min	07:21:58
-08	08_composition_mm2fast_f1.sh	exit=0	36 min	07:58:11
-10	10_thread_scaling.sh	exit=0	175 min	10:53:48
-11	11_genomewide_speed.sh	exit=0	6 min	11:00:42
-12	12_genomewide_concordance.sh	exit=0	2 min	11:03:22
-13	13_stress_dense_indels.sh	exit=0	58 min	12:01:29
-14	14_stress_large_sv.sh	exit=0	41 min	12:42:41
-25	25_speed_threads_builds.sh	exit=0	250 min	16:53:40
-28	28_mm2fast_modes.sh	exit=0	22 min	17:16:25
-[run 17:16:25] ALL_DONE
-[rerun 17:16:34] commit a27f700 Stress tests: pre-built index for timing, certified mode added, placement and CIGAR concordance over reads mapped by both
-12	12_genomewide_concordance.sh (rerun)	exit=0	2 min	17:19:05
-11	11_genomewide_speed.sh (rerun)	exit=0	8 min	17:27:26
-[rerun 17:27:26] RERUN_DONE
-[rerun2 17:27:28] commit a27f700 Stress tests: pre-built index for timing, certified mode added, placement and CIGAR concordance over reads mapped by both
-13	13_stress_dense_indels.sh (rerun)	exit=0	61 min	18:28:55
-14	14_stress_large_sv.sh (rerun)	exit=0	44 min	19:13:13
-[rerun2 19:13:13] RERUN2_DONE
-[rerun3 19:16:31] env -i, commit a0cba11 conda_on/conda_off: never fall back to the base environment; clean-room outputs
-21	(rerun3, env -i)	exit=0	1 min	19:18:17
-16	(rerun3, env -i)	exit=0	18 min	19:36:28
-17	(rerun3, env -i)	exit=0	19 min	19:55:32
-04	(rerun3, env -i)	exit=0	38 min	20:33:37
-08	(rerun3, env -i)	exit=0	36 min	21:09:46
-13	(rerun3, env -i)	exit=0	61 min	22:11:32
-09	(rerun3, env -i)	exit=0	77 min	23:28:55
-01	(rerun3, env -i)	exit=0	113 min	01:21:58
-[rerun3 01:21:58] RERUN3_DONE
-11	11_genomewide_speed.sh	exit=0	6 min	11:00:42
-12	12_genomewide_concordance.sh	exit=0	2 min	11:03:22
-12	12_genomewide_concordance.sh (rerun)	exit=0	2 min	17:19:05
-11	11_genomewide_speed.sh (rerun)	exit=0	8 min	17:27:26
-[gw 11:11:59] tag reproducibility-revision-2026 5f74e34
-fetch genomewide	exit=0	113 min	13:05:03
-27	(genome-wide, env -i)	exit=0	381 min	19:26:08
-24	(genome-wide, env -i)	exit=0	1027 min	12:33:24
-[gw 12:33:24] GW_DONE
+build_tools	exit=0	1 min	2026-10-23 11:49:59
+fetch_core	exit=0	101 min	2026-10-23 13:31:23
+smoke_test	exit=0	0 min	2026-10-23 13:31:25
+00	exit=0	12 min	2026-10-23 13:44:15
+29	exit=0	15 min	2026-10-23 14:26:38
+18	exit=0	11 min	2026-10-23 14:38:21
+19	exit=0	0 min	2026-10-23 14:39:04
+20	exit=0	0 min	2026-10-23 14:39:20
+23	exit=0	61 min	2026-10-23 15:41:10
+26	exit=0	17 min	2026-10-23 15:58:32
+02	exit=0	5 min	2026-10-23 16:04:10
+03	exit=0	14 min	2026-10-23 16:18:20
+05	exit=0	14 min	2026-10-23 16:33:08
+06	exit=0	11 min	2026-10-23 16:44:15
+15	exit=0	0 min	2026-10-23 16:44:17
+16	exit=0	18 min	2026-10-23 17:02:49
+21	exit=0	45 min	2026-10-23 17:48:48
+22	exit=0	14 min	2026-10-23 18:03:44
+07	exit=0	6 min	2026-10-23 18:10:18
+01	exit=0	135 min	2026-10-23 20:25:50
+04	exit=0	38 min	2026-10-23 21:04:25
+09	exit=0	97 min	2026-10-23 22:42:24
+17	exit=0	19 min	2026-10-23 23:01:39
+08	exit=0	37 min	2026-10-23 23:39:01
+10	exit=0	181 min	2026-10-24 02:40:03
+11	exit=0	12 min	2026-10-24 02:52:57
+12	exit=0	2 min	2026-10-24 02:55:32
+13	exit=0	62 min	2026-10-24 03:57:40
+14	exit=0	46 min	2026-10-24 04:43:58
+25	exit=0	259 min	2026-10-24 09:03:48
+28	exit=0	23 min	2026-10-24 09:26:53
+30	exit=0	11 min	2026-10-24 09:38:19
+31	exit=0	0 min	2026-10-24 09:38:43
+32	exit=0	20 min	2026-10-24 09:59:22
+33	exit=0	55 min	2026-10-24 10:54:31
+fetch_genomewide	exit=0	7 min	2026-10-25 19:27:21
+27	exit=0	397 min	2026-10-26 02:04:38
+34	exit=0	213 min	2026-10-26 05:37:51
+24	exit=0	1026 min	2026-10-26 22:44:47

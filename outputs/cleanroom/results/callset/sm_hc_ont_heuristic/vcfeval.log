@@ -1,0 +1,86 @@
+2026-10-23 17:42:00 serial = 27182818284
+2026-10-23 17:42:00 email = anon
+2026-10-23 17:42:00 RTG version = RTG Tools 3.13 / Core c27844a5bb (2025-05-27)
+2026-10-23 17:42:00 file.encoding = UTF-8
+2026-10-23 17:42:00 file.separator = /
+2026-10-23 17:42:00 host.name = gtc-gpu1.izs.intra
+2026-10-23 17:42:00 java.class.path = $CONDA_ENV/share/rtg-tools-3.13-0/RTG.jar
+2026-10-23 17:42:00 java.class.version = 69.0
+2026-10-23 17:42:00 java.home = $CONDA_ENV/lib/jvm
+2026-10-23 17:42:00 java.io.tmpdir = /tmp
+2026-10-23 17:42:00 java.library.path = $CONDA_ENV/share/rtg-tools-3.13-0
+2026-10-23 17:42:00 java.runtime.name = OpenJDK Runtime Environment
+2026-10-23 17:42:00 java.runtime.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-23 17:42:00 java.specification.name = Java Platform API Specification
+2026-10-23 17:42:00 java.specification.vendor = Oracle Corporation
+2026-10-23 17:42:00 java.specification.version = 25
+2026-10-23 17:42:00 java.vendor = N/A
+2026-10-23 17:42:00 java.vendor.url = https://openjdk.org/
+2026-10-23 17:42:00 java.vendor.url.bug = https://bugreport.java.com/bugreport/
+2026-10-23 17:42:00 java.version = 25.0.2-internal
+2026-10-23 17:42:00 java.version.date = 2026-01-20
+2026-10-23 17:42:00 java.vm.info = mixed mode, sharing
+2026-10-23 17:42:00 java.vm.name = OpenJDK 64-Bit Server VM
+2026-10-23 17:42:00 java.vm.specification.name = Java Virtual Machine Specification
+2026-10-23 17:42:00 java.vm.specification.vendor = Oracle Corporation
+2026-10-23 17:42:00 java.vm.specification.version = 25
+2026-10-23 17:42:00 java.vm.vendor = Oracle Corporation
+2026-10-23 17:42:00 java.vm.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-23 17:42:00 jdk.debug = release
+2026-10-23 17:42:00 lang.version = 25.0.2-internal
+2026-10-23 17:42:00 line.separator = 
+
+2026-10-23 17:42:00 models.dir = $CONDA_ENV/share/rtg-tools-3.13-0/models
+2026-10-23 17:42:00 nashorn.option.no.deprecation.warning = true
+2026-10-23 17:42:00 native.encoding = ANSI_X3.4-1968
+2026-10-23 17:42:00 os.arch = amd64
+2026-10-23 17:42:00 os.freememory = 56870424576
+2026-10-23 17:42:00 os.name = Linux
+2026-10-23 17:42:00 os.totalmemory = 540412989440
+2026-10-23 17:42:00 os.version = 6.12.0-124.40.1.el10_1.x86_64
+2026-10-23 17:42:00 path.separator = :
+2026-10-23 17:42:00 polyglot.js.nashorn-compat = true
+2026-10-23 17:42:00 processor.arch = amd64
+2026-10-23 17:42:00 processor.count = 80
+2026-10-23 17:42:00 references.dir = $CONDA_ENV/share/rtg-tools-3.13-0/references
+2026-10-23 17:42:00 runtime.freememory = 2155287488
+2026-10-23 17:42:00 runtime.maxmemory = 486371491840
+2026-10-23 17:42:00 runtime.totalMemory = 2181038080
+2026-10-23 17:42:00 stderr.encoding = ANSI_X3.4-1968
+2026-10-23 17:42:00 stdin.encoding = ANSI_X3.4-1968
+2026-10-23 17:42:00 stdout.encoding = ANSI_X3.4-1968
+2026-10-23 17:42:00 sun.arch.data.model = 64
+2026-10-23 17:42:00 sun.boot.library.path = $CONDA_ENV/lib/jvm/lib
+2026-10-23 17:42:00 sun.cpu.endian = little
+2026-10-23 17:42:00 sun.io.unicode.encoding = UnicodeLittle
+2026-10-23 17:42:00 sun.java.command = $CONDA_ENV/share/rtg-tools-3.13-0/RTG.jar vcfeval -b results/callset/c3_ont_stock/merge_output.vcf.gz -c results/callset/c3_ont_heuristic/merge_output.vcf.gz -t ref_chr22_sdf -e conf_chr22.bed -o results/callset/sm_hc_ont_heuristic
+2026-10-23 17:42:00 sun.java.launcher = SUN_STANDARD
+2026-10-23 17:42:00 sun.jnu.encoding = ANSI_X3.4-1968
+2026-10-23 17:42:00 sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2026-10-23 17:42:00 talkback = true
+2026-10-23 17:42:00 usage = false
+2026-10-23 17:42:00 user.country = US
+2026-10-23 17:42:00 user.dir = $WORKDIR
+2026-10-23 17:42:00 user.home = $HOME
+2026-10-23 17:42:00 user.language = en
+2026-10-23 17:42:00 user.name = a.deruvo
+2026-10-23 17:42:00 user.timezone = Europe/Rome
+2026-10-23 17:42:00 vendor = N/A
+2026-10-23 17:42:00 gzipfix.enabled = false
+2026-10-23 17:42:00 Command line arguments: rtg vcfeval -b results/callset/c3_ont_stock/merge_output.vcf.gz -c results/callset/c3_ont_heuristic/merge_output.vcf.gz -t ref_chr22_sdf -e conf_chr22.bed -o results/callset/sm_hc_ont_heuristic
+2026-10-23 17:42:00 Run Id: 432e90d6-b733-4807-bb12-fce735ab04d9
+2026-10-23 17:42:00 Referenced SDF-ID: 0d0f1cb8-c0a3-4e74-b47e-f532b5317396 Type: DNA Sequences: 1 Max-Length: 50818468 Min-Length: 50818468 Arm: UNKNOWN
+2026-10-23 17:42:00 Variant orientors per pass: [unphased (2 haplotypes):unphased (2 haplotypes)]
+2026-10-23 17:42:01 Reference CM000684.2 baseline contains 86856 variants.
+2026-10-23 17:42:01 Reference CM000684.2 calls contains 87273 variants.
+2026-10-23 17:42:02 Reference CM000684.2 had maximum path complexity of 803 at CM000684.2:32569537-32572106
+2026-10-23 17:42:03 Fraction of calls outside evaluation regions: 0.0500 (2522/50461)
+2026-10-23 17:42:03 Representation bias correction factor for SNP 41108/41108.0 = 1.0
+2026-10-23 17:42:03 Representation bias correction factor for NON_SNP 6706/6706.0 = 1.0
+2026-10-23 17:42:03 Selected score threshold using: maximized F-measure
+2026-10-23 17:42:03 Threshold  True-pos-baseline  True-pos-call  False-pos  False-neg  Precision  Sensitivity  F-measure
+----------------------------------------------------------------------------------------------------
+    2.000              47814          47814        125        156     0.9974       0.9967     0.9971
+     None              47814          47814        125        156     0.9974       0.9967     0.9971
+
+2026-10-23 17:42:03 Finished successfully in 3 s.

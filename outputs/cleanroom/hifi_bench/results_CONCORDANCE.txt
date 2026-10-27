@@ -8,4 +8,19 @@
    same POS: 99.77%  same MAPQ: 99.08%  identical CIGAR: 98.34%
    mean |dNM|: 3.436  (geo worse: 0.73%, better: 0.88%, equal: 98.39%)
    mean |dAS|: 11.298
+>> CLR concordance (mm2 vs geo)
+   shared primaries: 250992
+   same POS: 99.80%  same MAPQ: 99.52%  identical CIGAR: 98.75%
+   mean |dNM|: 1.620  (geo worse: 0.58%, better: 0.64%, equal: 98.79%)
+   mean |dAS|: 2.707
+>> CLR-chr14 concordance (mm2 vs geo)
+   shared primaries: 613023
+   same POS: 99.98%  same MAPQ: 99.97%  identical CIGAR: 99.52%
+   mean |dNM|: 0.659  (geo worse: 0.29%, better: 0.18%, equal: 99.53%)
+   mean |dAS|: 1.497
+>> Ecoli-ONT concordance (mm2 vs geo)
+   shared primaries: 3896819
+   same POS: 100.00%  same MAPQ: 100.00%  identical CIGAR: 99.94%
+   mean |dNM|: 0.132  (geo worse: 0.03%, better: 0.03%, equal: 99.93%)
+   mean |dAS|: 0.286
 ### DONE-CONC

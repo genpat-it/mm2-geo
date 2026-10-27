@@ -1,0 +1,85 @@
+2026-10-23 17:19:02 serial = 27182818284
+2026-10-23 17:19:02 email = anon
+2026-10-23 17:19:02 RTG version = RTG Tools 3.13 / Core c27844a5bb (2025-05-27)
+2026-10-23 17:19:02 file.encoding = UTF-8
+2026-10-23 17:19:02 file.separator = /
+2026-10-23 17:19:02 host.name = gtc-gpu1.izs.intra
+2026-10-23 17:19:02 java.class.path = $CONDA_ENV/share/rtg-tools-3.13-0/RTG.jar
+2026-10-23 17:19:02 java.class.version = 69.0
+2026-10-23 17:19:02 java.home = $CONDA_ENV/lib/jvm
+2026-10-23 17:19:02 java.io.tmpdir = /tmp
+2026-10-23 17:19:02 java.library.path = $CONDA_ENV/share/rtg-tools-3.13-0
+2026-10-23 17:19:02 java.runtime.name = OpenJDK Runtime Environment
+2026-10-23 17:19:02 java.runtime.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-23 17:19:02 java.specification.name = Java Platform API Specification
+2026-10-23 17:19:02 java.specification.vendor = Oracle Corporation
+2026-10-23 17:19:02 java.specification.version = 25
+2026-10-23 17:19:02 java.vendor = N/A
+2026-10-23 17:19:02 java.vendor.url = https://openjdk.org/
+2026-10-23 17:19:02 java.vendor.url.bug = https://bugreport.java.com/bugreport/
+2026-10-23 17:19:02 java.version = 25.0.2-internal
+2026-10-23 17:19:02 java.version.date = 2026-01-20
+2026-10-23 17:19:02 java.vm.info = mixed mode, sharing
+2026-10-23 17:19:02 java.vm.name = OpenJDK 64-Bit Server VM
+2026-10-23 17:19:02 java.vm.specification.name = Java Virtual Machine Specification
+2026-10-23 17:19:02 java.vm.specification.vendor = Oracle Corporation
+2026-10-23 17:19:02 java.vm.specification.version = 25
+2026-10-23 17:19:02 java.vm.vendor = Oracle Corporation
+2026-10-23 17:19:02 java.vm.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-23 17:19:02 jdk.debug = release
+2026-10-23 17:19:02 lang.version = 25.0.2-internal
+2026-10-23 17:19:02 line.separator = 
+
+2026-10-23 17:19:02 models.dir = $CONDA_ENV/share/rtg-tools-3.13-0/models
+2026-10-23 17:19:02 nashorn.option.no.deprecation.warning = true
+2026-10-23 17:19:02 native.encoding = ANSI_X3.4-1968
+2026-10-23 17:19:02 os.arch = amd64
+2026-10-23 17:19:02 os.freememory = 63163428864
+2026-10-23 17:19:02 os.name = Linux
+2026-10-23 17:19:02 os.totalmemory = 540412989440
+2026-10-23 17:19:02 os.version = 6.12.0-124.40.1.el10_1.x86_64
+2026-10-23 17:19:02 path.separator = :
+2026-10-23 17:19:02 polyglot.js.nashorn-compat = true
+2026-10-23 17:19:02 processor.arch = amd64
+2026-10-23 17:19:02 processor.count = 80
+2026-10-23 17:19:02 references.dir = $CONDA_ENV/share/rtg-tools-3.13-0/references
+2026-10-23 17:19:02 runtime.freememory = 2155279328
+2026-10-23 17:19:02 runtime.maxmemory = 486371491840
+2026-10-23 17:19:02 runtime.totalMemory = 2181038080
+2026-10-23 17:19:02 stderr.encoding = ANSI_X3.4-1968
+2026-10-23 17:19:02 stdin.encoding = ANSI_X3.4-1968
+2026-10-23 17:19:02 stdout.encoding = ANSI_X3.4-1968
+2026-10-23 17:19:02 sun.arch.data.model = 64
+2026-10-23 17:19:02 sun.boot.library.path = $CONDA_ENV/lib/jvm/lib
+2026-10-23 17:19:02 sun.cpu.endian = little
+2026-10-23 17:19:02 sun.io.unicode.encoding = UnicodeLittle
+2026-10-23 17:19:02 sun.java.command = $CONDA_ENV/share/rtg-tools-3.13-0/RTG.jar vcfeval -b results/callset/c3_hifi_stock/merge_output.vcf.gz -c results/callset/c3_hifi_heuristic/merge_output.vcf.gz -t ref_chr22_sdf -o results/callset/sm_all_hifi_heuristic
+2026-10-23 17:19:02 sun.java.launcher = SUN_STANDARD
+2026-10-23 17:19:02 sun.jnu.encoding = ANSI_X3.4-1968
+2026-10-23 17:19:02 sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2026-10-23 17:19:02 talkback = true
+2026-10-23 17:19:02 usage = false
+2026-10-23 17:19:02 user.country = US
+2026-10-23 17:19:02 user.dir = $WORKDIR
+2026-10-23 17:19:02 user.home = $HOME
+2026-10-23 17:19:02 user.language = en
+2026-10-23 17:19:02 user.name = a.deruvo
+2026-10-23 17:19:02 user.timezone = Europe/Rome
+2026-10-23 17:19:02 vendor = N/A
+2026-10-23 17:19:02 gzipfix.enabled = false
+2026-10-23 17:19:02 Command line arguments: rtg vcfeval -b results/callset/c3_hifi_stock/merge_output.vcf.gz -c results/callset/c3_hifi_heuristic/merge_output.vcf.gz -t ref_chr22_sdf -o results/callset/sm_all_hifi_heuristic
+2026-10-23 17:19:02 Run Id: 19ff8322-95d5-4ea7-8c96-78c85c3774c2
+2026-10-23 17:19:02 Referenced SDF-ID: 0d0f1cb8-c0a3-4e74-b47e-f532b5317396 Type: DNA Sequences: 1 Max-Length: 50818468 Min-Length: 50818468 Arm: UNKNOWN
+2026-10-23 17:19:02 Variant orientors per pass: [unphased (2 haplotypes):unphased (2 haplotypes)]
+2026-10-23 17:19:03 Reference CM000684.2 baseline contains 92637 variants.
+2026-10-23 17:19:03 Reference CM000684.2 calls contains 93282 variants.
+2026-10-23 17:19:04 Reference CM000684.2 had maximum path complexity of 2899 at CM000684.2:17481045-17481342
+2026-10-23 17:19:06 Representation bias correction factor for SNP 74157/74158.56097560977 = 0.9999789508373783
+2026-10-23 17:19:06 Representation bias correction factor for NON_SNP 14868/14866.439024390244 = 1.0001049999671876
+2026-10-23 17:19:06 Selected score threshold using: maximized F-measure
+2026-10-23 17:19:06 Threshold  True-pos-baseline  True-pos-call  False-pos  False-neg  Precision  Sensitivity  F-measure
+----------------------------------------------------------------------------------------------------
+    2.000              89025          89063       4219       3612     0.9548       0.9610     0.9579
+     None              89025          89063       4219       3612     0.9548       0.9610     0.9579
+
+2026-10-23 17:19:08 Finished successfully in 6 s.

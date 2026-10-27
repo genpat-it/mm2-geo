@@ -6,12 +6,15 @@ heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`; `MM2_GEO=1` in `submission-2026`), `
 minimap2 (`MM2_GEO` unset or 0). Timings are wall-clock seconds and peak RSS in kB (`/usr/bin/time`); `load=`
 is the 1-minute load average when each run started.
 
-## `cleanroom/` — re-run from a fresh clone
+## `cleanroom/` — re-run from a fresh clone of this branch
 
-Outputs of every numbered script (00–29, including the genome-wide scripts 24 and 27) run on a fresh clone of this branch with the
-conda environment from `environment.yml`, executables from `build_tools.sh` and inputs from `fetch_data.sh`;
-`status.tsv` lists each script's exit code and run time. Inputs were checked to be byte-identical to those of the
-paper; inputs and timing outputs of this run were on network storage, which slows the 32-thread runs that write the SAM to disk.
+Outputs of `scripts/run_all.sh` run on a fresh clone from GitHub (commit d899b11), with the conda environment
+from `environment.yml`, executables built by `build_tools.sh` from the public tags (certified mode as the
+default) and inputs downloaded by `fetch_data.sh`; every step ran from an empty environment and all 39 steps
+passed (`status.tsv`). Inputs and the work directory were on network storage; chr2–chr10 of script 24 were
+re-timed alone (`results/genomewide/summary_retime.txt`), and scripts 10 and 25, whose 32-thread and
+disk-output timings are limited by network writes, were re-timed with inputs and output on local disk
+(`localdisk/`, the values used in Supplementary Tables S12 and S20).
 
 ## `submission/` — first submission
 

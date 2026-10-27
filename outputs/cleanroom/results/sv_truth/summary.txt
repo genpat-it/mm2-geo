@@ -1,18 +1,39 @@
 HiFi stock P=0.900 R=0.659 F1=0.761 TP=180 FP=20 FN=93
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 1
+   reads within 300 bp of the site 52, with a single insertion >=300 bp 25
+   Sniffles2 call at the site: INS 616 bp, 22 reads
 HiFi heuristic P=0.891 R=0.656 F1=0.755 TP=179 FP=22 FN=94
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 0
+   reads within 300 bp of the site 52, with a single insertion >=300 bp 5
+   Sniffles2 call at the site: INS 419 bp, 17 reads
 HiFi certified P=0.900 R=0.659 F1=0.761 TP=180 FP=20 FN=93
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 1
+   reads within 300 bp of the site 52, with a single insertion >=300 bp 25
+   Sniffles2 call at the site: INS 616 bp, 22 reads
 ONT stock P=0.886 R=0.656 F1=0.754 TP=179 FP=23 FN=94
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 1
+   reads within 300 bp of the site 34, with a single insertion >=300 bp 21
+   Sniffles2 call at the site: INS 615 bp, 18 reads
 ONT heuristic P=0.873 R=0.652 F1=0.746 TP=178 FP=26 FN=95
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 0
+   reads within 300 bp of the site 34, with a single insertion >=300 bp 9
+   Sniffles2 call at the site: none
 ONT certified P=0.886 R=0.656 F1=0.754 TP=179 FP=23 FN=94
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 1
+   reads within 300 bp of the site 34, with a single insertion >=300 bp 21
+   Sniffles2 call at the site: INS 615 bp, 18 reads
 CLR stock P=0.861 R=0.637 F1=0.733 TP=174 FP=28 FN=99
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 0
+   reads within 300 bp of the site 50, with a single insertion >=300 bp 17
+   Sniffles2 call at the site: INS 23677 bp, 3 reads
+   Sniffles2 call at the site: INS 390 bp, 20 reads
 CLR heuristic P=0.861 R=0.637 F1=0.733 TP=174 FP=28 FN=99
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 0
+   reads within 300 bp of the site 50, with a single insertion >=300 bp 17
+   Sniffles2 call at the site: INS 23677 bp, 3 reads
+   Sniffles2 call at the site: INS 373 bp, 20 reads
 CLR certified P=0.861 R=0.637 F1=0.733 TP=174 FP=28 FN=99
    615 bp VNTR insertion HG2_PB_SVrefine2Falcon1plusDovetail_7697 recovered: 0
+   reads within 300 bp of the site 50, with a single insertion >=300 bp 17
+   Sniffles2 call at the site: INS 23677 bp, 3 reads
+   Sniffles2 call at the site: INS 390 bp, 20 reads
