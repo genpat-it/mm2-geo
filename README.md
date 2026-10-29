@@ -61,7 +61,7 @@ never-taken branch — used to reproduce the paper's mechanism/ablation):
 
 ## Results (paper)
 
-Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three runs):
+Same executable with only environment variables changing, 32 threads, chr22 GIAB HG002 unless stated (median of three runs; genome-wide, each mode was timed against minimap2 in its own series):
 
 | data | heuristic mode | certified mode (preserves gap scores) |
 |---|---|---|
@@ -69,7 +69,7 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 | ONT | 1.15–1.19× | 1.07–1.19× |
 | CLR | 1.41× | 1.11× |
 
-- The DP stage itself becomes 1.5–2.1× faster in the heuristic mode and 1.15–2.5×
+- The DP stage itself becomes 1.6–2.1× faster in the heuristic mode and 1.15–2.6×
   faster in the certified mode; the rest of the run is unchanged, so the
   end-to-end gain follows the share of run time spent in DP (Amdahl's law).
 - The heuristic mode keeps small-variant F1 unchanged in GIAB high-confidence regions
