@@ -35,7 +35,7 @@ bash scripts/fetch_data.sh core          # references, truth sets, stratificatio
 bash scripts/smoke_test.sh               # ~30 s sanity check of the build and configuration
 bash scripts/00_verify_output_identity.sh
 # ... then any numbered script; the genome-wide ones need:
-bash scripts/fetch_data.sh genomewide    # complete GIAB HG002 HiFi BAM (121 GB) and ONT R10.4.1 CRAM (104 GB)
+bash scripts/fetch_data.sh genomewide    # complete GIAB HG002 HiFi BAM (121 GB), ONT R10.4.1 CRAM (104 GB), ONT R9.4.1 subset
 ```
 
 Or everything in one command (build, data, smoke test and every numbered script in dependency order; one log
@@ -47,18 +47,18 @@ bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
-`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34; e.g.
+`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31, 34 and 35; e.g.
 `results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
-`results/ont_r9_genomewide/` for 34). Timings assume an otherwise idle machine and local storage for the inputs; all
-timing scripts use one executable per comparison, change only environment variables, discard the SAM
-output and report the median of three interleaved runs.
+`results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35). Timings assume an otherwise idle machine and local storage for the inputs;
+the timing scripts use one executable per comparison, change only environment variables, send the SAM
+output to `/dev/null` (except the output-handling rows of Table S20, script 25, which also write it to disk) and report the median of three interleaved runs.
 
 ## Executables (`build_tools.sh`)
 
 | config variable | built from | used for |
 |---|---|---|
-| `MM2GEO` | tag `revision-2026` | all heuristic- and certified-mode results |
-| `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode speed checks with the code as first released |
+| `MM2GEO` | tag `revision-2026` | every certified-mode result and the heuristic-mode results not listed below |
+| `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode timing series of Tables S18 and S20 (scripts 24 and 25), with the code as first released |
 | `MM2GEO_INSTR` | `revision-2026` + `instrumentation.patch` | per-gap log (`MM2_GEO_GAPLOG`) and DP-stage CPU time (`MM2_GEO_TIMEDP`); output unchanged |
 | `MM2GEO_ORACLE` | `revision-2026` + `cert_oracle.patch` | per-gap check of the certified mode against the full band (`MM2_GEO_CERT_ORACLE`); output unchanged |
 | `MM2GEO_O3` | `revision-2026` with bioconda's minimap2 compiler flags | build comparison |
@@ -68,7 +68,7 @@ Environment variables of the tool (all off by default; unset means stock minimap
 
 | variable | effect |
 |---|---|
-| `MM2_GEO=1` | certified mode (default): geometry-sized band accepted by the score certificate, exact one-gap shortcut, score-only first pass; output identical to minimap2 |
+| `MM2_GEO=1` | certified mode (default): geometry-sized band accepted by the score certificate, exact one-gap shortcut, score-only first pass; preserves minimap2's gap scores (output identical to minimap2's except for rare equal-score ties) |
 | `MM2_GEO_FAST=1` | with `MM2_GEO=1`: heuristic mode (geometry-sized band, doubled on boundary contact), as selected by `MM2_GEO=1` alone in `submission-2026` |
 | `MM2_GEO_CERT=1` | accepted for compatibility; no effect |
 | `MM2_GEO_MARGIN=m` | band margin (default 20) |
