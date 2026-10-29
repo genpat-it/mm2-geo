@@ -1,3 +1,8 @@
 reads 1228750, bases 9896844806
 mapped reads 643498 (52.37%), primary records 676761
 certified identical to minimap2: yes
+   reads <1k: 490849, mapped 19.7%
+   reads 1-5k: 394142, mapped 59.8%
+   reads 5-20k: 235127, mapped 88.0%
+   reads >=20k: 108632, mapped 95.8%
+   bases in mapped reads 90.7%

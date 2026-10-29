@@ -13,6 +13,11 @@ MM2_GEO=0 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D
 # mapped reads (reads with >= 1 primary record, tp:A:P) and primary records (supplementary alignments included,
 # which minimap2 also tags tp:A:P): the definition of Supplementary Table S19 (script 29)
 awk -v n="$(awk 'NR==1{print $2+0}' $D/summary.txt)" '$0~/tp:A:P/{p++; r[$1]=1} END{m=length(r); printf "mapped reads %d (%.2f%%), primary records %d\n", m, 100*m/n, p}' $D/stock.paf | tee -a $D/summary.txt
+# mapped fraction by read length (the R9.4.1 reads are unfiltered; Supplementary Table S19, note a)
+awk '$0~/tp:A:P/{print $1}' $D/stock.paf | sort -u > $D/mapped_names.txt
+awk 'NR==FNR{m[$1]=1;next} FNR%4==1{n=substr($1,2); sub(/ .*/,"",n)} FNR%4==2{L=length($0); b=(L<1000?"<1k":L<5000?"1-5k":L<20000?"5-20k":">=20k"); t[b]++; if(n in m){c[b]++; MB+=L}; TB+=L}
+  END{for(b in t) printf "   reads %s: %d, mapped %.1f%%\n", b, t[b], 100*c[b]/t[b]; printf "   bases in mapped reads %.1f%%\n", 100*MB/TB}' $D/mapped_names.txt $FQ | tee -a $D/summary.txt
+rm -f $D/mapped_names.txt
 MM2_GEO=1 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D/certified.paf
 # differing PAF lines (with CIGAR) and, per differing record, the alignment score (AS) of minimap2 and certified
 diff $D/stock.paf $D/certified.paf | grep '^[<>]' > $D/discordant_lines.txt
