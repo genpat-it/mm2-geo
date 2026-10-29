@@ -5,6 +5,9 @@ runtime-gated patch on top of [minimap2](https://github.com/lh3/minimap2) v2.30
 that reduces the between-anchor dynamic programming. Its default **certified mode** reproduces
 minimap2's output; an opt-in **heuristic mode** trades exact equivalence for speed on some data.
 
+**How the algorithm works (illustrated, with an interactive bound calculator):
+<https://genpat-it.github.io/mm2-geo/>**
+
 > mm2-geo is minimap2 v2.30 (Li, 2018; MIT license, preserved in `LICENSE.txt`)
 > plus a compact, self-contained change in `align.c`. With `MM2_GEO` unset the executable produces
 > **alignment records byte-identical to stock minimap2** (the binary carries the
