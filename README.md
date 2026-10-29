@@ -2,8 +2,8 @@
 
 **Geometry-guided band sizing for the minimap2 gap-filling DP** — a small,
 runtime-gated patch on top of [minimap2](https://github.com/lh3/minimap2) v2.30
-that reduces the between-anchor dynamic programming. Its default **certified mode** reproduces
-minimap2's output; an opt-in **heuristic mode** trades exact equivalence for speed on some data.
+that reduces the between-anchor dynamic programming. Its default **certified mode** preserves
+minimap2's gap scores (output identical to minimap2's except for rare equal-score ties); an opt-in **heuristic mode** trades exact equivalence for speed on some data.
 
 **How the algorithm works (illustrated, with an interactive bound calculator):
 <https://genpat-it.github.io/mm2-geo/>**
