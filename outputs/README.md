@@ -22,6 +22,13 @@ were re-timed with inputs and output on local disk: `localdisk/results_THREADSCA
 `localdisk/speedchecks_timing.tsv` and `localdisk/25.log` (script 25: timing table and full log); these are
 the values used in Supplementary Tables S12 and S20.
 
+The certified-mode identity checks recorded in `cleanroom/` (the chr8 partition of script 24 and script 27) and in
+`revision/ont_r10_genomewide/stats.txt` were made with executables built at commit c042cdc; the certified-mode
+identity reported in the paper is that of `release/`, obtained with the executables of tag `revision-2026`.
+The timings of Supplementary Table S18 come from `revision/genomewide/wg_perchr.tsv` with `rerun_chr11.tsv`
+(heuristic-mode series) and `revision/genomewide/wg_modes_release.tsv` (certified-mode series);
+`release/results/genomewide/perchr.tsv` is a later run, used for the per-read identity only.
+
 ## `release/` — certified-mode steps with the executables of tag `revision-2026`
 
 The steps that involve the certified mode (00, 13, 14, 18, 20–24, 26–28, 30, 34; `logs/status.tsv`) and the
@@ -32,7 +39,9 @@ concordance and CIGAR-ablation values of Table 3 and Supplementary Table S6 (`hi
 HiFi/ONT/CLR, chr14 ONT and the genome-wide HiFi subset, `-cx` and `-ax`; for the subset the run was a byte
 comparison, `results/gwsubset_identity/summary.txt`, since added to script 23), `results/genomewide/perchr.tsv` (full-coverage HiFi: identical on every partition except chr8, whose
 9 differing reads, all equal-score ties, are in `discordant_chr8.paf`), `results/ont_r9_genomewide/` and
-`results/ont_r10_genomewide/` (identical). Large intermediates (BAM, PAF, Clair3 working directories, truvari
+`results/ont_r10_genomewide/` (identical). `results/hifi53x_alignment_rate/summary.txt`: alignment rate of stock minimap2 on all
+11,678,114 reads of the full-coverage HiFi data (Supplementary Table S19; script 35, run with the stock minimap2 v2.30
+executable, whose output equals that of mm2-geo with `MM2_GEO` unset). Large intermediates (BAM, PAF, Clair3 working directories, truvari
 VCFs) are not included.
 
 ## `submission/` — first submission

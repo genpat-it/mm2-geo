@@ -41,7 +41,7 @@ step build_tools bash "$SCRIPTS/build_tools.sh" || exit 1
 step fetch_core  bash "$SCRIPTS/fetch_data.sh" core || exit 1
 step smoke_test  bash "$SCRIPTS/smoke_test.sh" || exit 1
 
-genomewide(){ step fetch_genomewide bash "$SCRIPTS/fetch_data.sh" genomewide && { num 27; num 34; num 24; }; }
+genomewide(){ step fetch_genomewide bash "$SCRIPTS/fetch_data.sh" genomewide && { num 27; num 34; num 24; num 35; }; }
 core(){
   for n in 00 29 18 19 20 23 26 02 03 05 06; do num $n; done
   step 15 check15

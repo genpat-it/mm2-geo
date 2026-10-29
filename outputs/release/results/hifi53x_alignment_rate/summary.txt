@@ -1,0 +1,5 @@
+input reads 11678114, bases 165722883073
+PAF records 15245670, non-secondary records 12312551, mapped reads 11634450
+exit=0
+Thu Oct 29 10:38:53 AM CET 2026
+DONE

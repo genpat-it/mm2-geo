@@ -1,7 +1,7 @@
 # mm2-geo — reproducibility material
 
 This branch regenerates every table and figure of the mm2-geo paper ("Geometry-guided band sizing with a
-score certificate: faster minimap2 gap filling that reproduces its output"). The tool itself
+score certificate: faster minimap2 gap filling that preserves its gap scores"). The tool itself
 (minimap2 v2.30 plus a patch to `align.c`) is on the `main` branch of https://github.com/genpat-it/mm2-geo.
 The tagged tree also adds a DP-cell counter in `ksw2_extd2_sse.c` for `MM2_GEO_STATS`; `geo.patch` in the tool
 repository is the minimal production patch (`align.c` only, without the diagnostic flags).
@@ -114,6 +114,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `32_three_callers.sh` | Table S5 (Clair3, bcftools and DeepVariant on minimap2 and heuristic-mode BAMs; DeepVariant via docker) |
 | `33_fixed_r_band.sh` | Table S8 (minimap2 `-r 20,20` vs default vs heuristic mode: time and F1) |
 | `34_ont_r9_genomewide.sh` | ONT R9.4.1 genome-wide subset (Tables S19, S21, S22; first 20 GB of the GIAB ultra-long Guppy 3.2.4 FASTQ) |
+| `35_hifi53x_alignment_rate.sh` | Table S19, full-coverage HiFi row: alignment rate of stock minimap2 on all 11.7 million reads |
 
 Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 
