@@ -6,7 +6,8 @@ def load(f):
     d = {}
     for l in open(f):
         t = l.rstrip('\n').split('\t'); tg = dict((x[:2], x[5:]) for x in t[12:] if len(x) > 5 and x[2] == ':')
-        if tg.get('tp') == 'P': d[t[0]] = dict(L=int(t[1]), qs=int(t[2]), qe=int(t[3]), st=t[4], ts=int(t[7]), AS=int(tg['AS']), cg=tg['cg'])
+        # the first tp:A:P record of a read is its primary alignment (supplementary ones follow it)
+        if tg.get('tp') == 'P' and t[0] not in d: d[t[0]] = dict(L=int(t[1]), qs=int(t[2]), qe=int(t[3]), st=t[4], ts=int(t[7]), AS=int(tg['AS']), cg=tg['cg'])
     return d
 def amap(r):
     m = {}; q = r['qs'] if r['st'] == '+' else r['L'] - r['qe']; t = r['ts']

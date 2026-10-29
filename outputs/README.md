@@ -48,7 +48,7 @@ now script 32) and `results_KILLER_f1.txt` (Table S8, now script 33).
 | `modes_timing/` | `identity.tsv` (certified vs minimap2 hashes) and `chr22_timing.tsv` (chr22/chr14, median of 3), script 23; `timing.tsv` and `amdahl.tsv` (ONT R9.4.1 genome-wide subset), script 34 | Table 2 (end-to-end), S22 | 23, 34 |
 | `dp_stage/` | `dpstage.tsv`: wall, total CPU and DP-stage CPU time per data set and mode (script 26); `ont_r9_genomewide_amdahl.tsv`: the same for the ONT R9.4.1 genome-wide subset (script 34) | Table 2 (DP stage), S21 | 26, 34 |
 | `gap_rounds/` | band-doubling rounds and joint (d, E) statistics | S15 | 18 |
-| `discordant_reads/` | discordant reads by severity and GIAB stratification; `eval_geo.txt`: simulated truth | S16 | 19, 20 |
+| (see `release/`) | discordant reads by severity and GIAB stratification (`release/results/discordant_reads.txt`) and simulated truth (`release/results/simulated_truth.txt`) | S16 | 19, 20 |
 | `callset_diff/` | `sm_*`/`smhc_*`: small-variant comparison of the heuristic and certified callsets against minimap2 (whole chr22 / GIAB high-confidence); `sv_vcf/`: Sniffles2 SV calls for the nine chr22 BAMs | S17 | 21 |
 | `sv_truth_grch37/` | SV calls against GIAB Tier1 v0.6 for minimap2 / heuristic / certified | S17 (bottom) | 22 |
 | `genomewide/` | full-coverage HG002 HiFi per chromosome: heuristic series (`wg_perchr.tsv`, `rerun_chr11.tsv`); both modes with the released executables, used for the certified series (`wg_modes_release.tsv`; the clean-room re-run is `cleanroom/results/genomewide/perchr.tsv`); the 9 chr8 reads whose certified output differs, all equal-score ties, are in `release/results/genomewide/discordant_chr8.paf`; chr1-only setting (`chr1only_full.tsv`) | S18 | 24 |

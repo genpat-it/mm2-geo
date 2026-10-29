@@ -18,7 +18,9 @@ def load(f):
     r = {}
     for l in open(f):
         t = l.rstrip('\n').split('\t'); tg = dict((x[:2], x[5:]) for x in t[12:] if len(x) > 5 and x[2] == ':')
-        if tg.get('tp') == 'P': r[t[0]] = dict(key=(t[5], t[7], t[4]), q=(t[2], t[3]), ts=int(t[7]), te=int(t[8]), AS=int(tg['AS']), cg=tg.get('cg', ''))
+        # the first tp:A:P record of a read is its primary alignment (minimap2 also tags supplementary
+        # alignments tp:A:P and writes them after the primary)
+        if tg.get('tp') == 'P' and t[0] not in r: r[t[0]] = dict(key=(t[5], t[7], t[4]), q=(t[2], t[3]), ts=int(t[7]), te=int(t[8]), AS=int(tg['AS']), cg=tg.get('cg', ''))
     return r
 for tech in ['hifi', 'ont', 'clr']:
     a = load(f'{d}/{tech}_geo0.paf'); b = load(f'{d}/{tech}_geo1.paf')
