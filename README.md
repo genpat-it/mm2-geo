@@ -42,7 +42,7 @@ Or everything in one command (build, data, smoke test and every numbered script 
 per step and a summary of exit codes in `$WORKDIR/logs/status.tsv`; completed steps are skipped on a re-run):
 
 ```bash
-bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27 and 34
+bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27, 34 and 35
 ```
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined

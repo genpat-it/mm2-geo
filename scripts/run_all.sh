@@ -5,7 +5,7 @@
 # environment (`conda activate mm2-geo-repro`) with WORKDIR set.
 #
 #   bash scripts/run_all.sh                 # everything, sequentially (~2 days; ~400 GB)
-#   bash scripts/run_all.sh --core          # without the genome-wide scripts 24, 27 and 34 (~1 day; ~150 GB)
+#   bash scripts/run_all.sh --core          # without the genome-wide scripts 24, 27, 34 and 35 (~1 day; ~150 GB)
 #   bash scripts/run_all.sh --parallel      # genome-wide branch in parallel with the core scripts (~1.5 days)
 #
 # Already completed steps are skipped on a re-run (delete their line from status.tsv to repeat one).
