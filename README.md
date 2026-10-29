@@ -33,7 +33,7 @@ make
 cp minimap2 mm2geo   # the Makefile emits ./minimap2; run it as ./mm2geo below
 # stock minimap2 behaviour (output-identical to minimap2 2.30):
 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
-# certified mode (recommended; output identical to minimap2):
+# certified mode (recommended; preserves minimap2's gap scores, output identical except rare equal-score ties):
 MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
 # heuristic mode (opt-in; faster on some data, not output-identical):
 MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
@@ -63,7 +63,7 @@ never-taken branch — used to reproduce the paper's mechanism/ablation):
 
 Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three runs):
 
-| data | heuristic mode | certified mode (identical output) |
+| data | heuristic mode | certified mode (preserves gap scores) |
 |---|---|---|
 | HiFi | 1.38× | 1.24× (1.35× genome-wide, 53×) |
 | ONT | 1.15–1.19× | 1.07–1.19× |
@@ -108,7 +108,7 @@ The **heuristic mode** is not byte-identical to stock minimap2 (98.3–99.9% CIG
 identity): its boundary-contact test can accept a lower-scoring path when a
 band-leaving insertion–deletion detour is replaced by mismatches, which happens
 mostly in repetitive sequence. The **certified mode** replaces that test with a
-score bound and reproduces minimap2's output; its guarantee is relative to
+score bound and preserves minimap2's gap scores; its guarantee is relative to
 minimap2, whose own band, z-drop and chaining remain heuristics. Each accepted band carries
 a proof that no wider band (up to minimap2's) scores higher, and the returned traceback is
 checked to attain that score (otherwise the gap is realigned with minimap2's band), so
