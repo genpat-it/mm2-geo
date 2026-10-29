@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>mm2-geo — geometry-guided band sizing for minimap2</title>
+<meta name="description" content="mm2-geo sizes minimap2's gap-filling band from the anchor geometry and certifies each band with a score bound, so the DP does less work while each gap keeps minimap2's score.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+<style>
+:root{
+  --bg:#fbfbf8; --fg:#1d2126; --muted:#5b6470; --line:#dde1e5; --card:#ffffff;
+  --accent:#1f6f8b; --accent2:#c0563b; --ok:#2f7d4f; --band:rgba(31,111,139,.13); --code:#f1f3f4;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#14171b; --fg:#e6e8ea; --muted:#9aa3ad; --line:#2b3138; --card:#1b1f24;
+    --accent:#5fb4d2; --accent2:#e48a6f; --ok:#6cc38f; --band:rgba(95,180,210,.16); --code:#22272e; color-scheme: dark; }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);padding:48px 0 32px}
+header h1{font-size:2.2rem;margin:0 0 .3rem;letter-spacing:-.02em}
+header p.lead{font-size:1.15rem;color:var(--muted);margin:.4rem 0 1.2rem;max-width:44em}
+.btns a{display:inline-block;margin:0 8px 8px 0;padding:8px 14px;border:1px solid var(--line);border-radius:8px;color:var(--fg);text-decoration:none;background:var(--card);font-size:.95rem}
+.btns a.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+nav.toc{font-size:.92rem;color:var(--muted);margin:24px 0 0}
+nav.toc a{color:var(--muted);margin-right:14px;text-decoration:none;border-bottom:1px dotted var(--line)}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:1.45rem;margin:0 0 .8rem;letter-spacing:-.01em}
+h3{font-size:1.1rem;margin:1.6rem 0 .5rem}
+p{margin:.6rem 0}
+a{color:var(--accent)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em}
+code{background:var(--code);padding:1px 5px;border-radius:4px}
+pre{background:var(--code);padding:14px 16px;border-radius:8px;overflow-x:auto;line-height:1.45}
+pre code{background:none;padding:0}
+.fig{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:18px 0}
+.fig svg{width:100%;height:auto;display:block}
+.cap{font-size:.9rem;color:var(--muted);margin-top:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:680px){.grid2{grid-template-columns:1fr} header h1{font-size:1.8rem}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.card h3{margin-top:0}
+.tag{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:99px;border:1px solid currentColor;margin-left:6px;vertical-align:middle}
+.tag.ok{color:var(--ok)} .tag.warn{color:var(--accent2)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;white-space:nowrap}
+th{color:var(--muted);font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{border-left:3px solid var(--accent);padding:4px 14px;margin:14px 0;color:var(--muted)}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0 14px}
+.calc label{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.calc input,.calc select{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%}
+#ub{width:100%;height:280px;display:block}
+.out{font-variant-numeric:tabular-nums;margin-top:8px}
+.out b{color:var(--accent)}
+footer{padding:28px 0 48px;color:var(--muted);font-size:.9rem}
+ol li,ul li{margin:.25rem 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>mm2-geo</h1>
+    <p class="lead">Geometry-guided band sizing for minimap2's gap filling. Each gap between chained anchors gets a band sized from its own geometry; in the default <b>certified mode</b> a band is accepted only when a score bound proves that no wider band could score higher, so every gap keeps minimap2's alignment score while the dynamic programming (DP) does less work.</p>
+    <div class="btns">
+      <a class="primary" href="https://github.com/genpat-it/mm2-geo">Source on GitHub</a>
+      <a href="https://github.com/genpat-it/mm2-geo/blob/main/geo.patch">geo.patch</a>
+      <a href="https://github.com/genpat-it/mm2-geo/tree/reproducibility">Reproducibility branch</a>
+    </div>
+    <nav class="toc">
+      <a href="#problem">Problem</a><a href="#geometry">Geometry</a><a href="#modes">Two modes</a><a href="#certificate">Certificate</a><a href="#calculator">Try the bound</a><a href="#results">Results</a><a href="#use">Use</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section id="problem">
+  <h2>The problem: one band for every gap</h2>
+  <p>minimap2 aligns a long read by chaining exact-match anchors and then filling the gap between consecutive anchors with banded affine-gap DP (the ksw2 kernel). The band width is one global setting derived from <code>-r</code>: for the long-read presets (<code>map-hifi</code>, <code>map-ont</code>, <code>map-pb</code>) it is \(b_{\max} = 30{,}001\). Most gaps need far less: two anchors a few hundred bases apart, with a handful of small indels between them, are aligned correctly inside a narrow diagonal strip.</p>
+  <p>mm2-geo is minimap2 v2.30 with a compact, runtime-gated change in <code>align.c</code>. It keeps minimap2's seeding, chaining, scoring, ksw2 kernel and z-drop logic. It changes only how wide a band each gap is given, and when a narrow band is accepted.</p>
+</section>
+
+<section id="geometry">
+  <h2>The geometry of a gap</h2>
+  <p>Two consecutive anchors fix a gap of query length \(q\) and reference length \(t\). Every end-to-end path through the gap's DP matrix starts on the main diagonal and ends at off-diagonal displacement \(q-t\). The <b>drift</b> \(d=|q-t|\) (written \(|\Delta q-\Delta r|\) in the paper) is therefore a hard lower bound on the band.</p>
+  <div class="note"><b>Lemma (geometric lower bound).</b> Every alignment of the gap from \((0,0)\) to \((q,t)\) ends at displacement \(q-t\); a band of half-width below \(d\) cannot contain any end-to-end path.</div>
+  <p>mm2-geo starts each gap at \(b=\min(d+m,\,b_{\max})\): the drift the endpoints force, plus a margin \(m\) (default 20) for local wobble such as a compensating insertion–deletion pair.</p>
+  <div class="fig">
+    <svg viewBox="0 0 640 300" role="img" aria-label="DP matrix of a gap with the main diagonal, the drift and the geometry-sized band">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" style="color:var(--muted)">
+        <rect x="60" y="30" width="300" height="240" stroke-width="1.2"/>
+      </g>
+      <polygon points="60,30 102,30 360,236 360,270 318,270 60,64" fill="var(--band)"/>
+      <line x1="60" y1="30" x2="360" y2="270" stroke="var(--muted)" stroke-dasharray="4 4"/>
+      <polyline points="60,30 120,78 150,96 210,150 260,186 300,222 330,246 360,270" fill="none" stroke="var(--accent)" stroke-width="3"/>
+      <circle cx="60" cy="30" r="5" fill="var(--accent2)"/><circle cx="360" cy="270" r="5" fill="var(--accent2)"/>
+      <text x="60" y="20" font-size="13" fill="var(--fg)">anchor 1</text>
+      <text x="300" y="290" font-size="13" fill="var(--fg)">anchor 2</text>
+      <text x="200" y="22" font-size="12" fill="var(--muted)" text-anchor="middle">query →  (length q)</text>
+      <text x="40" y="150" font-size="12" fill="var(--muted)" text-anchor="middle" transform="rotate(-90 40 150)">reference → (length t)</text>
+      <g font-size="13" fill="var(--fg)">
+        <text x="390" y="70">main diagonal (dashed)</text>
+        <text x="390" y="100" fill="var(--accent)">alignment path</text>
+        <text x="390" y="130">shaded: band of half-width</text>
+        <text x="390" y="150">b = d + m around the path</text>
+        <text x="390" y="190">d = |q − t|: net displacement</text>
+        <text x="390" y="210">the endpoints force on</text>
+        <text x="390" y="230">every path through the gap</text>
+      </g>
+    </svg>
+    <div class="cap">The band only has to cover the displacement the endpoints impose (the drift \(d\)) plus a small margin; minimap2 gives every gap the same \(b_{\max}\).</div>
+  </div>
+</section>
+
+<section id="modes">
+  <h2>Two acceptance tests</h2>
+  <p>After the DP fills the band \(b\), mm2-geo must decide whether \(b\) was wide enough. The two modes answer this differently.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>Certified mode <span class="tag ok">default</span></h3>
+      <p>Accepts the band only if the best in-band score \(S_b\) is at least an upper bound \(U(b)\) on the score of <em>any</em> path that leaves the band. Otherwise it computes the smallest band \(b^{*}\) the bound can certify and realigns once (at most at \(b_{\max}\), where the computation is minimap2's own).</p>
+      <p>Each gap therefore receives minimap2's score. Read-level differences can only be equal-score alternative tracebacks.</p>
+      <p><code>MM2_GEO=1</code></p>
+    </div>
+    <div class="card">
+      <h3>Heuristic mode <span class="tag warn">opt-in</span></h3>
+      <p>Accepts the band if the returned path stays inside it: with \(e=\Sigma I-\Sigma D\) along the CIGAR and excursion \(E=\max|e|\), the band is accepted when \(E<b\), and doubled otherwise (up to \(b_{\max}\)).</p>
+      <p>Faster on some data, but a path can stay inside the band while a better one leaves it, so this mode can accept a lower-scoring alignment, mostly in repeats.</p>
+      <p><code>MM2_GEO=1 MM2_GEO_FAST=1</code></p>
+    </div>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 640 230" role="img" aria-label="An optimal path that leaves the narrow band versus an in-band path that replaces the detour by mismatches">
+      <rect x="40" y="20" width="560" height="190" fill="none" stroke="var(--muted)"/>
+      <polygon points="40,95 600,95 600,135 40,135" fill="var(--band)"/>
+      <line x1="40" y1="115" x2="600" y2="115" stroke="var(--muted)" stroke-dasharray="4 4"/>
+      <polyline points="40,115 220,115 260,40 300,40 340,115 600,115" fill="none" stroke="var(--ok)" stroke-width="3"/>
+      <polyline points="40,115 220,115 340,118 600,115" fill="none" stroke="var(--accent2)" stroke-width="3" stroke-dasharray="7 4"/>
+      <g font-size="13">
+        <text x="270" y="33" fill="var(--ok)" text-anchor="middle">optimal path: insertion–deletion detour leaves the band</text>
+        <text x="300" y="160" fill="var(--accent2)" text-anchor="middle">best in-band path: the detour absorbed as mismatches</text>
+        <text x="300" y="200" fill="var(--muted)" text-anchor="middle">x: position along the gap · y: off-diagonal displacement · shaded: band</text>
+      </g>
+    </svg>
+    <div class="cap">The case the heuristic test misses: the in-band path never touches the band edge, so \(E&lt;b\) accepts it, although a better path exists outside. The certified test compares scores, so it detects this case.</div>
+  </div>
+</section>
+
+<section id="certificate">
+  <h2>The score certificate</h2>
+  <p>Let \(a\) be the match score and \(g(l)=\min(q_1+l\,e_1,\;q_2+l\,e_2)\) minimap2's dual-affine cost of a gap of length \(l\) (\(q_i\), \(e_i\): the <code>-O</code>, <code>-E</code> values).</p>
+  <div class="note"><b>Proposition (score certificate).</b> Every path of the gap that leaves the band \(|i-j|\le b\) scores at most
+  $$U(b)=a\left\lfloor\frac{q+t-L}{2}\right\rfloor-g(b+1)-g(b+1-d),\qquad L=(b+1)+(b+1-d).$$
+  Hence, for \(b\ge d\), if the optimal in-band score satisfies \(S_b\ge U(b)\), no band wider than \(b\), up to \(b_{\max}\), yields a higher-scoring alignment.</div>
+  <p><b>Why it holds.</b> A path that reaches displacement \(b+1\) and ends at net displacement \(d\) inserts at least \(b+1\) bases and deletes at least \(b+1-d\) (the mirror case costs more). Those indels use up \(L\) of the \(q+t\) positions, which leaves at most \((q+t-L)/2\) aligned pairs, each worth at most \(a\). Splitting indels into several runs only adds opening costs, because \(g\) is subadditive, so the indels cost at least \(g(b+1)+g(b+1-d)\).</p>
+  <h3>What happens to a gap</h3>
+  <ol>
+    <li><b>One-gap shortcut</b> (\(d\le 32\)): the best alignment with at most one indel of length \(d\) is found in \(O(q+t)\) by sliding the indel along the gap. It is accepted without DP when it beats the analogous bound on all alignments with two or more indels.</li>
+    <li><b>First band</b> \(b=\min(d+m,b_{\max})\). For gaps of 256 bp or more it is first scored without traceback (score-only pass), so that the traceback is computed only at the accepted band.</li>
+    <li><b>Test</b> \(S_b\ge U(b)\). Because \(U\) is non-increasing in \(b\), a failing gap is not doubled blindly: mm2-geo computes the smallest \(b^{*}\) with \(U(b^{*})\le S_b\) and realigns once at \(b^{*}\).</li>
+    <li><b>Traceback check.</b> The score of the returned CIGAR is recomputed (a linear pass) and must equal \(S_b\); otherwise the gap is realigned with \(b_{\max}\).</li>
+    <li>minimap2's own CIGAR-based z-drop test then runs afterwards, unchanged.</li>
+  </ol>
+  <p>Every accepted band lies inside minimap2's band and carries a proof that minimap2's wider band would not score higher, so the certified gap score equals minimap2's. On chr22, the shortcut or the first band settles 97.5% of the gaps on HiFi and 89.8% on ONT; CLR, with its higher error rate, needs the realignment at \(b^{*}\) for 57% of gaps. Fewer than 0.01% of gaps fall back to minimap2's own band, and the DP still evaluates 1.15–1.73× fewer cells than minimap2.</p>
+</section>
+
+<section id="calculator">
+  <h2>Try the bound</h2>
+  <p>Enter a gap and an in-band score. The plot shows \(U(b)\) for \(b\ge d\); the band is certified where the curve lies at or below \(S_b\).</p>
+  <div class="calc">
+    <label>Preset
+      <select id="preset">
+        <option value="hifi">map-hifi (a=1, O=6,26, E=2,1)</option>
+        <option value="ont">map-ont / map-pb (a=2, O=4,24, E=2,1)</option>
+      </select></label>
+    <label>Query length q<input id="q" type="number" min="1" value="1200"></label>
+    <label>Reference length t<input id="t" type="number" min="1" value="1180"></label>
+    <label>Margin m<input id="m" type="number" min="0" value="20"></label>
+    <label>In-band score S<sub>b</sub><input id="s" type="number" value="1000"></label>
+  </div>
+  <div class="fig" style="margin-top:0">
+    <canvas id="ub" aria-label="Plot of the upper bound U(b) against the band b"></canvas>
+    <div class="out" id="out"></div>
+  </div>
+</section>
+
+<section id="results">
+  <h2>Results</h2>
+  <p>GIAB HG002 against GRCh38, same executable with only environment variables changing, 32 threads, median of three interleaved runs.</p>
+  <h3>Output identity of the certified mode</h3>
+  <div class="tbl"><table>
+    <tr><th>Data</th><th>Certified output vs minimap2</th></tr>
+    <tr><td>chr22 HiFi, ONT, CLR; chr14 ONT (PAF with CIGAR and SAM)</td><td>identical</td></tr>
+    <tr><td>ONT R9.4.1 and R10.4.1, genome-wide subsets</td><td>identical</td></tr>
+    <tr><td>HiFi, complete data set (53×, 11.7 million reads)</td><td>identical except 9 reads, all equal-score ties</td></tr>
+  </table></div>
+  <h3>Speed-up over minimap2</h3>
+  <div class="tbl"><table>
+    <tr><th>Data</th><th>certified, end to end</th><th>heuristic, end to end</th></tr>
+    <tr><td>HiFi chr22</td><td class="n">1.24×</td><td class="n">1.38×</td></tr>
+    <tr><td>HiFi genome-wide (53×, 25 partitions)</td><td class="n">1.35×</td><td class="n">1.35×</td></tr>
+    <tr><td>ONT chr22 / chr14</td><td class="n">1.07× / 1.19×</td><td class="n">1.19× / 1.15×</td></tr>
+    <tr><td>CLR chr22</td><td class="n">1.11×</td><td class="n">1.41×</td></tr>
+  </table></div>
+  <p>The DP stage itself becomes 1.15–2.5× faster in the certified mode and 1.5–2.1× in the heuristic mode. The rest of the run is unchanged, so the end-to-end gain follows the share of run time spent in DP. Genome-wide, the two modes were timed in separate series, each against minimap2 in the same series.</p>
+  <p>The heuristic mode keeps small-variant F1 unchanged in the GIAB high-confidence regions, but over the whole of chr22 it changes 6–8% of the small-variant and SV calls, mostly outside those regions. Use the certified mode wherever minimap2's alignments must be preserved, for example for structural-variant or repeat analyses and in validated pipelines.</p>
+</section>
+
+<section id="use">
+  <h2>Build and use</h2>
+<pre><code>git clone https://github.com/genpat-it/mm2-geo && cd mm2-geo
+make && cp minimap2 mm2geo
+
+./mm2geo -ax map-hifi ref.fa reads.fq > out.sam                        # MM2_GEO unset: stock minimap2 output
+MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam              # certified mode (recommended)
+MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam  # heuristic mode</code></pre>
+  <p>With <code>MM2_GEO</code> unset the executable produces alignment records identical to minimap2 v2.30. <code>geo.patch</code> applies the change to a stock minimap2 v2.30 tree (<code>align.c</code> only), and <code>geo_mm2fast.patch</code> ports both modes to <a href="https://github.com/bwa-mem2/mm2-fast">mm2-fast</a> (commit <code>14fe36c</code>), where the certified mode is identical to mm2-fast and 1.08–1.16× faster than it on chr22. The short-read (<code>-ax sr</code>) and spliced paths are unaffected.</p>
+  <h3>Environment variables</h3>
+  <div class="tbl"><table>
+    <tr><th>Variable</th><th>Effect</th></tr>
+    <tr><td><code>MM2_GEO=1</code></td><td>certified mode (score bound, one-gap shortcut, score-only first pass)</td></tr>
+    <tr><td><code>MM2_GEO_FAST=1</code></td><td>with <code>MM2_GEO=1</code>: heuristic mode</td></tr>
+    <tr><td><code>MM2_GEO_MARGIN=&lt;int&gt;</code></td><td>initial band margin \(m\) (default 20)</td></tr>
+    <tr><td><code>MM2_GEO_CERT_SCOREPROBE=&lt;int&gt;</code></td><td>score-only first pass for gaps of at least this length (default 256; 0 disables)</td></tr>
+    <tr><td><code>MM2_GEO_STATS=1</code></td><td>DP-cell counts and per-gap band statistics on stderr</td></tr>
+  </table></div>
+  <h3>Reproducibility</h3>
+  <p>The <a href="https://github.com/genpat-it/mm2-geo/tree/reproducibility">reproducibility branch</a> holds the scripts, data manifests and raw outputs behind every table of the paper (tag <code>reproducibility-revision-2026</code>). Code tags: <code>revision-2026</code> (certified mode as default, plus the heuristic mode) and <code>submission-2026</code> (heuristic mode only).</p>
+</section>
+
+</main>
+<footer>
+  <div class="wrap">
+    mm2-geo by Andrea de Ruvo, Nicolas Radomski, Michele Flammini and Adriano Di Pasquale (Gran Sasso Science Institute; IZS Abruzzo e Molise). Built on <a href="https://github.com/lh3/minimap2">minimap2</a> by Heng Li. MIT license.
+  </div>
+</footer>
+
+<script>
+(function(){
+  var P={hifi:{a:1,q1:6,e1:2,q2:26,e2:1},ont:{a:2,q1:4,e1:2,q2:24,e2:1}};
+  var $=function(id){return document.getElementById(id)};
+  function g(l,p){return l<=0?0:Math.min(p.q1+l*p.e1,p.q2+l*p.e2)}
+  function U(b,q,t,d,p){var L=(b+1)+(b+1-d);return p.a*Math.floor((q+t-L)/2)-g(b+1,p)-g(b+1-d,p)}
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+  function draw(){
+    var p=P[$('preset').value],q=+$('q').value||1,t=+$('t').value||1,m=Math.max(0,+$('m').value||0),S=+$('s').value;
+    var d=Math.abs(q-t),b0=d+m,bmax=30001;
+    var bs=null;for(var b=Math.max(d,0);b<=bmax;b++){if(U(b,q,t,d,p)<=S){bs=b;break}}
+    var hi=Math.min(bmax,Math.max(b0*3,(bs||b0)*1.5,d+60));
+    var c=$('ub'),dpr=window.devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;
+    var x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,H);
+    var pl=58,pr=12,pt=12,pb=34,lo=Math.max(d,0);
+    var ys=[];for(var b=lo;b<=hi;b++)ys.push(U(b,q,t,d,p));ys.push(S);
+    var ymin=Math.min.apply(null,ys),ymax=Math.max.apply(null,ys);if(ymax===ymin)ymax=ymin+1;var pad=(ymax-ymin)*.08;ymin-=pad;ymax+=pad;
+    var X=function(b){return pl+(b-lo)/(hi-lo||1)*(W-pl-pr)},Y=function(v){return pt+(ymax-v)/(ymax-ymin)*(H-pt-pb)};
+    x.strokeStyle=css('--line');x.fillStyle=css('--muted');x.font='12px sans-serif';x.lineWidth=1;
+    x.beginPath();x.moveTo(pl,pt);x.lineTo(pl,H-pb);x.lineTo(W-pr,H-pb);x.stroke();
+    for(var i=0;i<=4;i++){var v=ymin+(ymax-ymin)*i/4;x.fillText(Math.round(v),4,Y(v)+4)}
+    for(var i=0;i<=4;i++){var b=Math.round(lo+(hi-lo)*i/4);x.fillText(b,X(b)-10,H-pb+16)}
+    x.fillText('band b',W-pr-48,H-6);
+    x.strokeStyle=css('--accent');x.lineWidth=2.2;x.beginPath();
+    var step=Math.max(1,Math.floor((hi-lo)/600));for(var b=lo;b<=hi;b+=step){var yy=Y(U(b,q,t,d,p));b===lo?x.moveTo(X(b),yy):x.lineTo(X(b),yy)}x.stroke();
+    x.strokeStyle=css('--accent2');x.setLineDash([6,4]);x.beginPath();x.moveTo(pl,Y(S));x.lineTo(W-pr,Y(S));x.stroke();x.setLineDash([]);
+    x.fillStyle=css('--accent2');x.fillText('S_b',W-pr-28,Y(S)-6);
+    if(b0<=hi){x.strokeStyle=css('--muted');x.setLineDash([2,3]);x.beginPath();x.moveTo(X(b0),pt);x.lineTo(X(b0),H-pb);x.stroke();x.setLineDash([]);x.fillStyle=css('--muted');x.fillText('d+m',X(b0)+4,pt+12)}
+    if(bs!==null&&bs<=hi){x.fillStyle=css('--ok');x.beginPath();x.arc(X(bs),Y(U(bs,q,t,d,p)),4.5,0,7);x.fill();x.fillText('b*',X(bs)+6,Y(U(bs,q,t,d,p))-6)}
+    var u0=U(b0,q,t,d,p),msg='Drift d = <b>'+d+'</b>, first band d+m = <b>'+b0+'</b>, U('+b0+') = <b>'+u0+'</b>. ';
+    msg+= S>=u0 ? 'S<sub>b</sub> ≥ U(b): the first band is <b>certified</b>; no wider band, up to minimap2\'s, can score higher.'
+      : (bs!==null ? 'S<sub>b</sub> &lt; U(b): not certified; mm2-geo realigns once at the smallest certifiable band <b>b* = '+bs+'</b>.' : 'Not certifiable below b<sub>max</sub>: the gap is aligned with minimap2\'s band.');
+    $('out').innerHTML=msg;
+  }
+  ['preset','q','t','m','s'].forEach(function(id){$(id).addEventListener('input',draw)});
+  window.addEventListener('resize',draw);
+  if(document.readyState!=='loading')draw();else document.addEventListener('DOMContentLoaded',draw);
+})();
+</script>
+</body>
+</html>
