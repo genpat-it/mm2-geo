@@ -41,8 +41,7 @@ MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam
   path leaving it; otherwise the gap is realigned once with the smallest band the
   bound certifies. Includes an exact one-gap shortcut and a score-only first pass on
   gaps of at least 256 bp (`MM2_GEO_CERT_SCOREPROBE=<int>`, 0 disables). Output is
-  identical to minimap2's, except for rare equal-score ties and alignments that score
-  higher than minimap2's (see below).
+  identical to minimap2's, except for rare equal-score ties (see below).
 - `MM2_GEO_FAST=1` — heuristic mode: geometry-sized band, doubled when the returned
   path touches the band boundary (a heuristic acceptance test). This is the mode of
   the first release (tag `submission-2026`, where it was selected by `MM2_GEO=1` alone).
@@ -67,7 +66,7 @@ Same executable, 32 threads, chr22 GIAB HG002 unless stated (median of three run
 | ONT | 1.15–1.19× | 1.07–1.19× |
 | CLR | 1.41× | 1.11× |
 
-- The DP stage itself becomes 1.5–2.0× faster in the heuristic mode and 1.15–2.5×
+- The DP stage itself becomes 1.5–2.1× faster in the heuristic mode and 1.15–2.5×
   faster in the certified mode; the rest of the run is unchanged, so the
   end-to-end gain follows the share of run time spent in DP (Amdahl's law).
 - The heuristic mode keeps small-variant F1 unchanged in GIAB high-confidence regions
@@ -109,9 +108,8 @@ mostly in repetitive sequence. The **certified mode** replaces that test with a
 score bound and reproduces minimap2's output; its guarantee is relative to
 minimap2, whose own band, z-drop and chaining remain heuristics. Each accepted band carries
 a proof that no wider band (up to minimap2's) scores higher, and the returned traceback is
-checked to attain that score (a path running along the band edge can be traced back
-inconsistently by the banded kernel; such a gap is realigned with minimap2's band), so the
-certified gap score equals minimap2's. The only possible read-level differences are
+checked to attain that score (otherwise the gap is realigned with minimap2's band), so
+the certified gap score equals minimap2's. The only possible read-level differences are
 equal-score alternative tracebacks, which can also change minimap2's CIGAR-based z-drop
 decision downstream.
 
