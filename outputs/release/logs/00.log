@@ -1,0 +1,32 @@
+Note: switching to '79c9cc186b95f50bd899f69b48eba995ced810c6'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+== hifi
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes
+== ont
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes
+== clr
+   A) MM2_GEO unset == minimap2 v2.30:            yes
+   B) certified == minimap2 v2.30:                yes
+   C) heuristic revision-2026 == submission-2026: yes
+   D) heuristic differs from minimap2 (active):   yes

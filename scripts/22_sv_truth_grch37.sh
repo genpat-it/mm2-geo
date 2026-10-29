@@ -3,6 +3,7 @@
 # (extends 07_sv_calling.sh with the certified mode and CLR; Supplementary Table S17, bottom block).
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; S=sv; D=results/sv_truth; mkdir -p $D
+: > $D/summary.txt   # fresh output on every run (no mixing with a previous run)
 REF=$S/grch37_chr22.fa; CTG=$(head -1 $REF | sed 's/>//;s/ .*//')
 [ -s $S/truth_$CTG.vcf.gz ] || { "$BCFTOOLS" view $S/HG002_SVs_Tier1_v0.6.vcf.gz -r $CTG -Oz -o $S/truth_$CTG.vcf.gz; "$BCFTOOLS" index -tf $S/truth_$CTG.vcf.gz; }
 [ -s $S/tier1_$CTG.bed ] || awk -v c=$CTG '$1==c' $S/HG002_SVs_Tier1_v0.6.bed > $S/tier1_$CTG.bed

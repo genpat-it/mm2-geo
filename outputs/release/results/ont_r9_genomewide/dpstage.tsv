@@ -1,0 +1,3 @@
+stock	wall=926.02	cpu=14277.85	dp_cpu=3756.079
+heuristic	wall=870.50	cpu=12358.01	dp_cpu=1859.920
+certified	wall=907.77	cpu=13545.92	dp_cpu=2908.907

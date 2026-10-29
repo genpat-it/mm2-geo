@@ -6,7 +6,7 @@
 set -uo pipefail
 source "$(dirname "$0")/config.sh"
 cd "$WORKDIR"
-MG="$MM2GEO"                       # instrumented build == ./mm2geo (see tool repo)
+MG="$MM2GEO"                       # release executable (tag revision-2026), not the instrumented build
 C3="$CLAIR3"
 M_HIFI="$MODEL_HIFI"
 M_ONT="$MODEL_ONT"

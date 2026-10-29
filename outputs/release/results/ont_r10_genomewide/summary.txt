@@ -1,0 +1,3 @@
+reads 792854, bases 15746290279
+mapped reads 790638 (99.72%), primary records 962488
+certified identical to minimap2: yes

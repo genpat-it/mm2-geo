@@ -1,0 +1,15 @@
+reads 792854, bases 15746290279
+mapped reads 790638 (99.72%), primary records 962488
+certified identical to minimap2: yes
+stock	rep1	1576.09 24074876
+heuristic	rep1	1482.67 21084016
+certified	rep1	1501.80 22354416
+stock	rep2	1576.87 23844200
+heuristic	rep2	1483.14 21629104
+certified	rep2	1502.87 22909892
+stock	rep3	1575.00 24132552
+heuristic	rep3	1484.90 21253068
+certified	rep3	1501.89 22605520
+stock	wall=1576.48	cpu=47761.81	dp_cpu=5449.779
+heuristic	wall=1482.40	cpu=44751.72	dp_cpu=2542.025
+certified	wall=1503.66	cpu=45355.91	dp_cpu=3021.705

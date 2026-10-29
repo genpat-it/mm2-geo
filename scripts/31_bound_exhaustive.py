@@ -3,7 +3,11 @@
 # a DP over ALL paths (dual-affine gaps, runs split arbitrarily, every aligned pair scored +a, i.e. the most
 # favourable case) finds the best path that leaves the band |i-j|<=b, and compares it with U(b).
 # Scorings: HiFi preset, ONT preset, single affine; gaps with the read longer AND shorter than the reference.
-import sys
+# The summary table goes to stdout and to results/cert_oracle/bound_exhaustive.tsv (path given as the first
+# argument, as run_all.sh does, or under $WORKDIR when that is exported).
+import os, sys
+OUT = sys.argv[1] if len(sys.argv) > 1 else (os.path.join(os.environ['WORKDIR'], 'results/cert_oracle/bound_exhaustive.tsv') if os.environ.get('WORKDIR') else None)
+rows = []
 NEG = -10**9
 def run(a, O, label):
     g = lambda l: min(o + e*l for o, e in O)
@@ -38,7 +42,10 @@ def run(a, O, label):
                 bo, u = best_out(q, t, b), U(q, t, b); n += 1
                 if bo > u: bad += 1; print("VIOLATION", label, q, t, b, bo, u)
                 if bo == u: tight += 1
-    print(f"{label}\tcases={n}\tviolations={bad}\ttight={tight}", flush=True)
+    row = f"{label}\tcases={n}\tviolations={bad}\ttight={tight}"; rows.append(row); print(row, flush=True)
 run(1, [(6, 2), (26, 1)], "hifi_preset")
 run(2, [(4, 2), (24, 1)], "ont_preset")
 run(1, [(5, 4)], "single_affine")
+if OUT:
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    with open(OUT, 'w') as fh: fh.write('\n'.join(rows) + '\n')

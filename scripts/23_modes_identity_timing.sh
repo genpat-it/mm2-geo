@@ -1,9 +1,10 @@
 #!/bin/bash
 # Operating points (Table 2 end-to-end columns, Supplementary Table S22): output identity of the certified mode
 # (PAF with CIGAR and SAM, sha256) and timing of minimap2 / heuristic / certified, same executable,
-# 3 interleaved runs, SAM to /dev/null. chr22 HiFi/ONT/CLR and chr14 ONT.
+# 3 interleaved runs, SAM to /dev/null. chr22 HiFi/ONT/CLR and chr14 ONT; identity also on the genome-wide HiFi subset.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/modes; mkdir -p $D
+: > $D/identity.tsv; : > $D/timing.tsv   # fresh output on every run (no mixing with a previous run)
 for s in "hifi_chr22 map-hifi chr22_named.fa hifi_chr22.fq" "ont_chr22 map-ont chr22_named.fa ont_r10_chr22.fq" "clr_chr22 map-pb chr22_named.fa clr_chr22.fq" "ont_chr14 map-ont ref_chr14.fa ont_r10_chr14.fq"; do set -- $s
   for fmt in c a; do
     h0=$(MM2_GEO=0 "$MM2GEO" -${fmt}x $2 -t"$THREADS" $3 $4 2>/dev/null | grep -v '^@PG' | sha256sum | cut -c1-16)
@@ -15,6 +16,13 @@ for s in "hifi_chr22 map-hifi chr22_named.fa hifi_chr22.fq" "ont_chr22 map-ont c
     /usr/bin/time -f "%e %M" -o $D/t env $E "$MM2GEO" -ax $2 -t"$THREADS" $3 $4 > /dev/null 2>/dev/null
     echo -e "$1\t$c\trep$rep\t$(cat $D/t)" | tee -a $D/timing.tsv
   done; done
+done
+# genome-wide HiFi subset (Table 2, last row): identity only (its timing is script 11, its DP stage script 26)
+[ -s grch38_hifi.mmi ] || MM2_GEO=0 "$MM2GEO" -x map-hifi -d grch38_hifi.mmi "$GRCH38_REF" > /dev/null 2>&1
+for fmt in c a; do
+  h0=$(MM2_GEO=0 "$MM2GEO" -${fmt}x map-hifi -t"$THREADS" grch38_hifi.mmi "$GW_READS" 2>/dev/null | grep -v '^@PG' | sha256sum | cut -c1-16)
+  h1=$(MM2_GEO=1 "$MM2GEO" -${fmt}x map-hifi -t"$THREADS" grch38_hifi.mmi "$GW_READS" 2>/dev/null | grep -v '^@PG' | sha256sum | cut -c1-16)
+  echo -e "hifi_genomewide_subset\t-${fmt}x\tcertified identical to minimap2: $([ $h0 = $h1 ] && echo yes || echo NO)" | tee -a $D/identity.tsv
 done
 python3 - "$D/timing.tsv" <<'PY'
 import sys, collections, statistics as st

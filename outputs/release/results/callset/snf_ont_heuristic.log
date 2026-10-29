@@ -1,0 +1,67 @@
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476): Running Sniffles2, build 2.7.2
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476):   Run Mode: call_sample
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476):   Start on: 2026/10/27 17:31:59
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476):   Working dir: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476):   Used command: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/bin/sniffles --input results/callset/ont_heuristic.bam --vcf results/callset/ont_heuristic.sv.vcf.gz --reference chr22_cm.fa --threads 16
+2026-10-27 17:31:59,499 INFO sniffles.main (1402476): ==============================
+2026-10-27 17:31:59,538 INFO sniffles.main (1402476): Opening for reading: results/callset/ont_heuristic.bam
+2026-10-27 17:31:59,539 INFO sniffles.main (1402476): Opening for reading: chr22_cm.fa
+2026-10-27 17:31:59,539 INFO sniffles.main (1402476): Opening for writing: results/callset/ont_heuristic.sv.vcf.gz (single-sample, sorted, bgzipped, tabix-indexed)
+2026-10-27 17:31:59,543 INFO sniffles.main (1402476): 
+2026-10-27 17:31:59,543 INFO sniffles.main (1402476): Analyzing 301977 alignments total...
+2026-10-27 17:31:59,544 INFO sniffles.main (1402476): 
+2026-10-27 17:31:59,544 INFO sniffles.worker (1402476): Starting worker 0
+2026-10-27 17:31:59,547 INFO sniffles.worker (1402476): Starting worker 1
+2026-10-27 17:31:59,548 INFO sniffles.worker (1402476): Starting worker 2
+2026-10-27 17:31:59,549 INFO sniffles.worker (1402476): Starting worker 3
+2026-10-27 17:31:59,550 INFO sniffles.worker (1402476): Starting worker 4
+2026-10-27 17:31:59,551 INFO sniffles.worker (1402476): Starting worker 5
+2026-10-27 17:31:59,552 INFO sniffles.worker (1402476): Starting worker 6
+2026-10-27 17:31:59,554 INFO sniffles.worker (1402476): Starting worker 7
+2026-10-27 17:31:59,555 INFO sniffles.worker (1402476): Starting worker 8
+2026-10-27 17:31:59,556 INFO sniffles.worker (1402476): Starting worker 9
+2026-10-27 17:31:59,557 INFO sniffles.worker (1402476): Starting worker 10
+2026-10-27 17:31:59,558 INFO sniffles.worker (1402476): Starting worker 11
+2026-10-27 17:31:59,559 INFO sniffles.worker (1402476): Starting worker 12
+2026-10-27 17:31:59,560 INFO sniffles.worker (1402476): Starting worker 13
+2026-10-27 17:31:59,562 INFO sniffles.worker (1402476): Starting worker 14
+2026-10-27 17:31:59,563 INFO sniffles.worker (1402476): Starting worker 15
+2026-10-27 17:31:59,564 INFO sniffles.worker (1402476): Dispatched task #0 to worker 0 (0  tasks left)
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 1 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 2 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 3 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 4 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 5 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 6 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 7 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 8 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 9 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 10 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 11 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 12 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 13 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 14 shutting down...
+2026-10-27 17:31:59,565 INFO sniffles.worker (1402476): Worker 15 shutting down...
+2026-10-27 17:32:19,524 INFO sniffles.worker (1402476): Worker 0 got result for task #0
+2026-10-27 17:32:19,625 INFO sniffles.worker (1402476): Worker 0 shutting down...
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 0 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 1 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 2 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 3 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 4 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 5 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 6 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 7 done (code 0).
+2026-10-27 17:32:19,646 INFO sniffles.worker (1402476): Worker 8 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 9 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 10 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 11 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 12 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 13 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 14 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.worker (1402476): Worker 15 done (code 0).
+2026-10-27 17:32:19,647 INFO sniffles.main (1402476): Took 20.10s.
+2026-10-27 17:32:19,647 INFO sniffles.main (1402476): 
+2026-10-27 17:32:19,657 INFO sniffles.main (1402476): Generating index for results/callset/ont_heuristic.sv.vcf.gz...
+2026-10-27 17:32:19,677 INFO sniffles.main (1402476): Indexing VCF output took 0.02s.
+2026-10-27 17:32:19,677 INFO sniffles.main (1402476): Wrote 612 called SVs to results/callset/ont_heuristic.sv.vcf.gz (single-sample, sorted, bgzipped, tabix-indexed)

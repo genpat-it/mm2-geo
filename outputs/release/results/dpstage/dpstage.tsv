@@ -1,0 +1,16 @@
+data	mode	wall_s	cpu_s	dp_cpu_s
+hifi_chr22	stock	51.63	1578.42	1113.937
+hifi_chr22	heuristic	35.62	1069.59	630.526
+hifi_chr22	certified	39.79	1201.74	758.234
+ont_chr22	stock	124.39	3828.64	1321.899
+ont_chr22	heuristic	104.53	3199.13	693.615
+ont_chr22	certified	116.21	3556.80	1041.005
+clr_chr22	stock	47.17	1405.33	1177.632
+clr_chr22	heuristic	33.22	973.22	751.352
+clr_chr22	certified	42.04	1249.71	1018.107
+ont_chr14	stock	84.70	2478.40	736.089
+ont_chr14	heuristic	73.01	2102.41	369.866
+ont_chr14	certified	70.91	2027.96	285.291
+hifi_genomewide_subset	stock	59.95	1327.49	891.385
+hifi_genomewide_subset	heuristic	47.87	957.04	526.436
+hifi_genomewide_subset	certified	47.86	944.94	513.635

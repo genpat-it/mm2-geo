@@ -4,11 +4,15 @@
 # (map-ont index). Certified identity, 3 interleaved timing runs, DP-stage decomposition.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/ont_r9_genomewide; mkdir -p $D
+: > $D/timing.tsv; : > $D/dpstage.tsv   # fresh tables on every run (summary.txt is rewritten below)
 [ -s "$ONT_R9_READS" ] || { echo "run: bash scripts/fetch_data.sh genomewide"; exit 1; }
 [ -s grch38_ont.mmi ] || MM2_GEO=0 "$MM2GEO" -x map-ont -d grch38_ont.mmi "$GRCH38_REF" > /dev/null 2>&1
 FQ="$ONT_R9_READS"
 awk 'NR%4==2{n++;b+=length($0)}END{print "reads "n", bases "b}' $FQ | tee $D/summary.txt
 MM2_GEO=0 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D/stock.paf
+# mapped reads (reads with >= 1 primary record, tp:A:P) and primary records (supplementary alignments included,
+# which minimap2 also tags tp:A:P): the definition of Supplementary Table S19 (script 29)
+awk -v n="$(awk 'NR==1{print $2+0}' $D/summary.txt)" '$0~/tp:A:P/{p++; r[$1]=1} END{m=length(r); printf "mapped reads %d (%.2f%%), primary records %d\n", m, 100*m/n, p}' $D/stock.paf | tee -a $D/summary.txt
 MM2_GEO=1 "$MM2GEO" -cx map-ont -t"$THREADS" grch38_ont.mmi $FQ 2>/dev/null > $D/certified.paf
 # differing PAF lines (with CIGAR) and, per differing record, the alignment score (AS) of minimap2 and certified
 diff $D/stock.paf $D/certified.paf | grep '^[<>]' > $D/discordant_lines.txt

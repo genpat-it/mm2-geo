@@ -13,6 +13,8 @@ SCRIPTS="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; REPO="$(dirname "$SCRIP
 #    chr22_cm.fa, truth_chr22.vcf.gz, conf_chr22.bed, ref_chr22_sdf, hifi_chr22.fq,
 #    ont_r10_chr22.fq, ...; see ACCESSIONS.txt). Scripts `cd` here, so those names are relative to it.
 WORKDIR="${WORKDIR:-/path/to/mm2geo-workdir}"   # <-- SET THIS (or export WORKDIR=...) before running
+if [ -z "$WORKDIR" ] || [ "$WORKDIR" = /path/to/mm2geo-workdir ]; then
+  echo "set WORKDIR=... before running (export WORKDIR=/path/with/~400GB, or edit scripts/config.sh)" >&2; exit 1; fi
 
 # ---------------------------------------------------------------------------
 # 2) Executables. `bash scripts/build_tools.sh` builds all of them into $WORKDIR/bin from the tool

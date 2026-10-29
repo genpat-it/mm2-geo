@@ -1,0 +1,86 @@
+2026-10-27 17:23:51 serial = 27182818284
+2026-10-27 17:23:51 email = anon
+2026-10-27 17:23:51 RTG version = RTG Tools 3.13 / Core c27844a5bb (2025-05-27)
+2026-10-27 17:23:51 file.encoding = UTF-8
+2026-10-27 17:23:51 file.separator = /
+2026-10-27 17:23:51 host.name = gtc-gpu1.izs.intra
+2026-10-27 17:23:51 java.class.path = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/share/rtg-tools-3.13-0/RTG.jar
+2026-10-27 17:23:51 java.class.version = 69.0
+2026-10-27 17:23:51 java.home = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/lib/jvm
+2026-10-27 17:23:51 java.io.tmpdir = /tmp
+2026-10-27 17:23:51 java.library.path = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/share/rtg-tools-3.13-0
+2026-10-27 17:23:51 java.runtime.name = OpenJDK Runtime Environment
+2026-10-27 17:23:51 java.runtime.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-27 17:23:51 java.specification.name = Java Platform API Specification
+2026-10-27 17:23:51 java.specification.vendor = Oracle Corporation
+2026-10-27 17:23:51 java.specification.version = 25
+2026-10-27 17:23:51 java.vendor = N/A
+2026-10-27 17:23:51 java.vendor.url = https://openjdk.org/
+2026-10-27 17:23:51 java.vendor.url.bug = https://bugreport.java.com/bugreport/
+2026-10-27 17:23:51 java.version = 25.0.2-internal
+2026-10-27 17:23:51 java.version.date = 2026-01-20
+2026-10-27 17:23:51 java.vm.info = mixed mode, sharing
+2026-10-27 17:23:51 java.vm.name = OpenJDK 64-Bit Server VM
+2026-10-27 17:23:51 java.vm.specification.name = Java Virtual Machine Specification
+2026-10-27 17:23:51 java.vm.specification.vendor = Oracle Corporation
+2026-10-27 17:23:51 java.vm.specification.version = 25
+2026-10-27 17:23:51 java.vm.vendor = Oracle Corporation
+2026-10-27 17:23:51 java.vm.version = 25.0.2-internal-adhoc.rattler.src
+2026-10-27 17:23:51 jdk.debug = release
+2026-10-27 17:23:51 lang.version = 25.0.2-internal
+2026-10-27 17:23:51 line.separator = 
+
+2026-10-27 17:23:51 models.dir = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/share/rtg-tools-3.13-0/models
+2026-10-27 17:23:51 nashorn.option.no.deprecation.warning = true
+2026-10-27 17:23:51 native.encoding = UTF-8
+2026-10-27 17:23:51 os.arch = amd64
+2026-10-27 17:23:51 os.freememory = 27187163136
+2026-10-27 17:23:51 os.name = Linux
+2026-10-27 17:23:51 os.totalmemory = 540412989440
+2026-10-27 17:23:51 os.version = 6.12.0-124.40.1.el10_1.x86_64
+2026-10-27 17:23:51 path.separator = :
+2026-10-27 17:23:51 polyglot.js.nashorn-compat = true
+2026-10-27 17:23:51 processor.arch = amd64
+2026-10-27 17:23:51 processor.count = 80
+2026-10-27 17:23:51 references.dir = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/share/rtg-tools-3.13-0/references
+2026-10-27 17:23:51 runtime.freememory = 2157282280
+2026-10-27 17:23:51 runtime.maxmemory = 486371491840
+2026-10-27 17:23:51 runtime.totalMemory = 2181038080
+2026-10-27 17:23:51 stderr.encoding = UTF-8
+2026-10-27 17:23:51 stdin.encoding = UTF-8
+2026-10-27 17:23:51 stdout.encoding = UTF-8
+2026-10-27 17:23:51 sun.arch.data.model = 64
+2026-10-27 17:23:51 sun.boot.library.path = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/lib/jvm/lib
+2026-10-27 17:23:51 sun.cpu.endian = little
+2026-10-27 17:23:51 sun.io.unicode.encoding = UnicodeLittle
+2026-10-27 17:23:51 sun.java.command = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/share/rtg-tools-3.13-0/RTG.jar vcfeval -b results/callset/c3_hifi_stock/merge_output.vcf.gz -c results/callset/c3_hifi_certified/merge_output.vcf.gz -t ref_chr22_sdf -e conf_chr22.bed -o results/callset/sm_hc_hifi_certified
+2026-10-27 17:23:51 sun.java.launcher = SUN_STANDARD
+2026-10-27 17:23:51 sun.jnu.encoding = UTF-8
+2026-10-27 17:23:51 sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+2026-10-27 17:23:51 talkback = true
+2026-10-27 17:23:51 usage = false
+2026-10-27 17:23:51 user.country = US
+2026-10-27 17:23:51 user.dir = /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix
+2026-10-27 17:23:51 user.home = /home/IZSNT/a.deruvo
+2026-10-27 17:23:51 user.language = en
+2026-10-27 17:23:51 user.name = a.deruvo
+2026-10-27 17:23:51 user.timezone = Europe/Rome
+2026-10-27 17:23:51 vendor = N/A
+2026-10-27 17:23:51 gzipfix.enabled = false
+2026-10-27 17:23:51 Command line arguments: rtg vcfeval -b results/callset/c3_hifi_stock/merge_output.vcf.gz -c results/callset/c3_hifi_certified/merge_output.vcf.gz -t ref_chr22_sdf -e conf_chr22.bed -o results/callset/sm_hc_hifi_certified
+2026-10-27 17:23:51 Run Id: 0211cd12-ed1c-427d-8925-30b5fc6e25e5
+2026-10-27 17:23:51 Referenced SDF-ID: c4abb029-4971-4e9e-aa41-06965ea3c323 Type: DNA Sequences: 1 Max-Length: 50818468 Min-Length: 50818468 Arm: UNKNOWN
+2026-10-27 17:23:51 Variant orientors per pass: [unphased (2 haplotypes):unphased (2 haplotypes)]
+2026-10-27 17:23:51 Reference CM000684.2 baseline contains 92637 variants.
+2026-10-27 17:23:51 Reference CM000684.2 calls contains 92637 variants.
+2026-10-27 17:23:53 Reference CM000684.2 had maximum path complexity of 2899 at CM000684.2:17481045-17481342
+2026-10-27 17:23:54 Fraction of calls outside evaluation regions: 0.0041 (196/48054)
+2026-10-27 17:23:54 Representation bias correction factor for SNP 41319/41319.0 = 1.0
+2026-10-27 17:23:54 Representation bias correction factor for NON_SNP 6536/6536.0 = 1.0
+2026-10-27 17:23:54 Selected score threshold using: maximized F-measure
+2026-10-27 17:23:54 Threshold  True-pos-baseline  True-pos-call  False-pos  False-neg  Precision  Sensitivity  F-measure
+----------------------------------------------------------------------------------------------------
+    2.000              47855          47856          2          2     1.0000       1.0000     1.0000
+     None              47855          47856          2          2     1.0000       1.0000     1.0000
+
+2026-10-27 17:23:54 Finished successfully in 3 s.

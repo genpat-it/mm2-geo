@@ -27,7 +27,8 @@ step(){ # name command...: run unless already completed, log, record exit code a
   echo -e "$n\texit=$rc\t$(( ($(date +%s)-t0)/60 )) min\t$(date '+%F %T')" >> "$S"
   [ $rc = 0 ] || echo "[FAIL] $n exit=$rc (see $L/$n.log)"; return $rc; }
 num(){ local f; f=$(ls "$SCRIPTS"/${1}_* | grep -v '_stratify\|_gap_stats\|_discord_stats\|_truth_eval' | head -1)
-  case $f in *.py) step "$1" python3 "$f";; *) step "$1" bash "$f";; esac; }
+  case $f in */31_*.py) step "$1" python3 "$f" "$WORKDIR/results/cert_oracle/bound_exhaustive.tsv";;  # table also to a file
+    *.py) step "$1" python3 "$f";; *) step "$1" bash "$f";; esac; }
 check15(){ # regenerate the E. coli spike-in (script 15, fixed seed) and compare it with the shipped artifacts
   local d="$WORKDIR/check15"; rm -rf "$d"; mkdir -p "$d/ecoli_real2/flye" "$d/ecoli_vc"
   cp "$WORKDIR/ecoli_real2/flye/assembly.fasta" "$d/ecoli_real2/flye/" && cd "$d" &&

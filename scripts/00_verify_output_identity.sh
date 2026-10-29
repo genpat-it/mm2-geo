@@ -7,6 +7,7 @@
 #   D) heuristic mode != stock (the feature is active)
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/identity; mkdir -p $D
+: > $D/summary.txt   # fresh output on every run (no mixing with a previous run)
 STOCK="$BIN/minimap2_v2.30"
 if [ ! -x "$STOCK" ]; then
   rm -rf "$BIN/src/minimap2" && git clone -q --branch v2.30 --depth 1 https://github.com/lh3/minimap2 "$BIN/src/minimap2"
@@ -16,7 +17,8 @@ h(){ env $1 "$2" -ax $3 -t"$THREADS" chr22_named.fa $4 2>/dev/null | grep -v '^@
 for s in "hifi map-hifi hifi_chr22.fq" "ont map-ont ont_r10_chr22.fq" "clr map-pb clr_chr22.fq"; do set -- $s
   st=$(h MM2_GEO=0 "$STOCK" $2 $3); off=$(h MM2_GEO=0 "$MM2GEO" $2 $3)
   ce=$(h "MM2_GEO=1" "$MM2GEO" $2 $3)
-  he=$(h MM2_GEO=1 MM2_GEO_FAST=1 "$MM2GEO" $2 $3); hs=$(h MM2_GEO=1 MM2_GEO_FAST=1 "$MM2GEO_SUB" $2 $3)
+  he=$(h "MM2_GEO=1 MM2_GEO_FAST=1" "$MM2GEO" $2 $3); hs=$(h "MM2_GEO=1 MM2_GEO_FAST=1" "$MM2GEO_SUB" $2 $3)
+  for x in $st $off $ce $he $hs; do [ "$x" = e3b0c44298fc1c14 ] && { echo "ERROR: an aligner produced no output ($1)"; exit 1; }; done
   { echo "== $1"
     echo "   A) MM2_GEO unset == minimap2 v2.30:            $([ $st = $off ] && echo yes || echo NO)"
     echo "   B) certified == minimap2 v2.30:                $([ $st = $ce ] && echo yes || echo NO)"

@@ -5,8 +5,8 @@ cd "$WORKDIR"
 MG="$MM2GEO"; SAM="$SAMTOOLS"
 AR=chr22_named.fa; R=hifi_bench/results_ABLCIGAR_FULL.txt; : > $R
 export LC_ALL=C
-# same extraction as run_concordance.sh: primary only (-F 0x900), name<TAB>CIGAR
-ex(){ $SAM view -F 0x900 - 2>/dev/null | awk 'BEGIN{OFS="\t"}{print $1,$6}' | sort -k1,1; }
+# same extraction as 05_alignment_concordance.sh: mapped primary only (-F 0x904), name<TAB>CIGAR
+ex(){ $SAM view -F 0x904 - 2>/dev/null | awk 'BEGIN{OFS="\t"}{print $1,$6}' | sort -k1,1; }
 D=abcf; mkdir -p $D
 for TE in "hifi map-hifi hifi_chr22.fq" "ont map-ont ont_r10_chr22.fq"; do
   set -- $TE; tech=$1; pre=$2; rd=$3

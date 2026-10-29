@@ -2,8 +2,9 @@
 
 This branch regenerates every table and figure of the mm2-geo paper ("Geometry-guided band sizing with a
 score certificate: faster minimap2 gap filling that reproduces its output"). The tool itself
-(minimap2 v2.30 plus a single-file patch to `align.c`) is on the `main` branch of
-https://github.com/genpat-it/mm2-geo.
+(minimap2 v2.30 plus a patch to `align.c`) is on the `main` branch of https://github.com/genpat-it/mm2-geo.
+The tagged tree also adds a DP-cell counter in `ksw2_extd2_sse.c` for `MM2_GEO_STATS`; `geo.patch` in the tool
+repository is the minimal production patch (`align.c` only, without the diagnostic flags).
 
 | tag | content |
 |---|---|
@@ -13,6 +14,15 @@ https://github.com/genpat-it/mm2-geo.
 | `reproducibility-submission-2026` (this branch) | the material of the first submission |
 
 A permanent Zenodo snapshot of both branches will be deposited upon acceptance.
+
+## Requirements
+
+- Linux x86-64; gcc >= 9 (C99), make, zlib headers, git, curl, GNU time (`/usr/bin/time`), bc
+- conda (the environment in `environment.yml` provides samtools, bcftools, Clair3, RTG Tools, Sniffles2,
+  truvari, Flye, Badread, pbsim3)
+- docker for DeepVariant in script 32 (or `DEEPVARIANT=skip`)
+- a CPU with AVX2 for mm2-fast (scripts 01, 08, 10, 28; AVX-512 is used when present)
+- disk: ~400 GB for everything, ~150 GB for the core scripts (`run_all.sh --core`)
 
 ## Quick start (from an empty machine)
 
@@ -37,7 +47,9 @@ bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
-`$WORKDIR/hifi_bench/` (scripts 01–17) and `$WORKDIR/results/` (scripts 00 and 18–29). Timings assume an otherwise idle machine and local storage for the inputs; all
+`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34; e.g.
+`results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
+`results/ont_r9_genomewide/` for 34). Timings assume an otherwise idle machine and local storage for the inputs; all
 timing scripts use one executable per comparison, change only environment variables, discard the SAM
 output and report the median of three interleaved runs.
 
@@ -60,6 +72,9 @@ Environment variables of the tool (all off by default; unset means stock minimap
 | `MM2_GEO_FAST=1` | with `MM2_GEO=1`: heuristic mode (geometry-sized band, doubled on boundary contact), as selected by `MM2_GEO=1` alone in `submission-2026` |
 | `MM2_GEO_CERT=1` | accepted for compatibility; no effect |
 | `MM2_GEO_MARGIN=m` | band margin (default 20) |
+| `MM2_GEO_ONEGAP=1` | with `MM2_GEO_FAST=1`: adds the exact one-gap shortcut alone |
+| `MM2_GEO_CERT_SCOREPROBE=n` | certified mode: minimum gap length for the score-only first pass (default 256; 0 disables) |
+| `MM2_GEO_CERT_ORACLE=1` / `=2` | oracle build only (`cert_oracle.patch`): per-gap check of the certified / heuristic mode against the full band |
 | `MM2_GEO_STATS=1`, `MM2_GEO_FIXED=1`, `MM2_GEO_NODOUBLE=1` | DP-cell statistics and ablations |
 | `MM2_GEO_GAPLOG=file`, `MM2_GEO_TIMEDP=1` | instrumented build only: per-gap log, DP-stage CPU time |
 
@@ -70,7 +85,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | script | produces |
 |---|---|
 | `00_verify_output_identity.sh` | output identity: unset = minimap2 v2.30, certified = minimap2, heuristic unchanged across tags |
-| `01_benchmark_grid.sh` | Table 1 (heuristic mode: time, memory, small-variant F1) |
+| `01_benchmark_grid.sh` | Table 1 (heuristic mode: time, memory, small-variant F1); Table S13 timing rows (mm2-fast, mm2-fast+geo) |
 | `02_dp_cell_count.sh` | Table S2 (logical DP cells) |
 | `03_ablation_cigar_identity.sh`, `04_ablation_variant_f1.sh` | Table 3 (geometry vs doubling ablation) |
 | `05_alignment_concordance.sh`, `06_primary_presence.sh` | Tables S6, S4 |
@@ -91,7 +106,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes; chr1-only setting) |
 | `25_speed_threads_builds.sh` | Table S20 (threads, output handling, index scope, bioconda and -O3 builds) |
 | `26_dp_stage.sh` | Table 2 DP columns, Table S21 (DP-stage decomposition, Amdahl prediction) |
-| `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S21/S22) |
+| `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S19, S21, S22) |
 | `28_mm2fast_modes.sh` | Table S22, mm2-fast rows |
 | `29_input_counts.sh` | Table S19 (input reads, bases, alignment rates) |
 | `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
@@ -115,8 +130,10 @@ the genome-wide HiFi set (one complete SMRT Cell of the GIAB HG002 CCS 15 kb dat
 (ENA `SRR9900640`, md5-checked) and K-12 MG1655 reference (`NC_000913.3`), pbsim3 reads simulated from
 chr22 (seed 2024), and, with `genomewide`, the complete HiFi BAM and ONT CRAM, and the ONT R9.4.1 genome-wide subset (streamed from GIAB, checked by read and base counts). Small artifacts are in
 `data/` (*E. coli* strain assembly, spike-in reference and truth; md5 in
-`CHECKSUMS.md5`). The tool patches (`geo.patch` for minimap2 v2.30, `geo_mm2fast.patch` for mm2-fast) are
-taken by `build_tools.sh` from the tool tag, so there is a single copy of each.
+`CHECKSUMS.md5`). `build_tools.sh` builds mm2-geo from the tagged source tree itself (not by applying
+`geo.patch`), and takes `geo_mm2fast.patch` from tag `revision-2026` to build mm2-fast+geo, so there is a single
+copy of each patch (in the tool repository); `instrumentation.patch` and `cert_oracle.patch` (analysis builds)
+are in this branch.
 
 ## Software
 minimap2 2.30-r1287 (`v2.30` of lh3/minimap2) · mm2-fast 2.24-r1122 (commit `14fe36c`) · samtools 1.21 ·
@@ -124,4 +141,5 @@ bcftools 1.23 · Clair3 v2.0.2 (models `hifi`, `r1041_e82_400bps_sup_v500`) · D
 3.13 · Sniffles2 2.7.2 · truvari 5.4.0 · Flye 2.9.6 · Badread 0.4.1 · pbsim3 3.0 · GCC 14.3.1 (`-O2 -Wall`).
 
 ## Seeds
-*E. coli* spike-in `20260716`; simulated chr22 reads `2024`; ONT R10.4.1 genome-wide subset `samtools -s 42.10`.
+*E. coli* spike-in `20260716`; simulated chr22 reads `2024`; stress tests (scripts 13 and 14: implanted
+variants and Badread reads) `77`; ONT R10.4.1 genome-wide subset `samtools -s 42.10` (seed 42, 10%).

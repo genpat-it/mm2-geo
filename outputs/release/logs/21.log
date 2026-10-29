@@ -1,0 +1,17 @@
+== hifi: BAM records identical to minimap2 (certified): yes
+   SV heuristic: only-minimap2 30 only-geo 26 shared 635
+   small variants heuristic (all): only-minimap2 3612 only-geo 4219 shared 89063
+   small variants heuristic (hc): only-minimap2 23 only-geo 20 shared 47835
+   SV certified: only-minimap2 0 only-geo 0 shared 665
+   small variants certified (all): only-minimap2 198 only-geo 198 shared 92439
+   small variants certified (hc): only-minimap2 2 only-geo 2 shared 47856
+== ont: BAM records identical to minimap2 (certified): yes
+   SV heuristic: only-minimap2 31 only-geo 16 shared 556
+   small variants heuristic (all): only-minimap2 2229 only-geo 2647 shared 84626
+   small variants heuristic (hc): only-minimap2 156 only-geo 125 shared 47814
+   SV certified: only-minimap2 0 only-geo 0 shared 587
+   small variants certified (all): only-minimap2 156 only-geo 156 shared 86700
+   small variants certified (hc): only-minimap2 13 only-geo 13 shared 47958
+== clr: BAM records identical to minimap2 (certified): yes
+   SV heuristic: only-minimap2 23 only-geo 13 shared 474
+   SV certified: only-minimap2 0 only-geo 0 shared 497

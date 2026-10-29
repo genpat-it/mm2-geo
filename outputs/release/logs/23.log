@@ -1,0 +1,48 @@
+hifi_chr22	-cx	certified identical to minimap2: yes
+hifi_chr22	-ax	certified identical to minimap2: yes
+hifi_chr22	stock	rep1	49.53 15254976
+hifi_chr22	heuristic	rep1	35.83 13018260
+hifi_chr22	certified	rep1	39.97 14722168
+hifi_chr22	stock	rep2	49.50 15092884
+hifi_chr22	heuristic	rep2	35.66 12670240
+hifi_chr22	certified	rep2	39.91 14960292
+hifi_chr22	stock	rep3	49.84 14712872
+hifi_chr22	heuristic	rep3	36.13 12556084
+hifi_chr22	certified	rep3	41.37 14704636
+ont_chr22	-cx	certified identical to minimap2: yes
+ont_chr22	-ax	certified identical to minimap2: yes
+ont_chr22	stock	rep1	124.99 13226820
+ont_chr22	heuristic	rep1	103.91 10830552
+ont_chr22	certified	rep1	115.63 12180020
+ont_chr22	stock	rep2	123.77 13615888
+ont_chr22	heuristic	rep2	104.65 10805216
+ont_chr22	certified	rep2	116.16 12629172
+ont_chr22	stock	rep3	124.10 13250424
+ont_chr22	heuristic	rep3	104.33 10947152
+ont_chr22	certified	rep3	117.02 12604488
+clr_chr22	-cx	certified identical to minimap2: yes
+clr_chr22	-ax	certified identical to minimap2: yes
+clr_chr22	stock	rep1	46.43 14880772
+clr_chr22	heuristic	rep1	32.86 10419460
+clr_chr22	certified	rep1	41.69 12626536
+clr_chr22	stock	rep2	46.35 14923800
+clr_chr22	heuristic	rep2	32.79 10419880
+clr_chr22	certified	rep2	41.41 12746260
+clr_chr22	stock	rep3	46.90 14816756
+clr_chr22	heuristic	rep3	32.66 10429160
+clr_chr22	certified	rep3	41.37 12837912
+ont_chr14	-cx	certified identical to minimap2: yes
+ont_chr14	-ax	certified identical to minimap2: yes
+ont_chr14	stock	rep1	83.60 12672236
+ont_chr14	heuristic	rep1	72.61 7609628
+ont_chr14	certified	rep1	71.86 12309428
+ont_chr14	stock	rep2	86.75 13077120
+ont_chr14	heuristic	rep2	74.09 7442584
+ont_chr14	certified	rep2	70.98 11819144
+ont_chr14	stock	rep3	84.62 12921160
+ont_chr14	heuristic	rep3	72.38 7744868
+ont_chr14	certified	rep3	70.60 12258008
+hifi_chr22 stock 49.5s (1.00x) heuristic 35.8s (1.38x) certified 40.0s (1.24x)
+ont_chr22 stock 124.1s (1.00x) heuristic 104.3s (1.19x) certified 116.2s (1.07x)
+clr_chr22 stock 46.4s (1.00x) heuristic 32.8s (1.42x) certified 41.4s (1.12x)
+ont_chr14 stock 84.6s (1.00x) heuristic 72.6s (1.17x) certified 71.0s (1.19x)

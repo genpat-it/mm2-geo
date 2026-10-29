@@ -1,0 +1,20 @@
+hifi_chr22	stock	51.63	1578.42	1113.937
+hifi_chr22	heuristic	35.62	1069.59	630.526
+hifi_chr22	certified	39.79	1201.74	758.234
+ont_chr22	stock	124.39	3828.64	1321.899
+ont_chr22	heuristic	104.53	3199.13	693.615
+ont_chr22	certified	116.21	3556.80	1041.005
+clr_chr22	stock	47.17	1405.33	1177.632
+clr_chr22	heuristic	33.22	973.22	751.352
+clr_chr22	certified	42.04	1249.71	1018.107
+ont_chr14	stock	84.70	2478.40	736.089
+ont_chr14	heuristic	73.01	2102.41	369.866
+ont_chr14	certified	70.91	2027.96	285.291
+hifi_genomewide_subset	stock	59.95	1327.49	891.385
+hifi_genomewide_subset	heuristic	47.87	957.04	526.436
+hifi_genomewide_subset	certified	47.86	944.94	513.635
+hifi_chr22: DP share 71% | heuristic: DP 1.77x, non-DP -5.5%, CPU 1.48x, wall 1.45x, predicted 1.44x | certified: DP 1.47x, non-DP -4.5%, CPU 1.31x, wall 1.30x, predicted 1.29x
+ont_chr22: DP share 35% | heuristic: DP 1.91x, non-DP -0.0%, CPU 1.20x, wall 1.19x, predicted 1.20x | certified: DP 1.27x, non-DP +0.4%, CPU 1.08x, wall 1.07x, predicted 1.08x
+clr_chr22: DP share 84% | heuristic: DP 1.57x, non-DP -2.6%, CPU 1.44x, wall 1.42x, predicted 1.44x | certified: DP 1.16x, non-DP +1.7%, CPU 1.12x, wall 1.12x, predicted 1.13x
+ont_chr14: DP share 30% | heuristic: DP 1.99x, non-DP -0.6%, CPU 1.18x, wall 1.16x, predicted 1.17x | certified: DP 2.58x, non-DP +0.0%, CPU 1.22x, wall 1.19x, predicted 1.22x
+hifi_genomewide_subset: DP share 67% | heuristic: DP 1.69x, non-DP -1.3%, CPU 1.39x, wall 1.25x, predicted 1.38x | certified: DP 1.74x, non-DP -1.1%, CPU 1.40x, wall 1.25x, predicted 1.40x

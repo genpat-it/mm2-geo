@@ -4,6 +4,7 @@
 # submission-2026 executable; bioconda minimap2 and an -O3 rebuild for the build comparison. Median of 3 runs.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/speedchecks; mkdir -p $D
+: > $D/timing.tsv; : > $D/summary.txt   # fresh output on every run (no mixing with a previous run)
 [ -s $D/chr1.mmi ] || { "$SAMTOOLS" faidx "$GRCH38_REF" CM000663.2 > $D/chr1.fa; MM2_GEO=0 "$MM2GEO_SUB" -x map-hifi -d $D/chr1.mmi $D/chr1.fa > /dev/null 2>&1; }
 [ -s grch38_hifi.mmi ] || MM2_GEO=0 "$MM2GEO" -x map-hifi -d grch38_hifi.mmi "$GRCH38_REF" > /dev/null 2>&1
 head -n 120000 "$GW_READS" > $D/reads_30k.fq

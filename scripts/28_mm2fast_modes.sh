@@ -3,6 +3,7 @@
 # geo_mm2fast.patch in the heuristic and certified modes; certified identity vs mm2-fast; 3 interleaved runs.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/mm2fast; mkdir -p $D
+: > $D/summary.txt; : > $D/timing.tsv   # fresh output on every run (no mixing with a previous run)
 [ -x "$MM2FAST" ] && [ -x "$MM2FASTGEO" ] || { echo "mm2-fast executables missing (see build_tools.sh)"; exit 1; }
 for s in "hifi map-hifi hifi_chr22.fq" "ont map-ont ont_r10_chr22.fq" "clr map-pb clr_chr22.fq"; do set -- $s
   a=$("$MM2FAST" -cx $2 -t"$THREADS" chr22_named.fa $3 2>/dev/null | sha256sum | cut -c1-16)

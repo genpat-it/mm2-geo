@@ -8,6 +8,8 @@
 #   mm2fast / mm2fastgeo  mm2-fast commit 14fe36c, unpatched / with geo_mm2fast.patch (optional: needs a
 #                      x86-64 CPU with AVX2; skipped with a warning if the build fails)
 # scripts/smoke_test.sh checks the build; scripts/00_verify_output_identity.sh checks output identity.
+# Executables already present in $BIN are reused, not rebuilt: delete $WORKDIR/bin (or a single executable)
+# to rebuild from scratch.
 set -euo pipefail
 source "$(dirname "$0")/config.sh"
 HERE="$REPO"
@@ -55,4 +57,5 @@ git -C "$BIN/src/mm2-geo" show revision-2026:geo_mm2fast.patch > "$BIN/src/geo_m
 if build_mm2fast mm2fast && build_mm2fast mm2fastgeo "$BIN/src/geo_mm2fast.patch"; then log "mm2-fast built"
 else log "WARNING: mm2-fast build failed, see $BIN/src/build_mm2fast*.log (only the mm2-fast rows cannot be reproduced)"; fi
 
-log "versions:"; for b in mm2geo mm2geo_submission mm2geo_instr mm2geo_o3; do printf '  %-18s %s\n' "$b" "$("$BIN/$b" --version)"; done
+log "versions:"; for b in mm2geo mm2geo_submission mm2geo_instr mm2geo_oracle mm2geo_o3 mm2fast mm2fastgeo; do
+  if [ -x "$BIN/$b" ]; then printf '  %-18s %s\n' "$b" "$("$BIN/$b" --version 2>/dev/null)"; else printf '  %-18s %s\n' "$b" "(not built)"; fi; done

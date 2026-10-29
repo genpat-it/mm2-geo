@@ -1,0 +1,67 @@
+2026-10-27 17:20:08,783 INFO sniffles.main (1371207): Running Sniffles2, build 2.7.2
+2026-10-27 17:20:08,783 INFO sniffles.main (1371207):   Run Mode: call_sample
+2026-10-27 17:20:08,783 INFO sniffles.main (1371207):   Start on: 2026/10/27 17:20:08
+2026-10-27 17:20:08,783 INFO sniffles.main (1371207):   Working dir: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix
+2026-10-27 17:20:08,783 INFO sniffles.main (1371207):   Used command: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/bin/sniffles --input results/callset/hifi_certified.bam --vcf results/callset/hifi_certified.sv.vcf.gz --reference chr22_cm.fa --threads 16
+2026-10-27 17:20:08,784 INFO sniffles.main (1371207): ==============================
+2026-10-27 17:20:08,820 INFO sniffles.main (1371207): Opening for reading: results/callset/hifi_certified.bam
+2026-10-27 17:20:08,821 INFO sniffles.main (1371207): Opening for reading: chr22_cm.fa
+2026-10-27 17:20:08,821 INFO sniffles.main (1371207): Opening for writing: results/callset/hifi_certified.sv.vcf.gz (single-sample, sorted, bgzipped, tabix-indexed)
+2026-10-27 17:20:08,823 INFO sniffles.main (1371207): 
+2026-10-27 17:20:08,823 INFO sniffles.main (1371207): Analyzing 317534 alignments total...
+2026-10-27 17:20:08,823 INFO sniffles.main (1371207): 
+2026-10-27 17:20:08,823 INFO sniffles.worker (1371207): Starting worker 0
+2026-10-27 17:20:08,826 INFO sniffles.worker (1371207): Starting worker 1
+2026-10-27 17:20:08,827 INFO sniffles.worker (1371207): Starting worker 2
+2026-10-27 17:20:08,828 INFO sniffles.worker (1371207): Starting worker 3
+2026-10-27 17:20:08,830 INFO sniffles.worker (1371207): Starting worker 4
+2026-10-27 17:20:08,831 INFO sniffles.worker (1371207): Starting worker 5
+2026-10-27 17:20:08,832 INFO sniffles.worker (1371207): Starting worker 6
+2026-10-27 17:20:08,833 INFO sniffles.worker (1371207): Starting worker 7
+2026-10-27 17:20:08,834 INFO sniffles.worker (1371207): Starting worker 8
+2026-10-27 17:20:08,835 INFO sniffles.worker (1371207): Starting worker 9
+2026-10-27 17:20:08,837 INFO sniffles.worker (1371207): Starting worker 10
+2026-10-27 17:20:08,838 INFO sniffles.worker (1371207): Starting worker 11
+2026-10-27 17:20:08,839 INFO sniffles.worker (1371207): Starting worker 12
+2026-10-27 17:20:08,840 INFO sniffles.worker (1371207): Starting worker 13
+2026-10-27 17:20:08,841 INFO sniffles.worker (1371207): Starting worker 14
+2026-10-27 17:20:08,843 INFO sniffles.worker (1371207): Starting worker 15
+2026-10-27 17:20:08,844 INFO sniffles.worker (1371207): Dispatched task #0 to worker 0 (0  tasks left)
+2026-10-27 17:20:08,844 INFO sniffles.worker (1371207): Worker 1 shutting down...
+2026-10-27 17:20:08,844 INFO sniffles.worker (1371207): Worker 2 shutting down...
+2026-10-27 17:20:08,844 INFO sniffles.worker (1371207): Worker 3 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 4 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 5 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 6 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 7 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 8 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 9 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 10 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 11 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 12 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 13 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 14 shutting down...
+2026-10-27 17:20:08,845 INFO sniffles.worker (1371207): Worker 15 shutting down...
+2026-10-27 17:20:17,552 INFO sniffles.worker (1371207): Worker 0 got result for task #0
+2026-10-27 17:20:17,653 INFO sniffles.worker (1371207): Worker 0 shutting down...
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 0 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 1 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 2 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 3 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 4 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 5 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 6 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 7 done (code 0).
+2026-10-27 17:20:17,661 INFO sniffles.worker (1371207): Worker 8 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 9 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 10 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 11 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 12 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 13 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 14 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.worker (1371207): Worker 15 done (code 0).
+2026-10-27 17:20:17,662 INFO sniffles.main (1371207): Took 8.84s.
+2026-10-27 17:20:17,662 INFO sniffles.main (1371207): 
+2026-10-27 17:20:17,671 INFO sniffles.main (1371207): Generating index for results/callset/hifi_certified.sv.vcf.gz...
+2026-10-27 17:20:17,690 INFO sniffles.main (1371207): Indexing VCF output took 0.02s.
+2026-10-27 17:20:17,690 INFO sniffles.main (1371207): Wrote 707 called SVs to results/callset/hifi_certified.sv.vcf.gz (single-sample, sorted, bgzipped, tabix-indexed)

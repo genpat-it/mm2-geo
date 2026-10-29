@@ -6,7 +6,11 @@ HUMAN — GIAB HG002 (NA24385)
   ONT R10.4.1   : ONT Open Data GIAB 2023.05 HG002 super-accuracy       PAO83395.pass.cram
                   https://ont-open-data.s3.amazonaws.com/giab_2023.05/analysis/hg002/sup/PAO83395.pass.cram
                   (encoded against GRCh38 no-alt analysis set: GCA_000001405.15_GRCh38_no_alt_analysis_set.fna)
-  ONT R9.4.1    : GIAB HG002 ultra-long (2017, Guppy 3.2.4), only for the 3x genome-wide R9.4.1 rows
+                  10% subsample of the primary records: samtools view -F 0x900 -s 42.10 (seed 42, fraction 0.10)
+  ONT R9.4.1    : GIAB HG002 ultra-long (2017, Guppy 3.2.4), only for the ~3x genome-wide R9.4.1 rows
+                  https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/data/AshkenazimTrio/HG002_NA24385_son/Ultralong_OxfordNanopore/guppy-V3.2.4_2020-01-22/HG002_ONT-UL_GIAB_20200122.fastq.gz
+                  first 20 GB (uncompressed, complete records only), streamed; subset md5 948425787aa1c9a6745753aa1b0d6d7b,
+                  1,228,750 reads, 9,896,844,806 bases
   PacBio CLR    : GIAB HG002 PacBio CLR, PacBio_MtSinai_NIST            HG002_PacBio_GRCh38.bam
   reference     : GRCh38 GenBank GCA_000001405.15 (CM* names), GRCh37 chr22 (Ensembl 110, SVs)
   stratifications: GIAB v3.3 GRCh38 segdups, AllTandemRepeatsandHomopolymers_slop5, lowmappabilityall
@@ -19,13 +23,18 @@ HUMAN — GIAB HG002 (NA24385)
                   138,688 reads, ~0.57x), aligned unsliced to the whole GRCh38
 
 BACTERIAL — E. coli
-  reads         : ENA SRR9900640 (real Oxford Nanopore isolate)
+  reads         : ENA SRR9900640 (real Oxford Nanopore isolate), SRR9900640_1.fastq.gz md5 733b61ae7289db93cc46e14dc473122d
   reference     : E. coli K-12 MG1655, NC_000913.3 (concordance row only)
   spike-in truth: built from the strain's own Flye assembly (data/ecoli_strain_assembly.fasta);
                   SNPs+indels implanted by scripts/15_ecoli_plant_variants.py (seed 20260716)
                   -> data/ecoli_ref_mut.fa + data/ecoli_spikein_truth.vcf.gz
 
+STRESS TESTS (scripts 13, 14)
+  chr22 with implanted dense indels / large SVs (scripts/make_adversarial.py, ADV_SEED=77) and Badread 0.4.1
+  reads simulated from them (badread simulate --seed 77)
+
 TOOL
   mm2-geo source : https://github.com/genpat-it/mm2-geo  (tags revision-2026 and submission-2026)
-  patches        : geo.patch (minimap2 v2.30), geo_mm2fast.patch (mm2-fast 14fe36c), instrumentation.patch (analysis only)
+  patches        : geo.patch (minimap2 v2.30), geo_mm2fast.patch (mm2-fast 14fe36c), instrumentation.patch and
+                   cert_oracle.patch (this repository; analysis only, output unchanged)
   stock minimap2 : https://github.com/lh3/minimap2 tag v2.30 (2.30-r1287)

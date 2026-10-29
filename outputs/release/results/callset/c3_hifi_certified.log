@@ -1,0 +1,158 @@
+[33m[WARNING][0m No absolute output path provided, using current directory as prefix
+
+[INFO] CLAIR3 VERSION: v2.0.2
+[INFO] BAM FILE PATH: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/hifi_certified.bam
+[INFO] REFERENCE FILE PATH: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/chr22_cm.fa
+[INFO] MODEL PATH: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env/bin/models/hifi
+[INFO] OUTPUT FOLDER: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified
+[INFO] PLATFORM: hifi
+[INFO] THREADS: 32
+[INFO] BED FILE PATH: EMPTY
+[INFO] VCF FILE PATH: EMPTY
+[INFO] CONTIGS: CM000684.2
+[INFO] CONDA PREFIX: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/env
+[INFO] SAMTOOLS PATH: samtools
+[INFO] PYTHON PATH: python3
+[INFO] PYPY PATH: pypy3
+[INFO] PARALLEL PATH: parallel
+[INFO] WHATSHAP PATH: whatshap
+[INFO] LONGPHASE PATH: EMPTY
+[INFO] CHUNK SIZE: 5000000
+[INFO] FULL ALIGN PROPORTION: 0.3
+[INFO] FULL ALIGN REFERENCE PROPORTION: 0.3
+[INFO] PHASING PROPORTION: 0.7
+[INFO] MINIMUM MQ: 5
+[INFO] MINIMUM COVERAGE: 2
+[INFO] SNP AF THRESHOLD: 0.08
+[INFO] INDEL AF THRESHOLD: 0.08
+[INFO] BASE ERROR IN GVCF: 0.001
+[INFO] GQ BIN SIZE IN GVCF: 5
+[INFO] ENABLE FILEUP ONLY CALLING: False
+[INFO] ENABLE FAST MODE CALLING: False
+[INFO] ENABLE CALLING SNP CANDIDATES ONLY: False
+[INFO] ENABLE PRINTING REFERENCE CALLS: False
+[INFO] ENABLE OUTPUT GVCF: False
+[INFO] ENABLE HAPLOID PRECISE MODE: False
+[INFO] ENABLE HAPLOID SENSITIVE MODE: False
+[INFO] ENABLE INCLUDE ALL CTGS CALLING: False
+[INFO] ENABLE NO PHASING FOR FULL ALIGNMENT: False
+[INFO] ENABLE REMOVING INTERMEDIATE FILES: False
+[INFO] ENABLE LONGPHASE FOR INTERMEDIATE VCF PHASING: False
+[INFO] ENABLE PHASING FINAL VCF OUTPUT USING WHATSHAP: False
+[INFO] ENABLE PHASING FINAL VCF OUTPUT USING LONGPHASE: False
+[INFO] ENABLE HAPLOTAGGING FINAL BAM: False
+[INFO] ENABLE LONG INDEL CALLING: False
+[INFO] ENABLE C_IMPLEMENT: True
+[INFO] ENABLE DWELL TIME: False
+
+[INFO] Check environment variables
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/log
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/pileup_output
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/merge_output
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/phase_output
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/gvcf_tmp_output
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/full_alignment_output
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/phase_output/phase_vcf
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/phase_output/phase_bam
+[INFO] Create folder /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/full_alignment_output/candidate_bed
+[INFO] Call variant in contigs: CM000684.2
+[INFO] Chunk number for each contig: 11
+[INFO] 1/7 Call variants using pileup model
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 1/11) : 0
+Total time elapsed: 0.02 s
+[INFO] No vcf output for file /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/pileup_output/pileup_CM000684.2_1.vcf, remove empty file
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 2/11) : 0
+Total time elapsed: 0.02 s
+[INFO] No vcf output for file /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/tmp/pileup_output/pileup_CM000684.2_2.vcf, remove empty file
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 7/11) : 10294
+Total time elapsed: 8.54 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 9/11) : 12364
+Total time elapsed: 9.61 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 6/11) : 15228
+Total time elapsed: 9.89 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 8/11) : 11708
+Total time elapsed: 9.75 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 10/11) : 14730
+Total time elapsed: 9.92 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 11/11) : 16671
+Total time elapsed: 10.59 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 5/11) : 20348
+Total time elapsed: 12.43 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 4/11) : 23818
+Total time elapsed: 14.21 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 3/11) : 49367
+Total time elapsed: 24.90 s
+
+[INFO] 2/7 Select heterozygous SNP variants for Whatshap phasing and haplotagging
+[INFO] Select heterozygous pileup variants exceeding phasing quality cutoff 22
+[INFO] Total heterozygous SNP positions selected: CM000684.2: 39589
+
+[INFO] 3/7 Phase VCF file using Whatshap
+This is WhatsHap 2.8 running under Python 3.11.18
+Working on 1 sample from 1 family
+
+# Working on contig CM000684.2 in individual SAMPLE
+Found 39589 usable heterozygous variants (0 skipped due to missing genotypes)
+Number of supplementary alignments: 0
+Number of non-singleton groups: 0
+Skipped 0 groups
+Found 127697 reads covering 39536 variants
+Kept 109645 reads that cover at least two variants each
+Selected 25326 most phase-informative reads covering 39490 variants
+Phasing 1 sample by solving the MEC problem ...
+Largest block contains 2025 variants (5.1% of accessible variants) between position 16330380 and 16570885
+Changed 415 genotypes while writing VCF
+
+# Resource usage
+Maximum memory usage: 0.458 GB
+Time spent reading BAM/CRAM:                   20.5 s
+Time spent parsing VCF:                         0.4 s
+Time spent selecting reads:                     6.7 s
+Time spent phasing:                            91.3 s
+Time spent writing VCF:                         0.6 s
+Time spent finding components:                  0.4 s
+Time spent on rest:                             0.5 s
+Total elapsed time:                           120.5 s
+
+[INFO] 5/7 Select candidates for full-alignment calling
+[INFO] Set variants quality cutoff 22.0
+[INFO] Set reference calls quality cutoff 19.0
+[INFO] Low quality reference calls to be processed in CM000684.2: 23619
+[INFO] Low quality variants to be processed in CM000684.2: 28703
+
+[INFO] 6/7 Call low-quality variants using full-alignment model
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 6/6) : 2322
+Total time elapsed: 6.69 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 2/6) : 10000
+Total time elapsed: 17.83 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 3/6) : 10000
+Total time elapsed: 23.15 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 1/6) : 10000
+Total time elapsed: 26.41 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 4/6) : 10000
+Total time elapsed: 31.19 s
+Calling variants ...
+Total processed positions in CM000684.2 (chunk 5/6) : 10000
+Total time elapsed: 34.89 s
+
+[INFO] 7/7 Merge pileup VCF and full-alignment VCF
+[INFO] Pileup variants processed in CM000684.2: 67054
+[INFO] Full-alignment variants processed in CM000684.2: 25967
+
+[INFO] Finish calling, output file: /mnt/disk2/a.deruvo/freemap_revision/rev2/rerun_fix/results/callset/c3_hifi_certified/merge_output.vcf.gz

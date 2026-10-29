@@ -4,6 +4,7 @@
 # (truvari / rtg vcfeval with minimap2 as baseline), plus the high-confidence BED restriction.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/callset; mkdir -p $D
+: > $D/summary.txt   # summary rewritten on every run (BAMs and callsets already present are reused)
 source "$CONDA_PROFILE"
 for s in "hifi map-hifi hifi_chr22.fq hifi $MODEL_HIFI" "ont map-ont ont_r10_chr22.fq ont $MODEL_ONT" "clr map-pb clr_chr22.fq none none"; do set -- $s
   for c in stock heuristic certified; do

@@ -6,7 +6,7 @@
 #   1. the mm2-geo binary ($MM2GEO) runs;
 #   2. MM2_GEO=0 (stock) and MM2_GEO=1 MM2_GEO_FAST=1 (geo) both produce valid, non-empty alignments;
 #   3. samtools reads the output;
-#   4. the geometric band is actually engaged under MM2_GEO=1 MM2_GEO_FAST=1 (MM2_GEO_STATS);
+#   4. the geometric band is actually engaged under MM2_GEO=1 MM2_GEO_FAST=1 (MM2_GEO_STATS gaps=...);
 #   5. the certified mode (MM2_GEO=1) reproduces the stock output exactly.
 # It does NOT check accuracy — only that your build + tools + config are wired correctly.
 set -uo pipefail
@@ -54,8 +54,12 @@ n1=$("$SAMTOOLS" view -c -F0x904 "$T/geo.sam" 2>/dev/null || echo 0)
 [ "${n1:-0}" -ge 1 ] && ok "MM2_GEO=1 MM2_GEO_FAST=1 mapped $n1/60 primary reads" || bad "MM2_GEO=1 MM2_GEO_FAST=1 produced no alignments"
 
 # --- 3) geometric band actually engaged ---
-stats=$(MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_STATS=1 "$MM2GEO" -ax map-hifi -t1 "$T/ref.fa" "$T/reads.fq" 2>&1 >/dev/null | grep -c "MM2_GEO_STATS\|MM2_GEO_CELLS")
-[ "${stats:-0}" -ge 1 ] && ok "geometric band engaged under MM2_GEO=1 MM2_GEO_FAST=1 (diagnostics printed)" || bad "MM2_GEO_STATS produced no diagnostics"
+# MM2_GEO_STATS prints "### MM2_GEO_STATS gaps=<n> ..." only when the geometric band handled at least one gap
+stats=$(MM2_GEO=1 MM2_GEO_FAST=1 MM2_GEO_STATS=1 "$MM2GEO" -ax map-hifi -t1 "$T/ref.fa" "$T/reads.fq" 2>&1 >/dev/null | grep -c "MM2_GEO_STATS gaps=")
+[ "${stats:-0}" -ge 1 ] && ok "geometric band engaged under MM2_GEO=1 MM2_GEO_FAST=1 (MM2_GEO_STATS gaps= reported)" || bad "MM2_GEO_STATS reported no banded gaps"
+# Not checked here: that the heuristic output differs from stock. On these synthetic reads (uniform random
+# reference, 1% scattered errors, no long indels) the heuristic SAM is identical to stock, so the check would
+# fail on a correct build; it runs on the real chr22 data in 00_verify_output_identity.sh (check D).
 
 # --- 4) certified mode == stock (SAM records, @PG excluded) ---
 MM2_GEO=1 "$MM2GEO" -ax map-hifi -t4 "$T/ref.fa" "$T/reads.fq" 2>/dev/null > "$T/cert.sam"
