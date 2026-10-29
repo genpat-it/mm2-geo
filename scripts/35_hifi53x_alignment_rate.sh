@@ -9,5 +9,5 @@ IDX=grch38_hifi.mmi; [ -s $IDX ] || MM2_GEO=0 "$MM2GEO" -x map-hifi -d $IDX "$GR
 "$SAMTOOLS" view -@8 -u -F 0x900 "$HG002_HIFI_BAM" | "$SAMTOOLS" fastq -@8 - 2>/dev/null \
  | tee >(awk 'NR%4==2{n++; b+=length($0)} END{printf "input reads %d, bases %d\n", n, b}' > $D/input.txt) \
  | MM2_GEO=0 "$MM2GEO" -cx map-hifi -t"$THREADS" $IDX - 2>/dev/null \
- | awk -F'\t' '/tp:A:P/{p++; if($1!=last){m++; last=$1}} END{printf "mapped reads %d, non-secondary records %d\n", m, p}' > $D/paf.txt
+ | awk -F'\t' '/tp:A:P/{p++; if($1!=last){m++; last=$1}} {r++} END{printf "PAF records %d, non-secondary records %d, mapped reads %d\n", r, p, m}' > $D/paf.txt
 sleep 5; cat $D/input.txt $D/paf.txt | tee $D/summary.txt
