@@ -18,7 +18,7 @@ for rep in 1 2 3; do for cfg in mm2 geo; do
   echo "$cfg $(cat $D/t)" >> $D/times
 done; done
 for cfg in mm2 geo; do
-  awk -v c=$cfg '$1==c{print $2, $3}' $D/times | sort -n | awk -v c=$cfg 'NR==2{printf "   %-4s time %ss  RSS %.1fGB (median of 3)\n",c,$1,$2/1048576}' | tee -a $R
+  awk -v c=$cfg '$1==c{print $2, $3}' $D/times | sort -n | awk -v c=$cfg 'NR==2{printf "   %-4s time %ss  RSS %.1fGiB (median of 3)\n",c,$1,$2/1048576}' | tee -a $R
 done
 # -F 0x904: primary records only (unmapped, secondary and supplementary excluded), so that the counts and the
 # concordance denominator refer to mapped reads

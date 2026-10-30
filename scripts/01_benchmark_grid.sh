@@ -27,7 +27,7 @@ alncmd(){ case $1 in
 timrss(){ local cmd; cmd="$(alncmd "$1" "$2" "$3" "$4")"; local t=() r=()
   for i in 1 2 3; do /usr/bin/time -f "%e %M" bash -c "$cmd >/dev/null 2>/dev/null" 2>$S/tr.t
     read e m < $S/tr.t; t+=("$e"); r+=("$m"); done
-  awk -v tt=$(med "${t[@]}") -v rr=$(med "${r[@]}") 'BEGIN{printf "%5.0fs %5.1fGB",tt,rr/1048576}'; }
+  awk -v tt=$(med "${t[@]}") -v rr=$(med "${r[@]}") 'BEGIN{printf "%5.0fs %5.1fGiB",tt,rr/1048576}'; }
 
 # datasets: name|alignref|clairref|ctg|truth|bed|sdf|reheaderTag
 DS=(

@@ -26,5 +26,5 @@ for s in "${DS[@]}"; do set -- $s
 done
 awk -F'\t' 'NR>1{k=$1"\t"$2; t[k]=t[k]" "$4; r[k]=r[k]" "$5}
   function med(s,  a,n){n=split(s,a," "); asort(a); return a[int((n+1)/2)]}
-  END{for(k in t) printf "%s\t%.0f s\t%.1f GB\n", k, med(t[k]), med(r[k])/1048576}' $T | sort > $D/summary.txt
+  END{for(k in t) printf "%s\t%.0f s\t%.1f GiB\n", k, med(t[k]), med(r[k])/1048576}' $T | sort > $D/summary.txt
 cat $I >> $D/summary.txt; echo DONE >> $D/summary.txt

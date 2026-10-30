@@ -1,21 +1,21 @@
-chr14_clr	certified	73 s	12.5 GB
-chr14_clr	heuristic	55 s	9.0 GB
-chr14_clr	minimap2	83 s	14.6 GB
-chr14_hifi	certified	27 s	10.7 GB
-chr14_hifi	heuristic	32 s	10.3 GB
-chr14_hifi	minimap2	44 s	12.1 GB
-chr14_ont	certified	72 s	11.1 GB
-chr14_ont	heuristic	73 s	6.9 GB
-chr14_ont	minimap2	85 s	12.2 GB
-chr22_clr	certified	42 s	12.2 GB
-chr22_clr	heuristic	33 s	9.6 GB
-chr22_clr	minimap2	47 s	14.2 GB
-chr22_hifi	certified	40 s	13.4 GB
-chr22_hifi	heuristic	36 s	12.1 GB
-chr22_hifi	minimap2	50 s	14.4 GB
-chr22_ont	certified	116 s	11.7 GB
-chr22_ont	heuristic	104 s	10.0 GB
-chr22_ont	minimap2	124 s	12.5 GB
+chr14_clr	certified	73 s	12.5 GiB
+chr14_clr	heuristic	55 s	9.0 GiB
+chr14_clr	minimap2	83 s	14.6 GiB
+chr14_hifi	certified	27 s	10.7 GiB
+chr14_hifi	heuristic	32 s	10.3 GiB
+chr14_hifi	minimap2	44 s	12.1 GiB
+chr14_ont	certified	72 s	11.1 GiB
+chr14_ont	heuristic	73 s	6.9 GiB
+chr14_ont	minimap2	85 s	12.2 GiB
+chr22_clr	certified	42 s	12.2 GiB
+chr22_clr	heuristic	33 s	9.6 GiB
+chr22_clr	minimap2	47 s	14.2 GiB
+chr22_hifi	certified	40 s	13.4 GiB
+chr22_hifi	heuristic	36 s	12.1 GiB
+chr22_hifi	minimap2	50 s	14.4 GiB
+chr22_ont	certified	116 s	11.7 GiB
+chr22_ont	heuristic	104 s	10.0 GiB
+chr22_ont	minimap2	124 s	12.5 GiB
 dataset	certified_sam_equals_minimap2
 chr22_hifi	yes
 chr22_ont	yes
