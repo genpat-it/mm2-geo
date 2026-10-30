@@ -25,9 +25,11 @@ heuristic-mode rows of Table S20 from `revision/speed_checks/`.
 
 The certified-mode identity checks recorded in `cleanroom/` (executables built at commit c042cdc) and in
 `revision/ont_r10_genomewide/stats.txt` (an earlier development build, committed on 8 October) predate the release;
-the certified-mode identity and every timing reported in the paper are those of `release/`, obtained with the
-executables of tag `revision-2026` (heuristic-mode rows of Tables S18 and S20: `submission-2026` executables, as
-stated in each table). Supplementary Table S18 comes from `release/results/genomewide/perchr.tsv`, one series with
+the certified-mode identity and every certified-mode timing reported in the paper are those of `release/`, obtained
+with the executables of tag `revision-2026`. Heuristic-mode-only timings come from the series stated in each table:
+Table S13 and the first rows of Table S14 from `submission/`, the heuristic-mode rows of Table S20 from
+`revision/speed_checks/` (`submission-2026` executables), those of Table S18 from `release/` (`submission-2026`
+executable, in the same series as the certified mode). Supplementary Table S18 comes from `release/results/genomewide/perchr.tsv`, one series with
 both modes interleaved; the earlier per-mode series in `revision/genomewide/` are superseded.
 
 ## `release/` — certified-mode steps with the executables of tag `revision-2026`
