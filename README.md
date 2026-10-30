@@ -43,14 +43,14 @@ Or everything in one command (build, data, smoke test and every numbered script 
 per step and a summary of exit codes in `$WORKDIR/logs/status.tsv`; completed steps are skipped on a re-run):
 
 ```bash
-bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27, 34 and 35
+bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27, 34, 35 and 37
 ```
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
-`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31, 34 and 35; e.g.
+`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–38; e.g.
 `results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
-`results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35). Timings assume an otherwise idle machine and local storage for the inputs;
+`results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35, `results/table1_modes/`, `results/certified/` and `results/examples/` for 36, 37 and 38). Timings assume an otherwise idle machine and local storage for the inputs;
 the timing scripts use one executable per comparison, change only environment variables, send the SAM
 output to `/dev/null` (except the output-handling rows of Table S20, script 25, which also write it to disk) and report the median of three interleaved runs.
 
@@ -103,12 +103,12 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `20_simulated_truth.sh` | discordant reads against simulated truth (pbsim3, seed 2024) |
 | `21_callset_diff.sh` | Table S17 (SV and small-variant callsets on the same GRCh38 alignments) |
 | `22_sv_truth_grch37.sh` | Table S17, bottom block (SVs vs GIAB Tier1 for minimap2 / heuristic / certified) |
-| `23_modes_identity_timing.sh` | Table 2 end-to-end columns, Table S22 (both modes, certified identity) |
+| `23_modes_identity_timing.sh` | certified identity on chr22 HiFi/ONT/CLR and chr14 ONT (`-cx` and `-ax`); its timing series is superseded by script 36 (Table 2 end-to-end columns and Table S22 use the series of Table 1) |
 | `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes; chr1-only setting) |
-| `25_speed_threads_builds.sh` | Table S20 heuristic-mode series (threads, output handling, index scope, bioconda and -O3 builds; certified series from script 37) |
+| `25_speed_threads_builds.sh` | Table S20 heuristic-mode series (threads, output handling, index scope, bioconda and -O3 builds; certified series from script 37). The printed heuristic-mode rows were obtained with `submission-2026` executables, the -O3 one included; the script builds the -O3 executable from `revision-2026`, whose heuristic output is identical |
 | `26_dp_stage.sh` | Table 2 DP columns, Table S21 (DP-stage decomposition, Amdahl prediction) |
 | `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S19, S21, S22) |
-| `28_mm2fast_modes.sh` | Table S22, mm2-fast rows |
+| `28_mm2fast_modes.sh` | Table S22, mm2-fast rows (both modes ported to mm2-fast; certified identity to mm2-fast) |
 | `29_input_counts.sh` | Table S19 (input reads, bases, alignment rates) |
 | `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
 | `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |

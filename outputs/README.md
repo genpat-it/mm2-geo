@@ -19,15 +19,16 @@ on network storage. `results/genomewide/summary_retime.txt` is the manual re-tim
 of script 24, run alone after their first timing had overlapped with other jobs (`perchr.tsv` holds the
 re-timed rows). Scripts 10 and 25, whose 32-thread and disk-output timings are limited by network writes,
 were re-timed with inputs and output on local disk: `localdisk/results_THREADSCALING.txt` (script 10),
-`localdisk/speedchecks_timing.tsv` and `localdisk/25.log` (script 25: timing table and full log); these are
-the values used in Supplementary Tables S12 and S20.
+`localdisk/speedchecks_timing.tsv` and `localdisk/25.log` (script 25: timing table and full log). They are kept for
+reference: Supplementary Table S12 comes from `release/results/certified/threads.tsv` (script 37) and the
+heuristic-mode rows of Table S20 from `revision/speed_checks/`.
 
-The certified-mode identity checks recorded in `cleanroom/` (the chr8 partition of script 24 and script 27) and in
-`revision/ont_r10_genomewide/stats.txt` were made with executables built at commit c042cdc; the certified-mode
-identity reported in the paper is that of `release/`, obtained with the executables of tag `revision-2026`.
-The timings of Supplementary Table S18 come from `revision/genomewide/wg_perchr.tsv` with `rerun_chr11.tsv`
-(heuristic-mode series) and `revision/genomewide/wg_modes_release.tsv` (certified-mode series);
-`release/results/genomewide/perchr.tsv` is a later run, used for the per-read identity only.
+The certified-mode identity checks recorded in `cleanroom/` (executables built at commit c042cdc) and in
+`revision/ont_r10_genomewide/stats.txt` (an earlier development build, committed on 8 October) predate the release;
+the certified-mode identity and every timing reported in the paper are those of `release/`, obtained with the
+executables of tag `revision-2026` (heuristic-mode rows of Tables S18 and S20: `submission-2026` executables, as
+stated in each table). Supplementary Table S18 comes from `release/results/genomewide/perchr.tsv`, one series with
+both modes interleaved; the earlier per-mode series in `revision/genomewide/` are superseded.
 
 ## `release/` — certified-mode steps with the executables of tag `revision-2026`
 
@@ -66,15 +67,15 @@ now script 32) and `results_KILLER_f1.txt` (Table S8, now script 33).
 
 | folder | content | table | script |
 |---|---|---|---|
-| `modes_timing/` | `identity.tsv` (certified vs minimap2 hashes) and `chr22_timing.tsv` (chr22/chr14, median of 3), script 23; `timing.tsv` and `amdahl.tsv` (ONT R9.4.1 genome-wide subset), script 34 | Table 2 (end-to-end), S22 | 23, 34 |
-| `dp_stage/` | `dpstage.tsv`: wall, total CPU and DP-stage CPU time per data set and mode (script 26); `ont_r9_genomewide_amdahl.tsv`: the same for the ONT R9.4.1 genome-wide subset (script 34) | Table 2 (DP stage), S21 | 26, 34 |
+| `modes_timing/` | `identity.tsv` (certified vs minimap2 hashes) and `chr22_timing.tsv` (chr22/chr14, median of 3), script 23; `timing.tsv` and `amdahl.tsv` (ONT R9.4.1 genome-wide subset), script 34 | earlier series, superseded by `release/results/table1_modes/` (Table 2 end-to-end, S22) and `release/results/ont_r9_genomewide/` | 23, 34 |
+| `dp_stage/` | `dpstage.tsv`: wall, total CPU and DP-stage CPU time per data set and mode (script 26); `ont_r9_genomewide_amdahl.tsv`: the same for the ONT R9.4.1 genome-wide subset (script 34) | earlier series, superseded by `release/results/dpstage/dpstage.tsv` and `release/results/ont_r{9,10}_genomewide/dpstage.tsv` (Table 2 DP stage, S21) | 26, 34 |
 | `gap_rounds/` | band-doubling rounds and joint (d, E) statistics | S15 | 18 |
 | (see `release/`) | discordant reads by severity and GIAB stratification (`release/results/discordant_reads.txt`) and simulated truth (`release/results/simulated_truth.txt`) | S16 | 19, 20 |
 | `callset_diff/` | `sm_*`/`smhc_*`: small-variant comparison of the heuristic and certified callsets against minimap2 (whole chr22 / GIAB high-confidence); `sv_vcf/`: Sniffles2 SV calls for the nine chr22 BAMs | S17 | 21 |
 | `sv_truth_grch37/` | SV calls against GIAB Tier1 v0.6 for minimap2 / heuristic / certified | S17 (bottom) | 22 |
-| `genomewide/` | full-coverage HG002 HiFi per chromosome: heuristic series (`wg_perchr.tsv`, `rerun_chr11.tsv`); both modes with the released executables, used for the certified series (`wg_modes_release.tsv`; the clean-room re-run is `cleanroom/results/genomewide/perchr.tsv`); the 9 chr8 reads whose certified output differs, all equal-score ties, are in `release/results/genomewide/discordant_chr8.paf`; chr1-only setting (`chr1only_full.tsv`) | S18 | 24 |
+| `genomewide/` | full-coverage HG002 HiFi per chromosome: heuristic series (`wg_perchr.tsv`, `rerun_chr11.tsv`); both modes with the released executables, used for the certified series (`wg_modes_release.tsv`; the clean-room re-run is `cleanroom/results/genomewide/perchr.tsv`); the 9 chr8 reads whose certified output differs, all equal-score ties, are in `release/results/genomewide/discordant_chr8.paf`; chr1-only setting (`chr1only_full.tsv`) | earlier series; S18 uses `release/results/genomewide/perchr.tsv` | 24 |
 | `speed_checks/` | thread counts, output handling, index scope, bioconda and -O3 builds, rebuild from the public tag `submission-2026` (`pubcheck.tsv`, `relcheck.txt`) | S20 | 25 |
 | `input_counts/` | reads, bases, mapped reads and primary records per data set (`minor3.tsv`; its `certified` rows are certified-mode counts) | S19 | 29 |
 | `ont_r9_genomewide/` | ONT R9.4.1 genome-wide subset: read counts and certified identity | S19, S21, S22 | 34 |
-| `ont_r10_genomewide/` | ONT R10.4.1 genome-wide subset (10%, seed 42): read counts, certified identity (identical to minimap2), timing (3 reps), DP-stage decomposition | S19, S21, S22 | 27 |
-| `cert_oracle/` | per-gap oracle of the certified mode (`summary.tsv`) and exhaustive check of the score bound (`bound_exhaustive.tsv`) | S23 | 30, 31 |
+| `ont_r10_genomewide/` | ONT R10.4.1 genome-wide subset (10%, seed 42), earlier development build: read counts, certified identity (2 reads differ, AS +2), timing (3 reps), DP-stage decomposition | S19 (read counts); timing and identity superseded by `release/results/ont_r10_genomewide/` (S21, S22) | 27 |
+| `cert_oracle/` | per-gap oracle of an earlier certified build (`summary.tsv`) and exhaustive check of the score bound (`bound_exhaustive.tsv`) | bound check only; the S23 gap counts are in `release/results/cert_oracle/summary.tsv` | 30, 31 |

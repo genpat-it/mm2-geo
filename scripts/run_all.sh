@@ -41,11 +41,11 @@ step build_tools bash "$SCRIPTS/build_tools.sh" || exit 1
 step fetch_core  bash "$SCRIPTS/fetch_data.sh" core || exit 1
 step smoke_test  bash "$SCRIPTS/smoke_test.sh" || exit 1
 
-genomewide(){ step fetch_genomewide bash "$SCRIPTS/fetch_data.sh" genomewide && { num 27; num 34; num 24; num 35; }; }
+genomewide(){ step fetch_genomewide bash "$SCRIPTS/fetch_data.sh" genomewide && { num 27; num 34; num 24; num 35; num 37; }; }
 core(){
   for n in 00 29 18 19 20 23 26 02 03 05 06; do num $n; done
   step 15 check15
-  for n in 16 21 22 07 01 04 09 17 08 10 11 12 13 14 25 28 30 31 32 33; do num $n; done; }
+  for n in 16 21 22 07 01 04 09 17 08 10 11 12 13 14 25 28 30 31 32 33 36 38; do num $n; done; }
 
 if [ $CORE_ONLY = 1 ]; then core
 elif [ $PARALLEL = 1 ]; then genomewide & core; wait
