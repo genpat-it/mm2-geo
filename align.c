@@ -754,7 +754,7 @@ static int mm_geo_try_onegap(void *km, const mm_mapopt_t *o, const int8_t *mat, 
 }
 
 // --- mm2-geo instrumentation (MM2_GEO_STATS=1). Directly measures DP work.
-// Collect single-threaded (-t 1). ksw_geo_cells (defined here, incremented inside the
+// Thread-safe (one relaxed atomic add per ksw2 call). ksw_geo_cells (defined here, incremented inside the
 // ksw2 anti-diagonal loop) is the ACTUAL number of DP cells evaluated, counted identically
 // whether MM2_GEO is on or off, so a paired mm2-vs-geo run gives an honest cell ratio.
 // The band-distribution / attempt statistics below are recorded only on the geo path.
