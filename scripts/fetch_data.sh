@@ -3,10 +3,10 @@
 # Usage: bash scripts/fetch_data.sh [core|genomewide|all]
 #   core       (default) references, truth sets, stratifications, the chr22/chr14 HiFi/ONT/CLR read
 #              slices, the 0.57x genome-wide HiFi subset, the E. coli data and the simulated chr22 reads
-#              (scripts 00-22 and 29; the slices stream from the GIAB/ONT servers, so only the selected
+#              (all scripts except 24, 27, 34, 35, 37 and 39; the slices stream from the GIAB/ONT servers, so only the selected
 #              chromosomes are transferred)
 #   genomewide additionally the complete GIAB HG002 HiFi BAM (121 GB) and ONT R10.4.1 CRAM (104 GB) used
-#              by the genome-wide scripts (24, 27, 34, 35); needs ~250 GB of free space
+#              by the genome-wide scripts (24, 27, 34, 35, 37 and 39); needs ~250 GB of free space
 #   all        both
 # Every step is skipped when its output already exists, so the script can be re-run after an interruption.
 set -euo pipefail

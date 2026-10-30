@@ -24,7 +24,7 @@ HUMAN — GIAB HG002 (NA24385)
 
 BACTERIAL — E. coli
   reads         : ENA SRR9900640 (real Oxford Nanopore isolate), SRR9900640_1.fastq.gz md5 733b61ae7289db93cc46e14dc473122d
-  reference     : E. coli K-12 MG1655, NC_000913.3 (concordance row only)
+  reference     : E. coli K-12 MG1655, NC_000913.3 (E. coli rows of Tables S4 and S6, certified identity check)
   spike-in truth: built from the strain's own Flye assembly (data/ecoli_strain_assembly.fasta);
                   SNPs+indels implanted by scripts/15_ecoli_plant_variants.py (seed 20260716)
                   -> data/ecoli_ref_mut.fa + data/ecoli_spikein_truth.vcf.gz

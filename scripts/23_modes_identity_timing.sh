@@ -1,6 +1,6 @@
 #!/bin/bash
-# Operating points (Table 2 end-to-end columns, Supplementary Table S22): output identity of the certified mode
-# (PAF with CIGAR and SAM, sha256) and timing of minimap2 / heuristic / certified, same executable,
+# Output identity of the certified mode to minimap2
+# (PAF with CIGAR and SAM, sha256) and an earlier timing series (superseded by script 36) of minimap2 / heuristic / certified, same executable,
 # 3 interleaved runs, SAM to /dev/null. chr22 HiFi/ONT/CLR and chr14 ONT; identity also on the genome-wide HiFi subset.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/modes; mkdir -p $D
@@ -17,7 +17,7 @@ for s in "hifi_chr22 map-hifi chr22_named.fa hifi_chr22.fq" "ont_chr22 map-ont c
     echo -e "$1\t$c\trep$rep\t$(cat $D/t)" | tee -a $D/timing.tsv
   done; done
 done
-# genome-wide HiFi subset (Table 2, last row): identity only (its timing is script 11, its DP stage script 26)
+# genome-wide HiFi subset (Table 2, last row): identity only (its Table 2 row is the instrumented run of script 26)
 [ -s grch38_hifi.mmi ] || MM2_GEO=0 "$MM2GEO" -x map-hifi -d grch38_hifi.mmi "$GRCH38_REF" > /dev/null 2>&1
 for fmt in c a; do
   h0=$(MM2_GEO=0 "$MM2GEO" -${fmt}x map-hifi -t"$THREADS" grch38_hifi.mmi "$GW_READS" 2>/dev/null | grep -v '^@PG' | sha256sum | cut -c1-16)
