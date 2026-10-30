@@ -27,13 +27,13 @@ index 963cd29..d31882f 100644
 +// drift d) contains an insertion run and a deletion run totalling at least L=(b+1)+(b+1-d) and aligns at most
 +// (ql+tl-L)/2 pairs, so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d), with
 +// g(l) = min(q+l*e, q2+l*e2). If the in-band score S reaches U(b), no out-of-band path scores higher; otherwise
-+// the gap is realigned once with the smallest band whose bound S certifies (capped at minimap2's own band).
++// the gap is realigned with the smallest band whose bound S certifies (capped at minimap2's own band) and tested again.
 +// MM2_GEO_ONEGAP=1 (implied by the certified mode) first tries the best alignment with at most one gap in O(L) and
 +// accepts it only when it beats an upper bound on every alignment with two or more gaps.
 +static int mm_geo_cert(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_FAST"); v=(e&&*e&&atoi(e))?0:1;} return v; }
 +// In certified mode, gaps of at least MM2_GEO_CERT_SCOREPROBE bp (default 256; 0 disables) are first aligned
 +// score-only (no traceback); the score either certifies the narrow band or selects the certified band directly,
-+// so the traceback is computed only once, at the band that is finally accepted.
++// so the first band is traced back only if it passes the test.
 +static int mm_geo_cert_scoreprobe(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_SCOREPROBE"); v=(e&&*e)?atoi(e):256; if(v<0)v=0;} return v; }
 +static int mm_geo_onegap(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_ONEGAP"); v=(e&&*e&&atoi(e))?1:0; if(mm_geo_cert()) v=1;} return v; }
 +static inline int mm_geo_gcost(const mm_mapopt_t *o, int l){ int c1 = o->q + l * o->e, c2 = o->q2 + l * o->e2; return c1 < c2? c1 : c2; }
