@@ -211,7 +211,7 @@ ol li,ul li{margin:.25rem 0}
     <tr><td>ONT chr22 / chr14</td><td class="n">1.07× / 1.19×</td><td class="n">1.19× / 1.16×</td></tr>
     <tr><td>CLR chr22</td><td class="n">1.11×</td><td class="n">1.41×</td></tr>
   </table></div>
-  <p>The DP stage itself becomes 1.16–2.6× faster in the certified mode and 1.6–2.1× in the heuristic mode. The rest of the run is unchanged, so the end-to-end gain follows the share of run time spent in DP.</p>
+  <p>The DP stage itself becomes 1.16–2.6× faster in the certified mode and 1.6–2.1× in the heuristic mode. The rest of the run changes by at most 6%, so the end-to-end gain follows the share of run time spent in DP.</p>
   <p>The heuristic mode changes small-variant F1 by at most 0.0011 in the GIAB high-confidence regions, but over the whole of chr22 it changes 6–8% of the small-variant and SV calls, mostly outside those regions. Use the certified mode wherever lower-scoring alignments must be excluded and minimap2's gap scores preserved, for example for structural-variant or repeat analyses and in validated pipelines.</p>
 </section>
 
