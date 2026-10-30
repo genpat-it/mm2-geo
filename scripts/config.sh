@@ -34,10 +34,10 @@ MM2GEO_SUB="${MM2GEO_SUB:-$BIN/mm2geo_submission}"
 MM2GEO_INSTR="${MM2GEO_INSTR:-$BIN/mm2geo_instr}"
 MM2GEO_O3="${MM2GEO_O3:-$BIN/mm2geo_o3}"
 MM2GEO_ORACLE="${MM2GEO_ORACLE:-$BIN/mm2geo_oracle}"   # revision-2026 + cert_oracle.patch (script 30; same output)
-# stock minimap2 2.30 from bioconda (build-comparison script only): `conda install -c bioconda minimap2=2.30`
+# stock minimap2 2.30 from bioconda (build comparisons, scripts 25 and 37): `conda install -c bioconda minimap2=2.30`
 BIOCONDA_MM2="${BIOCONDA_MM2:-minimap2}"
 MM2GEO_SRC="${MM2GEO_SRC:-$BIN/src/mm2-geo}"
-# Optional: mm2-fast and mm2-fast+geo binaries (scripts 01, 08, 10, 28), built by build_tools.sh from
+# Optional: mm2-fast and mm2-fast+geo binaries (scripts 01, 08, 10, 28 and 37), built by build_tools.sh from
 # bwa-mem2/mm2-fast commit 14fe36c without / with geo_mm2fast.patch.
 MM2FAST="${MM2FAST:-$BIN/mm2fast}"
 MM2FASTGEO="${MM2FASTGEO:-$BIN/mm2fastgeo}"   # mm2-fast + geo_mm2fast.patch (heuristic and certified modes)
@@ -76,7 +76,7 @@ CLAIR3_MODELS="${CLAIR3_MODELS:-${CONDA_PREFIX:-$_CONDA_BASE/envs/mm2-geo-repro}
 MODEL_HIFI="${MODEL_HIFI:-$CLAIR3_MODELS/hifi}"
 MODEL_ONT="${MODEL_ONT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v500}"
 MODEL_BACT="${MODEL_BACT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v430_bacteria_finetuned}"
-# E. coli K-12 MG1655 reference (NC_000913.3), used only for the E. coli concordance row.
+# E. coli K-12 MG1655 reference (NC_000913.3): E. coli rows of Tables S4 and S6 and the certified identity check.
 ECOLI_REF="${ECOLI_REF:-$WORKDIR/ecoli_MG1655.fna}"
 # Full GRCh38 + genome-wide HG002 HiFi subset (scripts 11/12).
 GRCH38_REF="${GRCH38_REF:-$WORKDIR/GRCh38.fa}"
@@ -95,5 +95,5 @@ PBSIM_MODEL="${PBSIM_MODEL:-$CONDA_PREFIX/data/ERRHMM-SEQUEL.model}"
 # 6) Misc.
 THREADS="${THREADS:-32}"
 export TMPDIR="${TMPDIR:-$WORKDIR/tmp}"
-# scripts 01-17 write their tables to $WORKDIR/hifi_bench, scripts 00 and 18-29 to $WORKDIR/results
+# scripts 01-17, 32 and 33 write their tables to $WORKDIR/hifi_bench, scripts 00, 18-31 and 34-40 to $WORKDIR/results
 mkdir -p "$TMPDIR" "$WORKDIR/hifi_bench" "$WORKDIR/results"

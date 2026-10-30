@@ -28,15 +28,15 @@ The certified-mode identity checks recorded in `cleanroom/` (executables built a
 `revision/ont_r10_genomewide/stats.txt` (an earlier development build, committed on 8 October) predate the release;
 the certified-mode identity and every certified-mode timing reported in the paper are those of `release/`, obtained
 with the executables of tag `revision-2026`. Heuristic-mode-only timings come from the series stated in each table:
-Table S13 from `submission/`, the first rows of Table S14 from `cleanroom/hifi_bench/`, the heuristic-mode rows of Table S20 from
+Table S13 from `submission/`, the first rows of Table S14 from `cleanroom/hifi_bench/` (time and memory from `results_WHOLEGENOME.txt`, whose
+concordance line counts all reads, the concordance block from the primary-only `results_WG_CONCORD.txt` of script 12), the heuristic-mode rows of Table S20 from
 `revision/speed_checks/` (`submission-2026` executables), those of Table S18 from `release/` (`submission-2026`
 executable, in the same series as the certified mode). Supplementary Table S18 comes from `release/results/genomewide/perchr.tsv`, one series with
 both modes interleaved; the earlier per-mode series in `revision/genomewide/` are superseded.
 
 ## `release/` — certified-mode steps with the executables of tag `revision-2026`
 
-The steps that involve the certified mode (00, 13, 14, 18, 20–24, 26–28, 30, 34; `logs/status.tsv`) and the
-concordance and ablation scripts 05 and 03 were run with the executables built by `build_tools.sh` from tag
+The steps that involve the certified mode (00, 13, 14, 18, 20–24, 26–28, 30, 34; `logs/status.tsv`) and the concordance and ablation scripts 05 and 03, and the discordant-read statistics of script 19, were run with the executables built by `build_tools.sh` from tag
 `revision-2026`; these are the outputs behind every certified-mode number in the revised manuscript, and the
 concordance and CIGAR-ablation values of Table 3 and Supplementary Table S6 (`hifi_bench/`). Highlights:
 `results/identity/summary.txt` and `results/modes/identity.tsv` (certified identical to minimap2 on chr22
