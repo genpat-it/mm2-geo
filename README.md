@@ -70,9 +70,9 @@ Same executable with only environment variables changing, 32 threads, chr22 GIAB
 | CLR | 1.41× | 1.11× |
 
 - The DP stage itself becomes 1.6–2.1× faster in the heuristic mode and 1.16–2.6×
-  faster in the certified mode; the rest of the run is unchanged, so the
+  faster in the certified mode; the rest of the run changes by at most 6%, so the
   end-to-end gain follows the share of run time spent in DP (Amdahl's law).
-- The heuristic mode keeps small-variant F1 unchanged in GIAB high-confidence regions
+- The heuristic mode changes small-variant F1 by at most 0.0011 in GIAB high-confidence regions
   but can accept lower-scoring alignments in repetitive sequence; use the
   certified mode for structural-variant or repeat analyses and validated pipelines.
 - Complementary to SIMD acceleration: a port to
