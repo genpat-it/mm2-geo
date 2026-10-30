@@ -56,9 +56,9 @@ variables, except in the build comparisons (bioconda and -O3 builds; scripts 25 
 mm2-fast (scripts 01, 08, 10, 28 and 37) and the per-chromosome series of Table S18, which times the heuristic mode
 with the `submission-2026` executable and the certified mode with the `revision-2026` one (script 24). They report
 the median of three runs, with the configurations interleaved within each replicate in scripts 11, 23–25, 27, 28, 34,
-36, 37 and 40 and repeated three times in a row in scripts 01, 09, 10, 13, 14 and 33; the DP-stage decomposition (script 26, and the DP-stage runs of scripts 27 and 34) is one instrumented run per
+36, 37 and 40 and repeated three times in a row in scripts 01, 09, 10 (at 4 or more threads), 13, 14 and 33; the DP-stage decomposition (script 26, and the DP-stage runs of scripts 27 and 34) is one instrumented run per
 mode, and the rows that a table caption marks as single runs (the
-1–2-thread rows of Table S12, the heuristic-mode thread and output rows of Table S20) come from one run.
+1–2-thread rows of Table S12, run once by scripts 10 and 37, the heuristic-mode thread and output rows of Table S20) come from one run.
 
 ## Executables (`build_tools.sh`)
 
