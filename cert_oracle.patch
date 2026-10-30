@@ -1,7 +1,7 @@
 --- a/align.c
 +++ b/align.c
 @@ -679,6 +679,7 @@
- // so the traceback is computed only once, at the band that is finally accepted.
+ // so the first band is traced back only if it passes the test.
  static int mm_geo_cert_scoreprobe(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_SCOREPROBE"); v=(e&&*e)?atoi(e):256; if(v<0)v=0;} return v; }
  static int mm_geo_onegap(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_ONEGAP"); v=(e&&*e&&atoi(e))?1:0; if(mm_geo_cert()) v=1;} return v; }
 +static int mm_geo_oracle(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_CERT_ORACLE"); v=(e&&*e)?atoi(e):0;} return v; }
