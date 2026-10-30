@@ -166,7 +166,7 @@ ol li,ul li{margin:.25rem 0}
   <ol>
     <li><b>One-gap shortcut</b> (\(d\le 32\)): the best alignment with at most one indel of length \(d\) is found in \(O(q+t)\) by sliding the indel along the gap. It is accepted without DP when it beats the analogous bound on all alignments with two or more indels.</li>
     <li><b>First band</b> \(b=\min(d+m,b_{\max})\). For gaps of 256 bp or more it is first scored without traceback (score-only pass), so that the first band is traced back only if it passes the test.</li>
-    <li><b>Test</b> \(S_b\ge U(b)\). Because \(U\) is non-increasing in \(b\), a failing gap is not doubled blindly: mm2-geo computes the smallest \(b^{*}\) with \(U(b^{*})\le S_b\) and realigns at \(b^{*}\), then tests again (ksw2's banded score is not strictly monotone in \(b\), and 0.1–1.7% of the widened chr22 gaps need another realignment).</li>
+    <li><b>Test</b> \(S_b\ge U(b)\). Because \(U\) is non-increasing in \(b\), a failing gap is not doubled blindly: mm2-geo computes the smallest \(b^{*}\) with \(U(b^{*})\le S_b\) and realigns at \(b^{*}\), then tests again (ksw2's banded score is not monotone in \(b\), and 0.1–1.7% of the widened chr22 gaps need another realignment).</li>
     <li><b>Traceback check.</b> The score of the returned CIGAR is recomputed (a linear pass) and must equal \(S_b\); otherwise the gap is realigned with \(b_{\max}\).</li>
     <li>minimap2's own CIGAR-based z-drop test then runs afterwards, unchanged.</li>
   </ol>
