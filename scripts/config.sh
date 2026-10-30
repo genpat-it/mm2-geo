@@ -50,8 +50,8 @@ BCFTOOLS="${BCFTOOLS:-bcftools}"
 RTG="${RTG:-rtg}"
 BGZIP="${BGZIP:-bgzip}"
 TABIX="${TABIX:-tabix}"
-SNIFFLES="${SNIFFLES:-sniffles}"   # structural-variant caller (script 07)
-TRUVARI="${TRUVARI:-truvari}"      # SV benchmarking (script 07)
+SNIFFLES="${SNIFFLES:-sniffles}"   # structural-variant caller (scripts 07, 21 and 22)
+TRUVARI="${TRUVARI:-truvari}"      # SV benchmarking and callset comparison (scripts 07, 21 and 22)
 
 # ---------------------------------------------------------------------------
 # 4) Conda: profile to source + environments holding Clair3 and RTG Tools. By default both are the
@@ -78,7 +78,7 @@ MODEL_ONT="${MODEL_ONT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v500}"
 MODEL_BACT="${MODEL_BACT:-$CLAIR3_MODELS/r1041_e82_400bps_sup_v430_bacteria_finetuned}"
 # E. coli K-12 MG1655 reference (NC_000913.3): E. coli rows of Tables S4 and S6 and the certified identity check.
 ECOLI_REF="${ECOLI_REF:-$WORKDIR/ecoli_MG1655.fna}"
-# Full GRCh38 + genome-wide HG002 HiFi subset (scripts 11/12).
+# Full GRCh38 + genome-wide HG002 HiFi subset (scripts 11, 12, 18, 23, 25, 26, 29, 37 and others; see README).
 GRCH38_REF="${GRCH38_REF:-$WORKDIR/GRCh38.fa}"
 GW_READS="${GW_READS:-$WORKDIR/hifi_genomewide_subset.fq}"   # GIAB HG002 CCS 15 kb, m54238_180901_011437.Q20.fastq
 # Complete GIAB HG002 data sets for the genome-wide benchmarks (fetched by `fetch_data.sh genomewide`).

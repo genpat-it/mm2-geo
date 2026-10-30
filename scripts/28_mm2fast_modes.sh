@@ -1,5 +1,5 @@
 #!/bin/bash
-# Composition with mm2-fast (Supplementary Tables S13/S22): mm2-fast (commit 14fe36c) vs the same build with
+# Composition with mm2-fast (Supplementary Table S22, mm2-fast rows; Table S13 is the separate series of scripts 01 and 08): mm2-fast (commit 14fe36c) vs the same build with
 # geo_mm2fast.patch in the heuristic and certified modes; certified identity vs mm2-fast; 3 interleaved runs.
 set -uo pipefail
 source "$(dirname "$0")/config.sh"; cd "$WORKDIR"; D=results/mm2fast; mkdir -p $D

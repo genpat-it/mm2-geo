@@ -65,7 +65,7 @@ mode, and the rows that a table caption marks as single runs (the
 | config variable | built from | used for |
 |---|---|---|
 | `MM2GEO` | tag `revision-2026` | every certified-mode result and the heuristic-mode results not listed below |
-| `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode timing series of Tables S18 and S20 (scripts 24 and 25), with the code as first released |
+| `MM2GEO_SUB` | tag `submission-2026` | heuristic-mode timing series of Tables S18 and S20 (scripts 24 and 25) and the heuristic-mode identity check of script 00, with the code as first released |
 | `MM2GEO_INSTR` | `revision-2026` + `instrumentation.patch` | per-gap log (`MM2_GEO_GAPLOG`) and DP-stage CPU time (`MM2_GEO_TIMEDP`); output unchanged |
 | `MM2GEO_ORACLE` | `revision-2026` + `cert_oracle.patch` | per-gap check of the certified mode against the full band (`MM2_GEO_CERT_ORACLE`); output unchanged |
 | `MM2GEO_O3` | `revision-2026` with bioconda's minimap2 compiler flags | build comparison |
@@ -123,7 +123,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `34_ont_r9_genomewide.sh` | ONT R9.4.1 genome-wide subset (Tables S19, S21, S22; first 20 GB of the GIAB ultra-long Guppy 3.2.4 FASTQ) |
 | `35_hifi53x_alignment_rate.sh` | Table S19, full-coverage HiFi row: alignment rate of stock minimap2 on all 11.7 million reads |
 | `36_table1_modes.sh` | Table 1 time and memory, the chromosome rows of the end-to-end columns of Table 2 and of Table S22: minimap2, certified and heuristic mode in one interleaved series (tag `revision-2026`); certified identity on all six data sets |
-| `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
+| `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, HiFi/ONT/CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
 | `38_worked_examples.sh` | Supplementary "Two examples": six chr22 HiFi reads in the three configurations, per-gap log of read `m64011_190901_095311/1378531/ccs` |
 | `39_ont_genomewide_sam_identity.sh` | Tables S19 and S22: certified SAM output equals minimap2's on the ONT R9.4.1 and R10.4.1 genome-wide subsets (scripts 34 and 27 compare PAF with CIGAR) |
 | `40_ecoli_timing.sh` | *E. coli* ONT timing and memory of minimap2 and both modes (Supplementary text) |
