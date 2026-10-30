@@ -127,7 +127,7 @@ ol li,ul li{margin:.25rem 0}
   <div class="grid2">
     <div class="card">
       <h3>Certified mode <span class="tag ok">default</span></h3>
-      <p>Accepts the band only if the best in-band score \(S_b\) is at least an upper bound \(U(b)\) on the score of <em>any</em> path that leaves the band. Otherwise it computes the smallest band \(b^{*}\) the bound can certify and realigns once (at most at \(b_{\max}\), where the computation is minimap2's own).</p>
+      <p>Accepts the band only if the best in-band score \(S_b\) is at least an upper bound \(U(b)\) on the score of <em>any</em> path that leaves the band. Otherwise it computes the smallest band \(b^{*}\) the bound can certify and realigns there, then tests again (at most at \(b_{\max}\), where the computation is minimap2's own).</p>
       <p>Each gap therefore receives minimap2's score. Read-level differences can only be equal-score alternative tracebacks.</p>
       <p><code>MM2_GEO=1</code></p>
     </div>
@@ -165,8 +165,8 @@ ol li,ul li{margin:.25rem 0}
   <h3>What happens to a gap</h3>
   <ol>
     <li><b>One-gap shortcut</b> (\(d\le 32\)): the best alignment with at most one indel of length \(d\) is found in \(O(q+t)\) by sliding the indel along the gap. It is accepted without DP when it beats the analogous bound on all alignments with two or more indels.</li>
-    <li><b>First band</b> \(b=\min(d+m,b_{\max})\). For gaps of 256 bp or more it is first scored without traceback (score-only pass), so that the traceback is computed only at the accepted band.</li>
-    <li><b>Test</b> \(S_b\ge U(b)\). Because \(U\) is non-increasing in \(b\), a failing gap is not doubled blindly: mm2-geo computes the smallest \(b^{*}\) with \(U(b^{*})\le S_b\) and realigns once at \(b^{*}\).</li>
+    <li><b>First band</b> \(b=\min(d+m,b_{\max})\). For gaps of 256 bp or more it is first scored without traceback (score-only pass), so that the first band is traced back only if it passes the test.</li>
+    <li><b>Test</b> \(S_b\ge U(b)\). Because \(U\) is non-increasing in \(b\), a failing gap is not doubled blindly: mm2-geo computes the smallest \(b^{*}\) with \(U(b^{*})\le S_b\) and realigns at \(b^{*}\), then tests again (ksw2's banded score is not strictly monotone in \(b\), and 0.1–1.7% of the widened chr22 gaps need another realignment).</li>
     <li><b>Traceback check.</b> The score of the returned CIGAR is recomputed (a linear pass) and must equal \(S_b\); otherwise the gap is realigned with \(b_{\max}\).</li>
     <li>minimap2's own CIGAR-based z-drop test then runs afterwards, unchanged.</li>
   </ol>
@@ -195,7 +195,7 @@ ol li,ul li{margin:.25rem 0}
 
 <section id="results">
   <h2>Results</h2>
-  <p>GIAB HG002 against GRCh38, same executable with only environment variables changing, 32 threads, median of three interleaved runs; genome-wide, each mode was timed against minimap2 in its own series.</p>
+  <p>GIAB HG002 against GRCh38, same executable with only environment variables changing, 32 threads, median of three interleaved runs; genome-wide, both modes in one series.</p>
   <h3>Output identity of the certified mode</h3>
   <div class="tbl"><table>
     <tr><th>Data</th><th>Certified output vs minimap2</th></tr>
@@ -206,12 +206,12 @@ ol li,ul li{margin:.25rem 0}
   <h3>Speed-up over minimap2</h3>
   <div class="tbl"><table>
     <tr><th>Data</th><th>certified, end to end</th><th>heuristic, end to end</th></tr>
-    <tr><td>HiFi chr22</td><td class="n">1.24×</td><td class="n">1.38×</td></tr>
-    <tr><td>HiFi genome-wide (53×, 25 partitions)</td><td class="n">1.35×</td><td class="n">1.35×</td></tr>
-    <tr><td>ONT chr22 / chr14</td><td class="n">1.07× / 1.19×</td><td class="n">1.19× / 1.15×</td></tr>
+    <tr><td>HiFi chr22</td><td class="n">1.25×</td><td class="n">1.39×</td></tr>
+    <tr><td>HiFi genome-wide (53×, 25 partitions)</td><td class="n">1.33×</td><td class="n">1.32×</td></tr>
+    <tr><td>ONT chr22 / chr14</td><td class="n">1.07× / 1.19×</td><td class="n">1.19× / 1.16×</td></tr>
     <tr><td>CLR chr22</td><td class="n">1.11×</td><td class="n">1.41×</td></tr>
   </table></div>
-  <p>The DP stage itself becomes 1.15–2.6× faster in the certified mode and 1.6–2.1× in the heuristic mode. The rest of the run is unchanged, so the end-to-end gain follows the share of run time spent in DP. Genome-wide, the two modes were timed in separate series, each against minimap2 in the same series.</p>
+  <p>The DP stage itself becomes 1.16–2.6× faster in the certified mode and 1.6–2.1× in the heuristic mode. The rest of the run is unchanged, so the end-to-end gain follows the share of run time spent in DP.</p>
   <p>The heuristic mode keeps small-variant F1 unchanged in the GIAB high-confidence regions, but over the whole of chr22 it changes 6–8% of the small-variant and SV calls, mostly outside those regions. Use the certified mode wherever lower-scoring alignments must be excluded and minimap2's gap scores preserved, for example for structural-variant or repeat analyses and in validated pipelines.</p>
 </section>
 
@@ -223,7 +223,7 @@ make && cp minimap2 mm2geo
 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam                        # MM2_GEO unset: stock minimap2 output
 MM2_GEO=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam              # certified mode (recommended)
 MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam  # heuristic mode</code></pre>
-  <p>With <code>MM2_GEO</code> unset the executable produces alignment records identical to minimap2 v2.30. <code>geo.patch</code> applies the change to a stock minimap2 v2.30 tree (<code>align.c</code> only), and <code>geo_mm2fast.patch</code> ports both modes to <a href="https://github.com/bwa-mem2/mm2-fast">mm2-fast</a> (commit <code>14fe36c</code>), where the certified mode is identical to mm2-fast and 1.08–1.16× faster than it on chr22. The short-read (<code>-ax sr</code>) and spliced paths are unaffected.</p>
+  <p>With <code>MM2_GEO</code> unset the executable produces alignment records identical to minimap2 v2.30. <code>geo.patch</code> applies the change to a stock minimap2 v2.30 tree (<code>align.c</code> only), and <code>geo_mm2fast.patch</code> ports both modes to <a href="https://github.com/bwa-mem2/mm2-fast">mm2-fast</a> (commit <code>14fe36c</code>), where the certified mode is identical to mm2-fast and 1.08–1.17× faster than it on chr22. The short-read (<code>-ax sr</code>) and spliced paths are unaffected.</p>
   <h3>Environment variables</h3>
   <div class="tbl"><table>
     <tr><th>Variable</th><th>Effect</th></tr>
@@ -275,7 +275,7 @@ MM2_GEO=1 MM2_GEO_FAST=1 ./mm2geo -ax map-hifi ref.fa reads.fq > out.sam  # heur
     if(bs!==null&&bs<=hi){x.fillStyle=css('--ok');x.beginPath();x.arc(X(bs),Y(U(bs,q,t,d,p)),4.5,0,7);x.fill();x.fillText('b*',X(bs)+6,Y(U(bs,q,t,d,p))-6)}
     var u0=U(b0,q,t,d,p),msg='Drift d = <b>'+d+'</b>, first band d+m = <b>'+b0+'</b>, U('+b0+') = <b>'+u0+'</b>. ';
     msg+= S>=u0 ? 'S<sub>b</sub> ≥ U(b): the first band is <b>certified</b>; no wider band, up to minimap2\'s, can score higher.'
-      : (bs!==null ? 'S<sub>b</sub> &lt; U(b): not certified; mm2-geo realigns once at the smallest certifiable band <b>b* = '+bs+'</b>.' : 'Not certifiable below b<sub>max</sub>: the gap is aligned with minimap2\'s band.');
+      : (bs!==null ? 'S<sub>b</sub> &lt; U(b): not certified; mm2-geo realigns at the smallest certifiable band <b>b* = '+bs+'</b> and tests again.' : 'Not certifiable below b<sub>max</sub>: the gap is aligned with minimap2\'s band.');
     $('out').innerHTML=msg;
   }
   ['preset','q','t','m','s'].forEach(function(id){$(id).addEventListener('input',draw)});
