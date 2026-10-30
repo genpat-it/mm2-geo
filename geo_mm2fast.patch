@@ -6,7 +6,7 @@ index d7588a9..e960d4c 100644
  	}
  }
  
-+// mm2-geo band-doubling grafted onto mm2-fast (env MM2_GEO=1, MM2_GEO_MARGIN default 20)
++// mm2-geo geometry-guided banding grafted onto mm2-fast (env MM2_GEO=1, MM2_GEO_MARGIN default 20)
 +static int mm_geo_enabled(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO"); v=(e&&*e&&atoi(e))?1:0;} return v; }
 +static int mm_geo_margin(void){ static int m=-1; if(m<0){const char*e=getenv("MM2_GEO_MARGIN"); m=(e&&*e)?atoi(e):20; if(m<0)m=0;} return m; }
 +// certified acceptance (default; MM2_GEO_FAST=1 = heuristic): any path leaving the band |i-j|<=b contains an insertion and a deletion run

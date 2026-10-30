@@ -6,11 +6,11 @@ index 963cd29..d31882f 100644
  	else memset(junc, 0, en - st);
  }
  
-+// mm2-geo: geometry-guided band-doubling. Each gap's DP band is sized from the anchor
-+// drift (|dq - dr| + margin) instead of minimap2's global -r, and doubled on boundary
-+// contact up to minimap2's own bandwidth; ksw2 still fills the band, so indel placement
-+// stays accurate. Gated by MM2_GEO=1 (MM2_GEO_MARGIN sets the margin, default 20);
-+// with MM2_GEO unset/0 this build is stock minimap2.
++// mm2-geo: geometry-guided banding. Each gap's DP band starts from the anchor drift
++// (|dq - dr| + margin) instead of minimap2's global -r and is widened, up to minimap2's own
++// bandwidth, until a score certificate holds (certified mode, the default) or, with
++// MM2_GEO_FAST=1, on boundary contact (heuristic mode). Gated by MM2_GEO=1 (MM2_GEO_MARGIN
++// sets the margin, default 20); with MM2_GEO unset/0 this build is stock minimap2.
 +static int mm_geo_enabled(void)
 +{
 +	static int v = -1;
