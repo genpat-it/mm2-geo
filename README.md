@@ -10,8 +10,7 @@ repository is the minimal production patch (`align.c` only, without the diagnost
 |---|---|
 | `revision-2026` (tool) | certified mode (`MM2_GEO=1`, the default) and heuristic mode (`MM2_GEO=1 MM2_GEO_FAST=1`) |
 | `submission-2026` (tool) | heuristic mode only, as first released; unchanged in `revision-2026` |
-| `reproducibility-revision2-2026` (this branch) | scripts for every table of the paper and its Supplementary Material, including the certified-mode series (scripts 36–38) |
-| `reproducibility-revision-2026` (this branch) | the same without scripts 36–38 |
+| `reproducibility-revision-2026` (this branch) | scripts for every table of the paper and its Supplementary Material |
 | `reproducibility-submission-2026` (this branch) | the material of the first submission |
 
 A permanent Zenodo snapshot of both branches will be deposited upon acceptance.
