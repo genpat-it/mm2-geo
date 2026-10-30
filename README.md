@@ -21,7 +21,7 @@ A permanent Zenodo snapshot of both branches will be deposited upon acceptance.
 - conda (the environment in `environment.yml` provides samtools, bcftools, Clair3, RTG Tools, Sniffles2,
   truvari, Flye, Badread, pbsim3)
 - docker for DeepVariant in script 32 (or `DEEPVARIANT=skip`)
-- a CPU with AVX2 for mm2-fast (scripts 01, 08, 10, 28; AVX-512 is used when present)
+- a CPU with AVX2 for mm2-fast (scripts 01, 08, 10, 28 and 37; AVX-512 is used when present)
 - disk: ~400 GB for everything, ~150 GB for the core scripts (`run_all.sh --core`)
 
 ## Quick start (from an empty machine)
@@ -49,9 +49,16 @@ Everything the scripts need (paths, executables, conda environments, Clair3 mode
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
 `$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–40; e.g.
 `results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
-`results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35, `results/table1_modes/`, `results/certified/` and `results/examples/` for 36, 37 and 38). Timings assume an otherwise idle machine and local storage for the inputs;
-the timing scripts use one executable per comparison, change only environment variables, send the SAM
-output to `/dev/null` (except the output-handling rows of Table S20, script 25, which also write it to disk) and report the median of three interleaved runs.
+`results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35, `results/table1_modes/`, `results/certified/` and `results/examples/` for 36, 37 and 38). Timings assume an otherwise idle machine and local storage for the inputs.
+The timing scripts send the SAM output to `/dev/null` (except the output-handling rows of Table S20, scripts 25
+and 37, which also write it to disk) and compare configurations of one executable that differ only in environment
+variables, except in the build comparisons (bioconda and -O3 builds; scripts 25 and 37), the comparisons with
+mm2-fast (scripts 01, 08, 10, 28 and 37) and the per-chromosome series of Table S18, which times the heuristic mode
+with the `submission-2026` executable and the certified mode with the `revision-2026` one (script 24). They report
+the median of three runs, with the configurations interleaved within each replicate in scripts 11, 23–25, 27, 28, 34,
+36, 37 and 40 and repeated three times in a row in scripts 01, 09, 10, 13, 14 and 33; the DP-stage decomposition
+(script 26) is one instrumented run per mode, and the rows that a table caption marks as single runs (the
+1–2-thread rows of Table S12, the heuristic-mode thread and output rows of Table S20) come from one run.
 
 ## Executables (`build_tools.sh`)
 
@@ -85,10 +92,10 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | script | produces |
 |---|---|
 | `00_verify_output_identity.sh` | output identity: unset = minimap2 v2.30, certified = minimap2, heuristic unchanged across tags |
-| `01_benchmark_grid.sh` | Table 1 heuristic-mode F1 (first-submission timing series, superseded by script 36); Table S13 timing rows (mm2-fast, mm2-fast+geo) |
+| `01_benchmark_grid.sh` | Table 1 F1 of minimap2 (equal to the certified mode's) and of the heuristic mode (first-submission timing series, superseded by script 36); Table S13 times of all four configurations |
 | `02_dp_cell_count.sh` | logical DP cells, heuristic mode (first series; Table S2 now from script 37) |
 | `03_ablation_cigar_identity.sh`, `04_ablation_variant_f1.sh` | Table 3 (geometry vs doubling ablation) |
-| `05_alignment_concordance.sh`, `06_primary_presence.sh` | Tables S6, S4 |
+| `05_alignment_concordance.sh`, `06_primary_presence.sh` | Tables S6, S4 (genome-wide subset row of Table S4 from script 12) |
 | `07_sv_calling.sh` | Table S7 (SVs vs GIAB Tier1, heuristic mode) |
 | `08_composition_mm2fast_f1.sh` | Table S13 (F1 with mm2-fast) |
 | `09_margin_sweep.sh` | Table S9 heuristic-mode CIGAR identity and F1 (times from script 37) |
@@ -103,8 +110,8 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `21_callset_diff.sh` | Table S17 (SV and small-variant callsets on the same GRCh38 alignments) |
 | `22_sv_truth_grch37.sh` | Table S17, bottom block (SVs vs GIAB Tier1 for minimap2 / heuristic / certified) |
 | `23_modes_identity_timing.sh` | certified identity on chr22 HiFi/ONT/CLR and chr14 ONT (`-cx` and `-ax`); its timing series is superseded by script 36 (Table 2 end-to-end columns and Table S22 use the series of Table 1) |
-| `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes; chr1-only setting) |
-| `25_speed_threads_builds.sh` | Table S20 heuristic-mode series (threads, output handling, index scope, bioconda and -O3 builds; certified series from script 37). The printed heuristic-mode rows were obtained with `submission-2026` executables, the -O3 one included; the script builds the -O3 executable from `revision-2026`, whose heuristic output is identical |
+| `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes); also a heuristic-mode chr1-only series (`results/genomewide/chr1_only.tsv`), not reported: the chr1-only note of Table S18 comes from script 37 |
+| `25_speed_threads_builds.sh` | Table S20 heuristic-mode series (threads, output handling, index scope, bioconda and -O3 builds; certified series from script 37). The printed heuristic-mode rows were obtained with `submission-2026` executables, the -O3 one included; the script builds the -O3 executable from `revision-2026`, whose heuristic output is identical. The printed heuristic-mode thread and output-handling rows are single runs (`outputs/revision/speed_checks/threads.tsv`), and the bioconda row compares the bioconda executable with the default build timed in the same session (`outputs/revision/speed_checks/buildtest.tsv`), whereas the script times it alongside the -O3 build |
 | `26_dp_stage.sh` | Table 2 DP columns, Table S21 (DP-stage decomposition, Amdahl prediction) |
 | `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S19, S21, S22) |
 | `28_mm2fast_modes.sh` | Table S22, mm2-fast rows (both modes ported to mm2-fast; certified identity to mm2-fast) |
@@ -112,10 +119,10 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
 | `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |
 | `32_three_callers.sh` | Table S5 (Clair3, bcftools and DeepVariant on minimap2 and heuristic-mode BAMs; DeepVariant via docker) |
-| `33_fixed_r_band.sh` | Table S8 F1 (minimap2 `-r 20,20` vs default vs heuristic mode; speed-ups from script 37) |
+| `33_fixed_r_band.sh` | Table S8 F1 (minimap2 `-r 20,20` vs default vs heuristic mode; speed-ups from script 37) and minimap2's F1 in Table S9 |
 | `34_ont_r9_genomewide.sh` | ONT R9.4.1 genome-wide subset (Tables S19, S21, S22; first 20 GB of the GIAB ultra-long Guppy 3.2.4 FASTQ) |
 | `35_hifi53x_alignment_rate.sh` | Table S19, full-coverage HiFi row: alignment rate of stock minimap2 on all 11.7 million reads |
-| `36_table1_modes.sh` | Table 1 time and memory: minimap2, certified and heuristic mode in one interleaved series (tag `revision-2026`); certified identity on all six data sets |
+| `36_table1_modes.sh` | Table 1 time and memory, the end-to-end columns of Table 2 and the chromosome rows of Table S22: minimap2, certified and heuristic mode in one interleaved series (tag `revision-2026`); certified identity on all six data sets |
 | `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
 | `38_worked_examples.sh` | Supplementary "Two examples": six chr22 HiFi reads in the three configurations, per-gap log of read `m64011_190901_095311/1378531/ccs` |
 | `39_ont_genomewide_sam_identity.sh` | Tables S19 and S22: certified SAM output equals minimap2's on the ONT R9.4.1 and R10.4.1 genome-wide subsets (scripts 34 and 27 compare PAF with CIGAR) |
@@ -143,7 +150,7 @@ are in this branch.
 
 ## Software
 minimap2 2.30-r1287 (`v2.30` of lh3/minimap2) · mm2-fast 2.24-r1122 (commit `14fe36c`) · samtools 1.21 ·
-bcftools 1.23 · Clair3 v2.0.2 (models `hifi`, `r1041_e82_400bps_sup_v500`) · DeepVariant 1.6.1 · RTG Tools
+bcftools 1.23 · Clair3 v2.0.2 (models `hifi`, `r1041_e82_400bps_sup_v500`, and `r1041_e82_400bps_sup_v430_bacteria_finetuned` for *E. coli*) · DeepVariant 1.6.1 · RTG Tools
 3.13 · Sniffles2 2.7.2 · truvari 5.4.0 · Flye 2.9.6 · Badread 0.4.1 · pbsim3 3.0 · GCC 14.3.1 (`-O2 -Wall`).
 
 ## Seeds

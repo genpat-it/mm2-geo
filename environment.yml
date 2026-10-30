@@ -19,6 +19,6 @@ dependencies:
   - pandas
   - numpy
   - pbsim3=3.0        # simulated reads with true alignments (fetch_data.sh)
-  - minimap2=2.30     # bioconda build, used only by the build comparison (25); set BIOCONDA_MM2
+  - minimap2=2.30     # bioconda build, used only by the build comparisons (25, 37); set BIOCONDA_MM2
 # mm2-geo, stock minimap2 v2.30 and mm2-fast are built from source by scripts/build_tools.sh and
 # scripts/00_verify_output_identity.sh; the conda minimap2 is only the bioconda-build comparison.
