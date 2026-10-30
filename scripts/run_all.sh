@@ -45,7 +45,7 @@ genomewide(){ step fetch_genomewide bash "$SCRIPTS/fetch_data.sh" genomewide && 
 core(){
   for n in 00 29 18 19 20 23 26 02 03 05 06; do num $n; done
   step 15 check15
-  for n in 16 21 22 07 01 04 09 17 08 10 11 12 13 14 25 28 30 31 32 33 36 38; do num $n; done; }
+  for n in 16 21 22 07 01 04 09 17 08 10 11 12 13 14 25 28 30 31 32 33 36 38 40; do num $n; done; }
 
 if [ $CORE_ONLY = 1 ]; then core
 elif [ $PARALLEL = 1 ]; then genomewide & core; wait

@@ -47,7 +47,7 @@ bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
-`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–39; e.g.
+`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–40; e.g.
 `results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
 `results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35, `results/table1_modes/`, `results/certified/` and `results/examples/` for 36, 37 and 38). Timings assume an otherwise idle machine and local storage for the inputs;
 the timing scripts use one executable per comparison, change only environment variables, send the SAM
@@ -95,7 +95,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `10_thread_scaling.sh` | thread scaling, heuristic mode (first series; Table S12 now from script 37) |
 | `11_genomewide_speed.sh`, `12_genomewide_concordance.sh` | Table S14 (0.57× genome-wide subset) |
 | `13_stress_dense_indels.sh`, `14_stress_large_sv.sh` | Supplementary section "Stress tests" |
-| `15_ecoli_plant_variants.py`, `16_ecoli_spikein_f1.sh` | *E. coli* spike-in (Table S3 and Supplementary text) |
+| `15_ecoli_plant_variants.py`, `16_ecoli_spikein_f1.sh` | *E. coli* spike-in F1 (Table S3 and Supplementary text) |
 | `17_indel_length_stratified_f1.sh` | Table S10 |
 | `18_gap_rounds_dE.sh` | Table S15 (band-doubling rounds, joint (d,E) statistics) |
 | `19_discordant_reads.sh` | Table S16 (discordant reads: severity, GIAB stratifications); uses the output of 18 |
@@ -119,6 +119,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
 | `38_worked_examples.sh` | Supplementary "Two examples": six chr22 HiFi reads in the three configurations, per-gap log of read `m64011_190901_095311/1378531/ccs` |
 | `39_ont_genomewide_sam_identity.sh` | Tables S19 and S22: certified SAM output equals minimap2's on the ONT R9.4.1 and R10.4.1 genome-wide subsets (scripts 34 and 27 compare PAF with CIGAR) |
+| `40_ecoli_timing.sh` | *E. coli* ONT timing and memory of minimap2 and both modes (Supplementary text) |
 
 Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 

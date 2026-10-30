@@ -60,7 +60,9 @@ read aligned to a different path of equal score (same AS and NM). `results/examp
 chr22 HiFi reads of the Supplementary "Two examples" in the three configurations and the per-gap log of read
 `m64011_190901_095311/1378531/ccs`. `results/ont_genomewide_sam_identity/` (script 39): `summary.tsv`, SAM
 (without `@PG`) of minimap2 and of the certified mode on the R9.4.1 and R10.4.1 genome-wide subsets against GRCh38;
-identical on both.
+identical on both. `results/ecoli_timing/` (script 40): `timing.tsv` and `summary.txt`, *E. coli* ONT time and
+memory of minimap2 and both modes (Supplementary text); it replaces `submission/results_ECOLI_TIME_REFMUT.txt`, a run
+not scripted in this branch.
 
 ## `submission/` — first submission
 
