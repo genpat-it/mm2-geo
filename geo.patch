@@ -23,7 +23,7 @@ index 963cd29..d31882f 100644
 +	if (m < 0) { const char *e = getenv("MM2_GEO_MARGIN"); m = (e && *e)? atoi(e) : 20; if (m < 0) m = 0; }
 +	return m;
 +}
-+// mm2-geo certified mode (default with MM2_GEO=1; MM2_GEO_FAST=1 selects the heuristic mode). A path that leaves the band |i-j|<=b of a gap (lengths ql, tl,
++// mm2-geo certified mode (default with MM2_GEO=1; MM2_GEO_FAST=1 selects the heuristic mode). For b >= d, a path that leaves the band |i-j|<=b of a gap (lengths ql, tl,
 +// drift d) contains an insertion run and a deletion run totalling at least L=(b+1)+(b+1-d) and aligns at most
 +// (ql+tl-L)/2 pairs, so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d), with
 +// g(l) = min(q+l*e, q2+l*e2). If the in-band score S reaches U(b), no out-of-band path scores higher; otherwise

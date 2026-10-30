@@ -667,7 +667,7 @@ static int mm_geo_nodouble(void){ static int v=-1; if(v<0){const char*e=getenv("
 static int mm_geo_fixed(void){ static int v=-1; if(v<0){const char*e=getenv("MM2_GEO_FIXED"); v=(e&&*e&&atoi(e))?1:0;} return v; }
 
 // mm2-geo certified mode (the default with MM2_GEO=1; MM2_GEO_FAST=1 selects the heuristic mode instead, and
-// MM2_GEO_CERT is accepted for compatibility but no longer needed). A path that leaves the band |i-j|<=b of a gap (lengths ql, tl,
+// MM2_GEO_CERT is accepted for compatibility but no longer needed). For b >= d, a path that leaves the band |i-j|<=b of a gap (lengths ql, tl,
 // drift d) contains an insertion run and a deletion run totalling at least L=(b+1)+(b+1-d) and aligns at most
 // (ql+tl-L)/2 pairs, so it scores at most U(b) = a*floor((ql+tl-L)/2) - g(b+1) - g(b+1-d), with
 // g(l) = min(q+l*e, q2+l*e2). If the in-band score S reaches U(b), no out-of-band path scores higher; otherwise
