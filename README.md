@@ -66,7 +66,7 @@ Same executable with only environment variables changing, 32 threads, chr22 GIAB
 | data | heuristic mode | certified mode (preserves gap scores) |
 |---|---|---|
 | HiFi | 1.39× (1.32× genome-wide, 53×) | 1.25× (1.33× genome-wide, 53×) |
-| ONT | 1.16–1.19× | 1.07–1.19× |
+| ONT (chr22, chr14) | 1.16–1.19× | 1.07–1.19× |
 | CLR | 1.41× | 1.11× |
 
 - The DP stage itself becomes 1.6–2.1× faster in the heuristic mode and 1.16–2.6×
