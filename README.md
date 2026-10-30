@@ -80,7 +80,7 @@ Same executable with only environment variables changing, 32 threads, chr22 GIAB
   genomic presets; spliced alignment is not covered):
   on chr22 its certified mode is byte-identical to mm2-fast and 1.17× (HiFi), 1.08× (ONT)
   and 1.08× (CLR) faster than it; the heuristic mode 1.23×, 1.18× and 1.33×.
-- Short reads (Illumina, `-ax sr`) use minimap2's ungapped path and are
+- Short reads (Illumina, `-ax sr`) keep minimap2's own gap filling and are
   unaffected.
 
 ## Applying to minimap2 and mm2-fast
