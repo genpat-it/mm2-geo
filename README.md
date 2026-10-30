@@ -42,12 +42,12 @@ Or everything in one command (build, data, smoke test and every numbered script 
 per step and a summary of exit codes in `$WORKDIR/logs/status.tsv`; completed steps are skipped on a re-run):
 
 ```bash
-bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27, 34, 35 and 37
+bash scripts/run_all.sh            # all tables (~2 days, ~400 GB); --core skips the genome-wide scripts 24, 27, 34, 35, 37 and 39
 ```
 
 Everything the scripts need (paths, executables, conda environments, Clair3 models, threads) is defined
 once in `scripts/config.sh`; any value can be overridden from the environment. Results are written to
-`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–38; e.g.
+`$WORKDIR/hifi_bench/` (scripts 01–17, 32 and 33) and `$WORKDIR/results/` (scripts 00, 18–31 and 34–39; e.g.
 `results/cert_oracle/` for 30 and 31, whose table also goes to stdout, `results/ont_r10_genomewide/` for 27 and
 `results/ont_r9_genomewide/` for 34, `results/hifi53x_alignment_rate/` for 35, `results/table1_modes/`, `results/certified/` and `results/examples/` for 36, 37 and 38). Timings assume an otherwise idle machine and local storage for the inputs;
 the timing scripts use one executable per comparison, change only environment variables, send the SAM
@@ -118,6 +118,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `36_table1_modes.sh` | Table 1 time and memory: minimap2, certified and heuristic mode in one interleaved series (tag `revision-2026`); certified identity on all six data sets |
 | `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
 | `38_worked_examples.sh` | Supplementary "Two examples": six chr22 HiFi reads in the three configurations, per-gap log of read `m64011_190901_095311/1378531/ccs` |
+| `39_ont_genomewide_sam_identity.sh` | Tables S19 and S22: certified SAM output equals minimap2's on the ONT R9.4.1 and R10.4.1 genome-wide subsets (scripts 34 and 27 compare PAF with CIGAR) |
 
 Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 

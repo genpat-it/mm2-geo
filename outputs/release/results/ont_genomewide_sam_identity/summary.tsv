@@ -1,0 +1,3 @@
+data_set	reads	minimap2_sam_md5	certified_sam_md5	certified_sam_equals_minimap2
+R9.4.1	1228750	6f96147d4ded967a2e984e47af656e81	6f96147d4ded967a2e984e47af656e81	yes
+R10.4.1	792854	a5b7cfc8a6aa1f795e14018344986a3d	a5b7cfc8a6aa1f795e14018344986a3d	yes

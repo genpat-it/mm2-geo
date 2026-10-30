@@ -57,7 +57,9 @@ speed-ups, `gwsub.tsv` Table S14 second series, `cells.tsv` Table S2, `ecoli.tsv
 first, certified-only run being `margin_certonly_20261030.tsv`). In `margin.tsv` the only `NO` (ONT, m=5) is one
 read aligned to a different path of equal score (same AS and NM). `results/examples/` (script 38): PAF of the six
 chr22 HiFi reads of the Supplementary "Two examples" in the three configurations and the per-gap log of read
-`m64011_190901_095311/1378531/ccs`.
+`m64011_190901_095311/1378531/ccs`. `results/ont_genomewide_sam_identity/` (script 39): `summary.tsv`, SAM
+(without `@PG`) of minimap2 and of the certified mode on the R9.4.1 and R10.4.1 genome-wide subsets against GRCh38;
+identical on both.
 
 ## `submission/` — first submission
 

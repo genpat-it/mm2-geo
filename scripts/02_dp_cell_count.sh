@@ -2,7 +2,7 @@
 source "$(dirname "$0")/config.sh"
 cd "$WORKDIR"
 MG="$MM2GEO"
-# Logical DP cells (Table S2), full chr22 HiFi and ONT R10.4.1 slices. The preset-specific indices are built
+# Logical DP cells, heuristic mode, full chr22 HiFi and ONT R10.4.1 slices (first series; Table S2 now from script 37). The preset-specific indices are built
 # once into $WORKDIR; MM2_GEO_STATS only counts, it does not change the output.
 R=hifi_bench/results_DPCELLS.txt; : > $R
 [ -s chr22.hifi.mmi ] || $MG -x map-hifi -d chr22.hifi.mmi chr22_named.fa 2>/dev/null
