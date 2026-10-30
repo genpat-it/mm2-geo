@@ -1,5 +1,5 @@
 diff --git a/align.c b/align.c
-index 963cd29..d31882f 100644
+index 963cd29..9a18497 100644
 --- a/align.c
 +++ b/align.c
 @@ -642,6 +642,110 @@ static inline void mm_get_junc(const mm_idx_t *mi, int32_t ctg, int32_t st, int3

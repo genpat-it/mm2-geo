@@ -1,5 +1,5 @@
 diff --git a/align.c b/align.c
-index d7588a9..e960d4c 100644
+index d7588a9..a5f5fcc 100644
 --- a/align.c
 +++ b/align.c
 @@ -667,6 +667,87 @@ static void mm_fix_bad_ends_splice(void *km, const mm_mapopt_t *opt, const mm_id
