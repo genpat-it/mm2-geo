@@ -1,0 +1,12 @@
+chr1only done
+speed done
+threads done
+margin done
+rband done
+gwsub done
+cells done
+ecoli done
+DONE
+--- rerun margin Fri Oct 30 10:29:51 AM CET 2026
+margin done
+DONE

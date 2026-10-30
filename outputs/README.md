@@ -44,6 +44,18 @@ comparison, `results/gwsubset_identity/summary.txt`, since added to script 23), 
 executable, whose output equals that of mm2-geo with `MM2_GEO` unset). Large intermediates (BAM, PAF, Clair3 working directories, truvari
 VCFs) are not included.
 
+Scripts 36–38 (tag `revision-2026`, 32 threads unless stated, configurations interleaved within each replicate):
+`results/table1_modes/` (script 36: `timing.tsv` and `summary.txt`, Table 1 time and memory of minimap2, certified
+and heuristic mode; `identity.tsv`, certified identical to minimap2 on all six chr22/chr14 data sets);
+`results/certified/` (script 37, one file per section: `chr1only.tsv` Table S18 note, `speed.tsv` Table S20
+certified series, `threads.tsv` Table S12, `margin.tsv` Table S9 times and certified identity, `rband.tsv` Table S8
+speed-ups, `gwsub.tsv` Table S14 second series, `cells.tsv` Table S2, `ecoli.tsv` certified identity on *E. coli*;
+`progress.txt` records that the margin section was re-run so that both modes are timed in the same series, the
+first, certified-only run being `margin_certonly_20261030.tsv`). In `margin.tsv` the only `NO` (ONT, m=5) is one
+read aligned to a different path of equal score (same AS and NM). `results/examples/` (script 38): PAF of the six
+chr22 HiFi reads of the Supplementary "Two examples" in the three configurations and the per-gap log of read
+`m64011_190901_095311/1378531/ccs`.
+
 ## `submission/` — first submission
 
 `results_*.txt` written by scripts 01–17 into `$WORKDIR/hifi_bench/` (Table 1, Table 3, Supplementary

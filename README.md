@@ -85,14 +85,14 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | script | produces |
 |---|---|
 | `00_verify_output_identity.sh` | output identity: unset = minimap2 v2.30, certified = minimap2, heuristic unchanged across tags |
-| `01_benchmark_grid.sh` | Table 1 (heuristic mode: time, memory, small-variant F1); Table S13 timing rows (mm2-fast, mm2-fast+geo) |
-| `02_dp_cell_count.sh` | Table S2 (logical DP cells) |
+| `01_benchmark_grid.sh` | Table 1 heuristic-mode F1 (first-submission timing series, superseded by script 36); Table S13 timing rows (mm2-fast, mm2-fast+geo) |
+| `02_dp_cell_count.sh` | logical DP cells, heuristic mode (first series; Table S2 now from script 37) |
 | `03_ablation_cigar_identity.sh`, `04_ablation_variant_f1.sh` | Table 3 (geometry vs doubling ablation) |
 | `05_alignment_concordance.sh`, `06_primary_presence.sh` | Tables S6, S4 |
 | `07_sv_calling.sh` | Table S7 (SVs vs GIAB Tier1, heuristic mode) |
 | `08_composition_mm2fast_f1.sh` | Table S13 (F1 with mm2-fast) |
-| `09_margin_sweep.sh` | Table S9 |
-| `10_thread_scaling.sh` | Table S12 |
+| `09_margin_sweep.sh` | Table S9 heuristic-mode CIGAR identity and F1 (times from script 37) |
+| `10_thread_scaling.sh` | thread scaling, heuristic mode (first series; Table S12 now from script 37) |
 | `11_genomewide_speed.sh`, `12_genomewide_concordance.sh` | Table S14 (0.57× genome-wide subset) |
 | `13_stress_dense_indels.sh`, `14_stress_large_sv.sh` | Supplementary section "Stress tests" |
 | `15_ecoli_plant_variants.py`, `16_ecoli_spikein_f1.sh` | *E. coli* spike-in (Table S3 and Supplementary text) |
@@ -104,7 +104,7 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `22_sv_truth_grch37.sh` | Table S17, bottom block (SVs vs GIAB Tier1 for minimap2 / heuristic / certified) |
 | `23_modes_identity_timing.sh` | Table 2 end-to-end columns, Table S22 (both modes, certified identity) |
 | `24_genomewide_perchr.sh` | Table S18 (full-coverage HG002 HiFi per chromosome, both modes; chr1-only setting) |
-| `25_speed_threads_builds.sh` | Table S20 (threads, output handling, index scope, bioconda and -O3 builds) |
+| `25_speed_threads_builds.sh` | Table S20 heuristic-mode series (threads, output handling, index scope, bioconda and -O3 builds; certified series from script 37) |
 | `26_dp_stage.sh` | Table 2 DP columns, Table S21 (DP-stage decomposition, Amdahl prediction) |
 | `27_ont_r10_genomewide.sh` | ONT R10.4.1 genome-wide subset (Tables S19, S21, S22) |
 | `28_mm2fast_modes.sh` | Table S22, mm2-fast rows |
@@ -112,9 +112,12 @@ Table numbers refer to the revised manuscript (main text: Tables 1–3, Figure 1
 | `30_cert_oracle.sh` | Table S23 (per-gap oracle of the certified mode against the full band; heuristic-mode positive control) |
 | `31_bound_exhaustive.py` | Supplementary proof section, numerical check (exhaustive DP over all paths of small gaps, three scorings) |
 | `32_three_callers.sh` | Table S5 (Clair3, bcftools and DeepVariant on minimap2 and heuristic-mode BAMs; DeepVariant via docker) |
-| `33_fixed_r_band.sh` | Table S8 (minimap2 `-r 20,20` vs default vs heuristic mode: time and F1) |
+| `33_fixed_r_band.sh` | Table S8 F1 (minimap2 `-r 20,20` vs default vs heuristic mode; speed-ups from script 37) |
 | `34_ont_r9_genomewide.sh` | ONT R9.4.1 genome-wide subset (Tables S19, S21, S22; first 20 GB of the GIAB ultra-long Guppy 3.2.4 FASTQ) |
 | `35_hifi53x_alignment_rate.sh` | Table S19, full-coverage HiFi row: alignment rate of stock minimap2 on all 11.7 million reads |
+| `36_table1_modes.sh` | Table 1 time and memory: minimap2, certified and heuristic mode in one interleaved series (tag `revision-2026`); certified identity on all six data sets |
+| `37_certified_complements.sh` | certified-mode counterparts, each with minimap2 (and the heuristic mode where stated) in one interleaved series: Table S2 (DP cells, both modes, CLR), S8 (`-r 20,20`, both modes), S9 (margin, both modes, certified identity), S12 (threads 1–64, both modes, alone and on mm2-fast), S14 (genome-wide subset, second series), S18 note (chr1-only), S20 (certified-mode series); certified identity on *E. coli* (both references) |
+| `38_worked_examples.sh` | Supplementary "Two examples": six chr22 HiFi reads in the three configurations, per-gap log of read `m64011_190901_095311/1378531/ccs` |
 
 Tables S1 (environment variables) and S11 (aligners compared) are descriptive; Figure 1 is a schematic.
 

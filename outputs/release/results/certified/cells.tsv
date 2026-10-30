@@ -1,0 +1,9 @@
+HiFi	mm2	### MM2_GEO_CELLS dp_cells=1721636376524 geo_on=1 
+HiFi	heur	### MM2_GEO_CELLS dp_cells=793163105741 geo_on=1 ### MM2_GEO_STATS gaps=10668727 first_pass=99.85% mean_attempts=1.002 reach_max=0.00% binit_median=20 binit_p90=22 bfinal_median=20 bfinal_p90=22 
+HiFi	cert	### MM2_GEO_CELLS dp_cells=1164350586722 geo_on=1 ### MM2_GEO_STATS gaps=10668655 first_pass=96.60% mean_attempts=1.034 reach_max=0.01% binit_median=20 binit_p90=22 bfinal_median=20 bfinal_p90=22 
+ONT	mm2	### MM2_GEO_CELLS dp_cells=2322071274416 geo_on=1 
+ONT	heur	### MM2_GEO_CELLS dp_cells=1045713711500 geo_on=1 ### MM2_GEO_STATS gaps=10800162 first_pass=99.90% mean_attempts=1.001 reach_max=0.00% binit_median=21 binit_p90=26 bfinal_median=21 bfinal_p90=26 
+ONT	cert	### MM2_GEO_CELLS dp_cells=2070720485349 geo_on=1 ### MM2_GEO_STATS gaps=10797069 first_pass=89.16% mean_attempts=1.109 reach_max=0.01% binit_median=21 binit_p90=26 bfinal_median=21 bfinal_p90=32 
+CLR	mm2	### MM2_GEO_CELLS dp_cells=1842411227062 geo_on=1 
+CLR	heur	### MM2_GEO_CELLS dp_cells=1018141989529 geo_on=1 ### MM2_GEO_STATS gaps=6556581 first_pass=99.44% mean_attempts=1.007 reach_max=0.00% binit_median=29 binit_p90=53 bfinal_median=29 bfinal_p90=54 
+CLR	cert	### MM2_GEO_CELLS dp_cells=1630380281210 geo_on=1 ### MM2_GEO_STATS gaps=6556420 first_pass=40.34% mean_attempts=1.597 reach_max=0.00% binit_median=29 binit_p90=53 bfinal_median=35 bfinal_p90=97 
