@@ -19,11 +19,13 @@ minimap2's gap scores (output identical to minimap2's except for rare equal-scor
 
 Between two chained anchors, minimap2 fills the gap with a banded DP whose width
 is a single global heuristic. mm2-geo instead sizes the band **per gap** from the
-local geometry `band = |Δquery − Δref| + margin` and **doubles it adaptively**
-under a *boundary-contact test* (`max|ΣI − ΣD| < band`) — a heuristic
-band-sufficiency signal, **not** a proof of global optimality — never exceeding
-minimap2's own band. Clean gaps get a tiny band (fast); the rare hard gap widens
-up to minimap2's cap. By Lemma 1 (paper), the geometric floor `|Δq − Δr|` is what
+local geometry `band = |Δquery − Δref| + margin`, never exceeding minimap2's own
+band. The default **certified mode** accepts a band only when a score bound proves
+that no path leaving it scores higher, and otherwise widens it to the smallest band
+the bound certifies; the opt-in **heuristic mode** (`MM2_GEO_FAST=1`) instead doubles
+the band under a *boundary-contact test* (`max|ΣI − ΣD| < band`), a band-sufficiency
+signal that is **not** a proof of optimality. Clean gaps get a tiny band (fast); the
+rare hard gap widens up to minimap2's cap. By Lemma 1 (paper), the geometric floor `|Δq − Δr|` is what
 makes the acceptance test operate in its valid regime.
 
 ## Build & use

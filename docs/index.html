@@ -158,10 +158,10 @@ ol li,ul li{margin:.25rem 0}
 <section id="certificate">
   <h2>The score certificate</h2>
   <p>Let \(a\) be the match score and \(g(l)=\min(q_1+l\,e_1,\;q_2+l\,e_2)\) minimap2's dual-affine cost of a gap of length \(l\) (\(q_i\), \(e_i\): the <code>-O</code>, <code>-E</code> values).</p>
-  <div class="note"><b>Proposition (score certificate).</b> Every path of the gap that leaves the band \(|i-j|\le b\) scores at most
+  <div class="note"><b>Proposition (score certificate).</b> For \(b\ge d\), every path of the gap that leaves the band \(|i-j|\le b\) scores at most
   $$U(b)=a\left\lfloor\frac{q+t-L}{2}\right\rfloor-g(b+1)-g(b+1-d),\qquad L=(b+1)+(b+1-d).$$
-  Hence, for \(b\ge d\), if the optimal in-band score satisfies \(S_b\ge U(b)\), no band wider than \(b\), up to \(b_{\max}\), yields a higher-scoring alignment.</div>
-  <p><b>Why it holds.</b> A path that reaches displacement \(b+1\) and ends at net displacement \(d\) inserts at least \(b+1\) bases and deletes at least \(b+1-d\) (the mirror case costs more). Those indels use up \(L\) of the \(q+t\) positions, which leaves at most \((q+t-L)/2\) aligned pairs, each worth at most \(a\). Splitting indels into several runs only adds opening costs, because \(g\) is subadditive, so the indels cost at least \(g(b+1)+g(b+1-d)\).</p>
+  Hence, if the optimal in-band score satisfies \(S_b\ge U(b)\), no band wider than \(b\), up to \(b_{\max}\), yields a higher-scoring alignment.</div>
+  <p><b>Why it holds.</b> A path that reaches displacement \(b+1\) and ends at net displacement \(d\) inserts at least \(b+1\) bases and deletes at least \(b+1-d\) (the mirror case is never cheaper). Those indels use up \(L\) of the \(q+t\) positions, which leaves at most \((q+t-L)/2\) aligned pairs, each worth at most \(a\). Splitting indels into several runs only adds opening costs, because \(g\) is subadditive, so the indels cost at least \(g(b+1)+g(b+1-d)\).</p>
   <h3>What happens to a gap</h3>
   <ol>
     <li><b>One-gap shortcut</b> (\(d\le 32\)): the best alignment with at most one indel of length \(d\) is found in \(O(q+t)\) by sliding the indel along the gap. It is accepted without DP when it beats the analogous bound on all alignments with two or more indels.</li>
