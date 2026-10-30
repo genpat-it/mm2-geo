@@ -95,7 +95,7 @@ index d7588a9..e960d4c 100644
  			}
  			mm_idx_bed_junc(mi, rid, rs, re, junc);
 -			if (is_sr) { // perform ungapped alignment
-+				if (mm_geo_enabled() && !is_sr) { // mm2-geo: geometry-seeded band-doubling (converges to mm2-fast's band)
++				if (mm_geo_enabled() && !is_sr) { // mm2-geo: geometry-seeded band, certified or (MM2_GEO_FAST=1) doubled, up to mm2-fast's band
 +					int full_bw = bw1, dd = (qe - qs) - (re - rs), gb;
 +					if (dd < 0) dd = -dd;
 +					gb = dd + mm_geo_margin();
