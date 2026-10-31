@@ -26,5 +26,6 @@ for s in "${DS[@]}"; do set -- $s
 done
 awk -F'\t' 'NR>1{k=$1"\t"$2; t[k]=t[k]" "$4; r[k]=r[k]" "$5}
   function med(s,  a,n){n=split(s,a," "); asort(a); return a[int((n+1)/2)]}
-  END{for(k in t) printf "%s\t%.0f s\t%.1f GiB\n", k, med(t[k]), med(r[k])/1048576}' $T | sort > $D/summary.txt
+  function hu(x,d,  p){p=10^d; return sprintf("%.*f", d, int(x*p+0.5+1e-9)/p)}   # round half up, as in the paper
+  END{for(k in t) printf "%s\t%s s\t%s GiB\n", k, hu(med(t[k]),0), hu(med(r[k])/1048576,1)}' $T | sort > $D/summary.txt
 cat $I >> $D/summary.txt; echo DONE >> $D/summary.txt

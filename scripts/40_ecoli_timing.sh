@@ -14,5 +14,6 @@ for rep in 1 2 3; do for c in mm2 cert heur; do v=E_$c
   echo -e "$c\t$rep\t$(tr ' ' '\t' < $D/t)" >> $D/timing.tsv; done; done; rm -f $D/t
 awk -F'\t' 'NR>1{t[$1]=t[$1]" "$3; r[$1]=r[$1]" "$4}
   function med(s, a,n){n=split(s,a," "); asort(a); return a[int((n+1)/2)]}
-  END{for(k in t) printf "%s\t%.1f s\t%.1f GiB\n", k, med(t[k]), med(r[k])/1048576}' $D/timing.tsv | sort > $D/summary.txt
+  function hu(x,d,  p){p=10^d; return sprintf("%.*f", d, int(x*p+0.5+1e-9)/p)}   # round half up, as in the paper
+  END{for(k in t) printf "%s\t%s s\t%s GiB\n", k, hu(med(t[k]),1), hu(med(r[k])/1048576,1)}' $D/timing.tsv | sort > $D/summary.txt
 cat $D/summary.txt
